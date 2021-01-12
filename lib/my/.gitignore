@@ -1,0 +1,9 @@
+*.o
+*.gcno
+*.gcda
+
+unit_tests
+libmy.a
+libmy-config
+
+doc/html
