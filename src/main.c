@@ -1,81 +1,49 @@
 /*
 ** EPITECH PROJECT, 2021
-** bs-minishell1
+** minishell1
 ** File description:
-** the main file
+** The entry point of the program
 */
 
-#include <sys/types.h>
-
-#include <libmy/ascii.h>
 #include <libmy/io.h>
-#include <libmy/printf.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include "shell.h"
 
-static void report_status(int status)
+static int init_stdio(void)
 {
-    my_putstr("Program terminated.\nStatus: ");
-    if (WIFEXITED(status)) {
-        my_putstr("OK\n");
-    } else if (WIFSIGNALED(status)) {
-        my_putendl(strsignal(WTERMSIG(status)));
-    } else {
-        my_putstr("NOT EXITED!\n");
-    }
-}
-
-static size_t count_args(char const **args)
-{
-    size_t argc = 0;
-
-    while (args[argc])
-        ++argc;
-    return argc;
-}
-
-static int exec_args(char const **args, char *envp[])
-{
-    size_t argc = count_args(args);
-    pid_t child_pid;
-    int status;
-
-    if (argc == 0)
-        return 0;
-    my_printf("Program name: %s\nNb args: %zu\nPID: %d\n", args[0], argc - 1,
-        getpid());
-    child_pid = fork();
-    if (child_pid < 0) {
-        my_putstr_fd(STDERR_FILENO, "couldn't fork process\n");
+    if (my_init_stdout(malloc(IO_BUF_SIZE), IO_BUF_SIZE, &free))
         return 84;
-    } else if (child_pid == 0) {
-        execve(args[0], (char *const *)args, envp);
+    if (my_init_stderr(malloc(IO_BUF_SIZE), IO_BUF_SIZE, &free)) {
+        my_free_stdout();
+        return 84;
     }
-    my_printf("Child PID: %d\n", child_pid);
-    waitpid(child_pid, &status, 0);
-    report_status(status);
+    if (my_init_stdin(malloc(IO_BUF_SIZE), IO_BUF_SIZE, &free)) {
+        my_free_stdout();
+        my_free_stderr();
+        return 84;
+    }
     return 0;
+}
+
+static void free_stdio(void)
+{
+    my_free_stdout();
+    my_free_stderr();
+    my_free_stdin();
 }
 
 int main(int argc, char *argv[], char *envp[])
 {
-    char **args;
-    int ret;
+    sh_ctx_t ctx;
 
-    if (argc != 2) {
-        my_putstr_fd(STDERR_FILENO, "wrong number of arguments\n");
+    (void)argc;
+    (void)argv;
+    if (init_stdio())
+        return 84;
+    if (sh_ctx_init(&ctx, envp)) {
+        free_stdio();
         return 84;
     }
-    args = my_str_to_word_array(argv[1]);
-    if (!args) {
-        my_putstr_fd(STDERR_FILENO, "failed to allocate argument array\n");
-        return 84;
-    }
-    ret = exec_args((char const **)args, envp);
-    for (size_t i = 0; args[i]; ++i)
-        free(args[i]);
-    free(args);
-    return ret;
+    free_stdio();
+    return 0;
 }
