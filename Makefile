@@ -29,6 +29,7 @@ SRCS_OTHER := \
 main.c        \
 print.c       \
 start.c       \
+exec.c        \
 
 INCS_BASE :=  \
 shell.h       \

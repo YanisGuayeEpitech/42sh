@@ -6,7 +6,6 @@
 */
 
 #include <libmy/io.h>
-#include <libmy/printf.h>
 #include <stdlib.h>
 #include "shell.h"
 
@@ -25,8 +24,8 @@ void sh_start(sh_ctx_t *ctx)
     (void)ctx;
     line_size = sh_get_input(ctx, &line, &alloc_size);
     while (line_size > 0) {
-        sh_print(ctx, "-> ");
-        sh_print(ctx, line);
+        if (sh_exec(ctx, line) < 0)
+            return;
         line_size = sh_get_input(ctx, &line, &alloc_size);
     }
     sh_print(ctx, "exit\n");

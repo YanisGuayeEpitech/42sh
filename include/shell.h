@@ -34,6 +34,16 @@ void sh_ctx_drop(sh_ctx_t *ctx);
 /// @param ctx The shell context.
 void sh_start(sh_ctx_t *ctx);
 
+/// Executes the given line.
+///
+/// @param ctx The shell context.
+/// @param line The line to execute.
+int sh_exec(sh_ctx_t *ctx, char *line);
+
+/// Prints the passed message only if stdout is a tty.
+///
+/// @param ctx The shell context.
+/// @param msg The line to print
 void sh_print(sh_ctx_t *ctx, char const *msg);
 
 #endif // !defined(__SHELL_H__)
