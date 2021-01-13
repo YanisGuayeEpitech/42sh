@@ -5,7 +5,7 @@ INC_PATH := include
 
 # LibMy
 LIBMY_PATH := lib/my
-LIBMY_MODULES := core ascii io memory parsing printf math
+LIBMY_MODULES := core ascii io memory parsing printf
 LIBMY_FLAGS := allow_malloc allow_open allow_read allow_write
 LIBMY := $(LIBMY_PATH)/libmy.a
 
@@ -32,7 +32,7 @@ RMDIR := rmdir -p
 MKDIR := mkdir -p
 LIBMY_CONFIG := $(LIBMY_PATH)/libmy-config
 
-TARGET=my_exec
+TARGET=mysh
 
 define retrieve_libmy_properties
 $(eval
