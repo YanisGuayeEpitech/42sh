@@ -45,6 +45,7 @@ int main(int argc, char *argv[], char *envp[])
         return 84;
     }
     sh_start(&ctx);
+    sh_ctx_drop(&ctx);
     free_stdio();
     return 0;
 }
