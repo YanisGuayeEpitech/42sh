@@ -6,10 +6,10 @@
 */
 
 #include <libmy/ascii.h>
+#include <libmy/io.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "shell.h"
-
-#include <libmy/printf.h>
 
 static void sh_free_env_entry(void *ptr)
 {
@@ -35,6 +35,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     }
     entry = NULL;
     my_vec_push(&ctx->env, &entry);
+    ctx->is_tty = isatty(MY_STDOUT->unix_stream.fd);
     return 0;
 }
 

@@ -30,6 +30,7 @@ Test(sh_ctx_init, normal_env)
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 0), "PATH=/bin");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 1), "USER=yeet");
     cr_assert_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), NULL);
+    cr_assert_eq(ctx.is_tty, 0);
 }
 
 Test(sh_ctx_drop, normal)
@@ -38,5 +39,6 @@ Test(sh_ctx_drop, normal)
     char *envp[] = {"PATH=/usr/bin", "USER=root", NULL};
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(ctx.is_tty, 0);
     sh_ctx_drop(&ctx);
 }

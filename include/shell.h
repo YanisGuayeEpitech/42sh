@@ -14,6 +14,7 @@
 
 typedef struct {
     my_vec_t env;
+    int is_tty;
 } sh_ctx_t;
 
 /// Initializes the shell's context
