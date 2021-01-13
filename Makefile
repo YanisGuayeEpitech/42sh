@@ -27,6 +27,8 @@ context.c     \
 
 SRCS_OTHER := \
 main.c        \
+print.c       \
+start.c       \
 
 INCS_BASE :=  \
 shell.h       \

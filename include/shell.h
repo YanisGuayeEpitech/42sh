@@ -29,4 +29,11 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp);
 /// @param ctx The shell context.
 void sh_ctx_drop(sh_ctx_t *ctx);
 
+/// Starts the shell.
+///
+/// @param ctx The shell context.
+void sh_start(sh_ctx_t *ctx);
+
+void sh_print(sh_ctx_t *ctx, char const *msg);
+
 #endif // !defined(__SHELL_H__)
