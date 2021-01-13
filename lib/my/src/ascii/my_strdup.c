@@ -14,7 +14,7 @@ MY_API char *my_strdup(char const *src)
 
     if (!src)
         return NULL;
-    dup = malloc(sizeof(*dup * my_strlen(src) + 1));
+    dup = malloc(sizeof(*dup) * (my_strlen(src) + 1));
     if (!dup)
         return NULL;
     my_strcpy(dup, src);
