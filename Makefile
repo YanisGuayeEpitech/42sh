@@ -22,17 +22,18 @@ CLIBS := -L$(LIBMY_PATH) -lmy
 TEST_CLIBS := -lcriterion -lgcov -L$(LIBMY_PATH) -lmy
 
 # Sources
-SRCS_BASE :=  \
-context.c     \
+SRCS_BASE :=       \
+context.c          \
+create_file_path.c \
 
-SRCS_OTHER := \
-main.c        \
-print.c       \
-start.c       \
-exec.c        \
+SRCS_OTHER :=      \
+exec.c             \
+main.c             \
+print.c            \
+start.c            \
 
-INCS_BASE :=  \
-shell.h       \
+INCS_BASE :=       \
+shell.h            \
 
 TESTS_BASE := $(addprefix test_, $(SRCS_BASE))
 

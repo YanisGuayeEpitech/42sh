@@ -46,4 +46,14 @@ int sh_exec(sh_ctx_t *ctx, char *line);
 /// @param msg The line to print
 void sh_print(sh_ctx_t *ctx, char const *msg);
 
+/// Contatenates the given components, adding a '/' if necessary.
+///
+/// @param dir_len The length in bytes of @c dir_name
+/// @param dir_name The directory part of the path
+/// @param file_name The file part to add.
+///
+/// @returns The path, or NULL if allocation failed.
+char *sh_create_file_path(
+    size_t dir_len, char const *dir_name, char const *file_name);
+
 #endif // !defined(__SHELL_H__)
