@@ -44,7 +44,7 @@ void sh_start(sh_ctx_t *ctx);
 ///
 /// @param ctx The shell context.
 /// @param line The line to execute.
-int sh_exec(sh_ctx_t *ctx, char *line);
+int sh_exec(sh_ctx_t *ctx, char const *line);
 
 /// Prints the passed message only if stdout is a tty.
 ///
@@ -61,6 +61,14 @@ void sh_print(sh_ctx_t *ctx, char const *msg);
 /// @returns The path, or NULL if allocation failed.
 char *sh_create_file_path(
     size_t dir_len, char const *dir_name, char const *file_name);
+
+/// Finds an executable named @c to_find in one of directories listed in $PATH.
+///
+/// @param ctx The shell context.
+/// @param to_find The executable to find.
+///
+/// @returns The full path of the executable if found, or @c NULL otherwise.
+char *sh_find_executable(sh_ctx_t *ctx, char const *to_find);
 
 /// Frees an entry of a string pointer array.
 ///

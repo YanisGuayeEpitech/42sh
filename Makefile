@@ -30,6 +30,7 @@ reset_path.c       \
 
 SRCS_OTHER :=      \
 exec.c             \
+find_executable.c  \
 main.c             \
 print.c            \
 start.c            \
