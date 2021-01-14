@@ -40,7 +40,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
         return 84;
     my_vec_init(&ctx->path, sizeof(char *));
     sh_ctx_reset_path(ctx);
-    ctx->is_tty = isatty(MY_STDOUT->unix_stream.fd);
+    ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     return 0;
 }
 
