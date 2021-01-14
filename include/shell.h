@@ -14,6 +14,8 @@
 
 typedef struct {
     my_vec_t env;
+    /// The index of the 'PATH' variable in env, or @c SIZE_MAX if not present.
+    size_t path_index;
     int is_tty;
 } sh_ctx_t;
 
