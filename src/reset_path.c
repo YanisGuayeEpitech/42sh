@@ -9,12 +9,10 @@
 #include <stdlib.h>
 #include "shell.h"
 
-#include <libmy/printf.h>
 static int sh_copy_path_dir(my_vec_t *pathvec, size_t dir_len, char const *dir)
 {
     char *entry;
 
-    // my_printf("dir_len: %zu, dir: %#.*s\n", dir_len, (int)dir_len, dir);
     if (dir_len == 0)
         return 0;
     entry = malloc(sizeof(*dir) * (dir_len + 1));
@@ -24,6 +22,7 @@ static int sh_copy_path_dir(my_vec_t *pathvec, size_t dir_len, char const *dir)
         return 0;
     }
     my_strncpy(entry, dir, dir_len);
+    entry[dir_len] = '\0';
     return 0;
 }
 

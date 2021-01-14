@@ -47,4 +47,5 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
 void sh_ctx_drop(sh_ctx_t *ctx)
 {
     my_vec_free(&ctx->env, &sh_free_entry);
+    my_vec_free(&ctx->path, &sh_free_entry);
 }
