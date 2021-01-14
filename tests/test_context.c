@@ -28,7 +28,6 @@ Test(sh_ctx_init, no_path)
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
     cr_assert_eq(ctx.env.capacity, 3);
     cr_assert_eq(ctx.env.length, 3);
-    cr_assert_eq(ctx.path_index, SIZE_MAX);
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 0), "LS_COLORS=?");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 1), "USER=yeet");
     cr_assert_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), NULL);
@@ -43,7 +42,6 @@ Test(sh_ctx_init, normal_env)
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
     cr_assert_eq(ctx.env.capacity, 4);
     cr_assert_eq(ctx.env.length, 4);
-    cr_assert_eq(ctx.path_index, 1);
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 0), "LS_COLORS=?");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 1), "PATH=/bin");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), "USER=yeet");

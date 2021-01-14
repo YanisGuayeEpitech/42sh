@@ -14,8 +14,7 @@
 
 typedef struct {
     my_vec_t env;
-    /// The index of the 'PATH' variable in env, or @c SIZE_MAX if not present.
-    size_t path_index;
+    my_vec_t path;
     int is_tty;
 } sh_ctx_t;
 
@@ -30,6 +29,11 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp);
 ///
 /// @param ctx The shell context.
 void sh_ctx_drop(sh_ctx_t *ctx);
+
+/// Reads the path environment variable
+///
+/// @param ctx The shell context.
+void sh_ctx_reset_path(sh_ctx_t *ctx);
 
 /// Starts the shell.
 ///
@@ -57,5 +61,12 @@ void sh_print(sh_ctx_t *ctx, char const *msg);
 /// @returns The path, or NULL if allocation failed.
 char *sh_create_file_path(
     size_t dir_len, char const *dir_name, char const *file_name);
+
+/// Frees an entry of a string pointer array.
+///
+/// For use with @c my_vec_free.
+///
+/// @param ptr The pointer to free.
+void sh_free_entry(void *ptr);
 
 #endif // !defined(__SHELL_H__)

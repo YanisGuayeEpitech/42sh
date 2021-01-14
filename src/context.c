@@ -11,11 +11,6 @@
 #include <unistd.h>
 #include "shell.h"
 
-static void sh_free_env_entry(void *ptr)
-{
-    free(*(char **)ptr);
-}
-
 static int sh_copy_env(sh_ctx_t *ctx, char **envp)
 {
     size_t env_size = 0;
@@ -29,7 +24,7 @@ static int sh_copy_env(sh_ctx_t *ctx, char **envp)
     for (size_t i = 0; i < env_size; ++i) {
         entry = my_strdup(envp[i]);
         if (!entry) {
-            my_vec_free(&ctx->env, &sh_free_env_entry);
+            my_vec_free(&ctx->env, &sh_free_entry);
             return 84;
         }
         my_vec_push(&ctx->env, &entry);
@@ -43,19 +38,13 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
 {
     if (sh_copy_env(ctx, envp))
         return 84;
-    ctx->path_index = SIZE_MAX;
-    for (size_t i = 0; i < ctx->env.length - 1; ++i) {
-        if (my_strncmp(MY_VEC_GET_ELEM(char *, &ctx->env, i), "PATH=", 5)
-            == 0) {
-            ctx->path_index = i;
-            break;
-        }
-    }
+    my_vec_init(&ctx->path, sizeof(char *));
+    sh_ctx_reset_path(ctx);
     ctx->is_tty = isatty(MY_STDOUT->unix_stream.fd);
     return 0;
 }
 
 void sh_ctx_drop(sh_ctx_t *ctx)
 {
-    my_vec_free(&ctx->env, &sh_free_env_entry);
+    my_vec_free(&ctx->env, &sh_free_entry);
 }

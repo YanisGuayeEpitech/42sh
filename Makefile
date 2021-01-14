@@ -25,6 +25,8 @@ TEST_CLIBS := -lcriterion -lgcov -L$(LIBMY_PATH) -lmy
 SRCS_BASE :=       \
 context.c          \
 create_file_path.c \
+util.c             \
+reset_path.c       \
 
 SRCS_OTHER :=      \
 exec.c             \
