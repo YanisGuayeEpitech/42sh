@@ -9,7 +9,6 @@
 #include <libmy/memory.h>
 #include <stdlib.h>
 
-#include <libmy/printf.h>
 char *sh_create_file_path(
     size_t dir_len, char const *dir_name, char const *file_name)
 {
