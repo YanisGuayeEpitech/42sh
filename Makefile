@@ -35,6 +35,7 @@ builtin.c          \
 exec.c             \
 find_executable.c  \
 main.c             \
+parsing.c          \
 print.c            \
 start.c            \
 

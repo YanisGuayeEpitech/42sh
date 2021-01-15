@@ -80,4 +80,8 @@ char *sh_find_executable(sh_ctx_t *ctx, char const *to_find);
 /// @param ptr The pointer to free.
 void sh_free_entry(void *ptr);
 
+/// Attempts to parse an int.
+///
+sh_error_t sh_parse_int(char const *str, int *result);
+
 #endif // !defined(__SHELL_H__)
