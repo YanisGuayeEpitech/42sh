@@ -36,6 +36,7 @@ print.c            \
 start.c            \
 
 INCS_BASE :=       \
+context.h          \
 shell.h            \
 
 TESTS_BASE := $(addprefix test_, $(SRCS_BASE))

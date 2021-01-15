@@ -6,7 +6,7 @@
 */
 
 #include <criterion/criterion.h>
-#include "shell.h"
+#include "context.h"
 
 Test(sh_ctx_reset_path, no_path)
 {

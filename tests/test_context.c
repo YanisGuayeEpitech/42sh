@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include <criterion/criterion.h>
-#include "shell.h"
+#include "context.h"
 
 Test(sh_ctx_init, empty_env)
 {
