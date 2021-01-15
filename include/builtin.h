@@ -25,6 +25,6 @@ sh_builtin_t const *sh_get_builtin(char const *name);
 int sh_exec_builtin(
     sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc, char *argv[]);
 
-int sh_builtin_cd(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+int sh_builtin_env(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
 
 #endif // !defined(__SHELL_BUILTIN_H__)

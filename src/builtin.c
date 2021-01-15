@@ -10,7 +10,7 @@
 #include <libmy/memory.h>
 #include <stdint.h>
 
-static const sh_builtin_t BUILTINS_DATA[] = {{"", NULL}};
+static const sh_builtin_t BUILTINS_DATA[] = {{"env", &sh_builtin_env}};
 
 static const size_t BUILTINS_COUNT =
     sizeof(BUILTINS_DATA) / sizeof(sh_builtin_t);

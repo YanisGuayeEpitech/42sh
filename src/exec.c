@@ -14,6 +14,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "builtin.h"
 #include "shell.h"
 
 static int sh_handle_status(int status)
@@ -76,13 +77,17 @@ int sh_exec(sh_ctx_t *ctx, char const *line)
 {
     char **args = my_str_to_word_array(line);
     size_t args_count = 0;
+    sh_builtin_t const *builtin;
     int ret = 0;
 
     if (!args)
         return 0;
     while (args[args_count])
         ++args_count;
-    if (args_count > 0)
+    builtin = args_count > 0 ? sh_get_builtin(args[0]) : NULL;
+    if (builtin)
+        ret = sh_exec_builtin(builtin, ctx, args_count, args);
+    else if (args_count > 0)
         ret = sh_exec_from_path(ctx, args);
     for (size_t i = 0; args[i]; ++i)
         free(args[i]);
