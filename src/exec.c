@@ -11,9 +11,25 @@
 #include <libmy/printf.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "shell.h"
+
+static int sh_handle_status(int status)
+{
+    if (WIFEXITED(status)) {
+        return 0;
+    } else if (WIFSIGNALED(status)) {
+        my_eputs(strsignal(WTERMSIG(status)));
+        if (WCOREDUMP(status))
+            my_eputs(" (core dumped)");
+        my_eputc('\n');
+        my_flush_stderr();
+        return 0;
+    }
+    return 1;
+}
 
 static int sh_exec_args(sh_ctx_t *ctx, char const *path, char *const *argv)
 {
@@ -28,7 +44,9 @@ static int sh_exec_args(sh_ctx_t *ctx, char const *path, char *const *argv)
         perror(argv[0]);
         return -1;
     }
-    waitpid(child_pid, &status, 0);
+    do {
+        waitpid(child_pid, &status, 0);
+    } while (sh_handle_status(status));
     return 0;
 }
 
