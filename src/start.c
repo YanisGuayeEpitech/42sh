@@ -25,7 +25,7 @@ void sh_start(sh_ctx_t *ctx)
     line_size = sh_get_input(ctx, &line, &alloc_size);
     while (line_size > 0) {
         if (sh_exec(ctx, line) < 0)
-            return;
+            break;
         line_size = sh_get_input(ctx, &line, &alloc_size);
     }
     sh_print(ctx, "exit\n");
