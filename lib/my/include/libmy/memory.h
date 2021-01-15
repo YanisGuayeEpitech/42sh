@@ -28,11 +28,18 @@ but memory module is not present"
 
 #include "libmy/internal/memory.h"
 
+/// Array info.
+typedef struct {
+    void *data;
+    size_t length;
+    size_t elem_size;
+} my_array_t;
+
 /// Performs a binary search on a sorted pointer array.
 ///
-/// @param array   The source array, must be sorted.
+/// @param array   The source array, must be sorted and be shorter
+///                than @c SIZE_MAX.
 /// @param to_find The element to find in @c array.
-/// @param len     The number of elements in @c array.
 /// @param cmp     The comparison function,
 ///                takes @c to_find as the first parameter,
 ///                a pointer to the nth element in @c array
@@ -41,10 +48,10 @@ but memory module is not present"
 ///                to be less than, to match, or be greater
 ///                than the second parameter.
 ///
-/// @returns A pointer to the found element, or @c NULL if not found.
-/// @since 0.1.0
-MY_API void *my_binary_search(
-    void *const array[], void const *to_find, size_t len, int (*cmp)());
+/// @returns The position of found element, or @c SIZE_MAX if not found.
+/// @since 0.2.0
+MY_API size_t my_binary_search(
+    my_array_t const *array, void const *to_find, int (*cmp)());
 
 /// Copies @c n bytes from @c src to @c dest.
 ///

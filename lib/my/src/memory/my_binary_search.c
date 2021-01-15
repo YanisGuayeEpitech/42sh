@@ -5,27 +5,43 @@
 ** Finds an element in a sorted array
 */
 
+#include <stdint.h>
 #include "libmy/memory.h"
 
-MY_API void *my_binary_search(void * const array[], void const *to_find,
-size_t len, int (*cmp)())
+static int do_cmp(
+    my_array_t const *array, void const *to_find, size_t pos, int (*cmp)())
 {
-    if (!array || !cmp)
-        return NULL;
-    while (len != 0) {
-        size_t mid = len / 2;
-        int comparison = (*cmp)(to_find, array[mid]);
+    return (*cmp)(
+        to_find, (void *)(((char *)array->data) + (pos * array->elem_size)));
+}
+
+static size_t array_offset(my_array_t const *base, my_array_t const *shifted)
+{
+    return (size_t)((uintptr_t)shifted->data - (uintptr_t)base->data)
+        / base->elem_size;
+}
+
+MY_API size_t my_binary_search(
+    my_array_t const *array_param, void const *to_find, int (*cmp)())
+{
+    my_array_t array = *array_param;
+
+    if (!array.data || !cmp)
+        return SIZE_MAX;
+    while (array.length != 0) {
+        size_t mid = array.length / 2;
+        int comparison = do_cmp(&array, to_find, mid, cmp);
 
         if (comparison == 0)
-            return (void *)(array + mid);
+            return array_offset(array_param, &array) + mid;
         if (comparison < 0) {
-            len = mid;
+            array.length = mid;
             continue;
-        } else if (mid + 1 >= len) {
-            return NULL;
+        } else if (mid + 1 >= array.length) {
+            return SIZE_MAX;
         }
-        array += mid + 1;
-        len -= mid + 1;
+        array.data = (char *)array.data + array.elem_size * (mid + 1);
+        array.length -= mid + 1;
     }
-    return NULL;
+    return SIZE_MAX;
 }
