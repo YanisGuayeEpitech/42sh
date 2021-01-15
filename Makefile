@@ -29,6 +29,7 @@ util.c             \
 reset_path.c       \
 
 SRCS_OTHER :=      \
+builtin.c          \
 exec.c             \
 find_executable.c  \
 main.c             \
