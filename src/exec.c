@@ -32,12 +32,6 @@ static int sh_exec_args(sh_ctx_t *ctx, char const *path, char *const *argv)
     return 0;
 }
 
-static void sh_free_path(int is_path, char *path)
-{
-    if (!is_path)
-        free(path);
-}
-
 static int sh_exec_from_path(sh_ctx_t *ctx, char *const *argv)
 {
     int is_path = my_strchr(argv[0], '/') != NULL;
@@ -50,11 +44,13 @@ static int sh_exec_from_path(sh_ctx_t *ctx, char *const *argv)
         return 0;
     } else if (access(path, X_OK) < 0) {
         perror(argv[0]);
-        sh_free_path(is_path, (char *)path);
+        if (!is_path)
+            free((char *)path);
         return 0;
     }
     ret = sh_exec_args(ctx, path, argv);
-    sh_free_path(is_path, (char *)path);
+    if (!is_path)
+        free((char *)path);
     return ret;
 }
 
