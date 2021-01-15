@@ -12,6 +12,32 @@
 
 #define IO_BUF_SIZE (1024)
 
+typedef enum {
+    SH_OK = 0,
+    SH_EXPRESSION_SYNTAX,
+    SH_BAD_NUMBER,
+    SH_ERROR_MAX,
+} sh_error_t;
+
+/// Retrurns a string corresponding to the given error code.
+///
+/// @param code The error code.
+///
+/// @returns The error string, or "Unknown error" if <tt>code < SH_OK</tt> or
+/// <tt>code >= SH_ERROR_MAX</tt>.
+char const *sh_strerror(sh_error_t code);
+
+/// Prints the given error code to the standard error output.
+///
+/// Does nothing if @c code is @c SH_OK.
+///
+/// @param prefix If not null or empty, prefix is printed followed by a color
+/// and a blank.
+/// @param code The error code.
+///
+/// @returns The @c code argument.
+sh_error_t sh_perror(char const *prefix, sh_error_t code);
+
 /// Starts the shell.
 ///
 /// @param ctx The shell context.
