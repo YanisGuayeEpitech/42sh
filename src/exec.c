@@ -17,9 +17,10 @@
 #include "builtin.h"
 #include "shell.h"
 
-static int sh_handle_status(int status)
+static int sh_handle_status(sh_ctx_t *ctx, int status)
 {
     if (WIFEXITED(status)) {
+        ctx->exit_code = WEXITSTATUS(status);
         return 0;
     } else if (WIFSIGNALED(status)) {
         my_eputs(strsignal(WTERMSIG(status)));
@@ -47,7 +48,7 @@ static int sh_exec_args(sh_ctx_t *ctx, char const *path, char *const *argv)
     }
     do {
         waitpid(child_pid, &status, 0);
-    } while (sh_handle_status(status));
+    } while (sh_handle_status(ctx, status));
     return 0;
 }
 
@@ -59,6 +60,7 @@ static int sh_exec_from_path(sh_ctx_t *ctx, char *const *argv)
 
     if (!path) {
         my_fprintf(MY_STDERR, "%s: Command not found.\n", argv[0]);
+        ctx->exit_code = 1;
         my_flush_stderr();
         return 0;
     } else if (access(path, X_OK) < 0) {

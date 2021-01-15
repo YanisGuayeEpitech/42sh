@@ -7,10 +7,12 @@
 
 #include "builtin.h"
 #include <libmy/ascii.h>
+#include <libmy/io.h>
 #include <libmy/memory.h>
 #include <stdint.h>
 
-static const sh_builtin_t BUILTINS_DATA[] = {{"env", &sh_builtin_env}};
+static const sh_builtin_t BUILTINS_DATA[] = {
+    {"env", &sh_builtin_env}, {"exit", &sh_builtin_exit}};
 
 static const size_t BUILTINS_COUNT =
     sizeof(BUILTINS_DATA) / sizeof(sh_builtin_t);
@@ -37,7 +39,9 @@ int sh_exec_builtin(
 {
     int should_exit = 0;
 
-    (*builtin->run)(ctx, &should_exit, argc, argv);
+    ctx->exit_code = (*builtin->run)(ctx, &should_exit, argc, argv);
+    my_flush_stdout();
+    my_flush_stderr();
     if (should_exit)
         return -1;
     return 0;

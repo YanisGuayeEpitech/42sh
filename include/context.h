@@ -11,9 +11,14 @@
 #include <libmy/collections.h>
 
 typedef struct {
+    /// A vector of the environment entries.
     my_vec_t env;
+    /// A vector of the entries from the PATH environment variable.
     my_vec_t path;
+    /// Is stdin a tty?
     int is_tty;
+    /// The exit code of the previous program.
+    int exit_code;
 } sh_ctx_t;
 
 /// Initializes the shell's context

@@ -35,6 +35,7 @@ static void free_stdio(void)
 int main(int argc, char *argv[], char *envp[])
 {
     sh_ctx_t ctx;
+    int code;
 
     (void)argc;
     (void)argv;
@@ -45,7 +46,8 @@ int main(int argc, char *argv[], char *envp[])
         return 84;
     }
     sh_start(&ctx);
+    code = ctx.exit_code;
     sh_ctx_drop(&ctx);
     free_stdio();
-    return 0;
+    return code;
 }
