@@ -32,6 +32,8 @@ reset_path.c       \
 util.c             \
 
 SRCS_OTHER :=      \
+builtin/cd.c       \
+builtin/dirs.c     \
 builtin/env.c      \
 builtin/exit.c     \
 builtin/setenv.c   \

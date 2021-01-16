@@ -5,8 +5,10 @@
 ** Prints errors
 */
 
-#include "error.h"
+#include <errno.h>
 #include <libmy/io.h>
+#include <stdio.h>
+#include "shell.h"
 
 static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_OK] = "no error",
@@ -16,6 +18,8 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_BAD_VAR_CHARS] = "Variable name must contain alphanumeric characters",
     [SH_TOO_MANY_ARGS] = "Too many arguments",
     [SH_TOO_FEW_ARGS] = "Too few arguments",
+    [SH_CD_NO_HOME_DIR] = "No home directory",
+    [SH_CD_HOME_DIR] = "Can't change to home directory",
 };
 
 char const *sh_strerror(sh_error_t code)
@@ -29,11 +33,22 @@ sh_error_t sh_perror(char const *prefix, sh_error_t code)
 {
     if (code == SH_OK)
         return code;
-    if (prefix && *prefix) {
+    if (prefix) {
         my_eputs(prefix);
         my_eputs(": ");
     }
     my_eputs(sh_strerror(code));
     my_eputs(".\n");
     return code;
+}
+
+int sh_perror_errno(char const *prefix)
+{
+    if (prefix) {
+        my_eputs(prefix);
+        my_eputs(": ");
+    }
+    my_flush_stderr();
+    perror(NULL);
+    return errno;
 }

@@ -18,6 +18,8 @@ typedef enum {
     SH_BAD_VAR_CHARS,
     SH_TOO_MANY_ARGS,
     SH_TOO_FEW_ARGS,
+    SH_CD_NO_HOME_DIR,
+    SH_CD_HOME_DIR,
     SH_ERROR_MAX,
 } sh_error_t;
 
@@ -42,7 +44,7 @@ sh_error_t sh_perror(char const *prefix, sh_error_t code);
 
 /// Calls @ref sh_perror then returns the value of @c ret.
 ///
-/// @param prefix If not null or empty, prefix is printed followed by a color
+/// @param prefix If not null, prefix is printed followed by a color
 /// and a blank.
 /// @param code The error code.
 ///
@@ -50,6 +52,14 @@ sh_error_t sh_perror(char const *prefix, sh_error_t code);
 SH_INLINE int sh_rerror(char const *prefix, sh_error_t code, int ret)
 {
     sh_perror(prefix, code);
+    return ret;
+}
+
+int sh_perror_errno(char const *prefix);
+
+SH_INLINE int sh_rerror_errno(char const *prefix, int ret)
+{
+    sh_perror_errno(prefix);
     return ret;
 }
 

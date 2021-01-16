@@ -45,7 +45,7 @@ Test(sh_perror, normal_error, .init = &setup, .fini = &finish)
     sh_perror("", SH_EXPRESSION_SYNTAX);
     sh_perror(NULL, SH_BAD_NUMBER);
     my_flush_stderr();
-    cr_assert_stderr_eq_str("test: Badly formed number.\nExpression "
+    cr_assert_stderr_eq_str("test: Badly formed number.\n: Expression "
                             "Syntax.\nBadly formed number.\n ",
         "");
 }
