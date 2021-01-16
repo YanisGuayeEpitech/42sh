@@ -29,3 +29,13 @@ sh_error_t sh_parse_int(char const *str, int *result)
         *result = -*result;
     return 0;
 }
+
+sh_error_t sh_check_var_name(char const *name, size_t name_len)
+{
+    if (!name || name_len == 0 || !(my_isalpha(*name) || *name == '_'))
+        return SH_BAD_VAR_START;
+    for (size_t i = 1; i < name_len; ++i)
+        if (!(my_isalnum(name[i]) || name[i] == '_'))
+            return SH_BAD_VAR_CHARS;
+    return SH_OK;
+}

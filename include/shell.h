@@ -16,6 +16,8 @@ typedef enum {
     SH_OK = 0,
     SH_EXPRESSION_SYNTAX,
     SH_BAD_NUMBER,
+    SH_BAD_VAR_START,
+    SH_BAD_VAR_CHARS,
     SH_ERROR_MAX,
 } sh_error_t;
 
@@ -82,6 +84,21 @@ void sh_free_entry(void *ptr);
 
 /// Attempts to parse an int.
 ///
+/// @param str The string to parse.
+/// @param[out] result Where the parsed int is stored.
+///
+/// @returns @c SH_OK if the parsing succeded, or an error code otherwise.
 sh_error_t sh_parse_int(char const *str, int *result);
+
+/// Validates a variable name.
+///
+/// A valid variable name matches the regex [a-zA-Z_][a-zA-Z_0-9]*
+///
+/// @param name The variable name.
+/// @param name_len The number of characters in @c name.
+///
+/// @returns @c SH_OK if @c name is a valid variable name, or an error code
+/// otherwise.
+sh_error_t sh_check_var_name(char const *name, size_t name_len);
 
 #endif // !defined(__SHELL_H__)

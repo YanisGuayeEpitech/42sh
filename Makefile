@@ -26,6 +26,7 @@ SRCS_BASE :=       \
 context.c          \
 create_file_path.c \
 error.c            \
+parsing.c          \
 reset_path.c       \
 util.c             \
 
@@ -36,7 +37,6 @@ builtin.c          \
 exec.c             \
 find_executable.c  \
 main.c             \
-parsing.c          \
 print.c            \
 start.c            \
 
