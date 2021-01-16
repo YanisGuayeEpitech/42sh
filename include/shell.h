@@ -98,4 +98,9 @@ sh_error_t sh_parse_int(char const *str, int *result);
 /// otherwise.
 sh_error_t sh_check_var_name(char const *name, size_t name_len);
 
+/// Fetches the current working directory's absolute path.
+///
+/// @returns The current working directory.
+char *sh_get_cwd(void);
+
 #endif // !defined(__SHELL_H__)

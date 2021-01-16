@@ -37,6 +37,7 @@ builtin/exit.c     \
 builtin/setenv.c   \
 builtin/unsetenv.c \
 builtin.c          \
+cwd.c              \
 exec.c             \
 find_executable.c  \
 main.c             \
