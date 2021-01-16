@@ -35,6 +35,7 @@ SRCS_OTHER :=      \
 builtin/env.c      \
 builtin/exit.c     \
 builtin/setenv.c   \
+builtin/unsetenv.c \
 builtin.c          \
 exec.c             \
 find_executable.c  \

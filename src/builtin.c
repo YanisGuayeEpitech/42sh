@@ -11,8 +11,12 @@
 #include <libmy/memory.h>
 #include <stdint.h>
 
-static const sh_builtin_t BUILTINS_DATA[] = {{"env", &sh_builtin_env},
-    {"exit", &sh_builtin_exit}, {"setenv", &sh_builtin_setenv}};
+static const sh_builtin_t BUILTINS_DATA[] = {
+    {"env", &sh_builtin_env},
+    {"exit", &sh_builtin_exit},
+    {"setenv", &sh_builtin_setenv},
+    {"unsetenv", &sh_builtin_unsetenv},
+};
 
 static const size_t BUILTINS_COUNT =
     sizeof(BUILTINS_DATA) / sizeof(sh_builtin_t);
