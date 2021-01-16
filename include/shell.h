@@ -83,6 +83,30 @@ char *sh_find_executable(sh_ctx_t *ctx, char const *to_find);
 /// @param ptr The pointer to free.
 void sh_free_entry(void *ptr);
 
+/// Fetches an environment variable entry with the given key and key size.
+///
+/// @param ctx The shell context.
+/// @param key The key.
+/// @param key_len The number of characters in @c key.
+///
+/// @returns A pointer to the full entry string, @c NULL if no entry was found.
+char **sh_env_get_entry(sh_ctx_t *ctx, char const *key, size_t key_len);
+
+/// Adds or updates and environment variable with the given key and value.
+///
+/// @param ctx The shell context.
+/// @param key The name of the variable.
+/// @param value The value of the variable.
+void sh_env_set(sh_ctx_t *ctx, char const *key, char const *value);
+
+/// Removes an environment variable named @c key.
+///
+/// @param ctx The shell context.
+/// @param key The name of the variable.
+///
+/// @returns 1 if the variable was found and removed, 0 otherwise.
+int sh_env_remove(sh_ctx_t *ctx, char const *key);
+
 /// Attempts to parse an int.
 ///
 /// @param str The string to parse.
