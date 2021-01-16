@@ -18,6 +18,7 @@ typedef enum {
     SH_BAD_NUMBER,
     SH_BAD_VAR_START,
     SH_BAD_VAR_CHARS,
+    SH_TOO_MANY_ARGS,
     SH_ERROR_MAX,
 } sh_error_t;
 
