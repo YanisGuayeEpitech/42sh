@@ -5,8 +5,8 @@
 ** Prints errors
 */
 
+#include "error.h"
 #include <libmy/io.h>
-#include "shell.h"
 
 static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_OK] = "no error",
@@ -15,6 +15,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_BAD_VAR_START] = "Variable name must begin with a letter",
     [SH_BAD_VAR_CHARS] = "Variable name must contain alphanumeric characters",
     [SH_TOO_MANY_ARGS] = "Too many arguments",
+    [SH_TOO_FEW_ARGS] = "Too few arguments",
 };
 
 char const *sh_strerror(sh_error_t code)
