@@ -9,12 +9,6 @@
 #include <stdlib.h>
 #include "shell.h"
 
-static ssize_t sh_get_input(sh_ctx_t *ctx, char **line, size_t *alloc_size)
-{
-    sh_print(ctx, "$> ");
-    return my_getline(line, alloc_size, MY_STDIN);
-}
-
 void sh_start(sh_ctx_t *ctx)
 {
     char *line = NULL;
@@ -22,11 +16,13 @@ void sh_start(sh_ctx_t *ctx)
     ssize_t line_size;
 
     (void)ctx;
-    line_size = sh_get_input(ctx, &line, &alloc_size);
+    sh_print_prompt(ctx);
+    line_size = my_getline(&line, &alloc_size, MY_STDIN);
     while (line_size > 0) {
         if (sh_exec(ctx, line) < 0)
             break;
-        line_size = sh_get_input(ctx, &line, &alloc_size);
+        sh_print_prompt(ctx);
+        line_size = my_getline(&line, &alloc_size, MY_STDIN);
     }
     sh_print(ctx, "exit\n");
     free(line);

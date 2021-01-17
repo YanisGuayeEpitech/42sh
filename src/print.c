@@ -15,3 +15,8 @@ void sh_print(sh_ctx_t *ctx, char const *msg)
         my_flush_stdout();
     }
 }
+
+void sh_print_prompt(sh_ctx_t *ctx)
+{
+    sh_print(ctx, "$> ");
+}

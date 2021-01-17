@@ -24,11 +24,16 @@ void sh_start(sh_ctx_t *ctx);
 /// @param line The line to execute.
 int sh_exec(sh_ctx_t *ctx, char const *line);
 
-/// Prints the passed message only if stdout is a tty.
+/// Prints the passed message only if stdin is a tty.
 ///
 /// @param ctx The shell context.
 /// @param msg The line to print
 void sh_print(sh_ctx_t *ctx, char const *msg);
+
+/// Prints the shell prompt if stdin is a tty.
+///
+/// @param ctx The shell context.
+void sh_print_prompt(sh_ctx_t *ctx);
 
 /// Contatenates the given components, adding a '/' if necessary.
 ///
