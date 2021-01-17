@@ -116,4 +116,14 @@ char *sh_get_cwd(void);
 /// @returns The number of bytes read, or -1 on error.
 ssize_t sh_read_line(sh_ctx_t *ctx);
 
+/// Is @c c an argument separator character?
+///
+/// @param c The character to check
+///
+/// @returns Whether the given character is an argument separator.
+SH_INLINE int sh_is_arg_sep(char c)
+{
+    return c == ' ' || c == '\t';
+}
+
 #endif // !defined(__SHELL_H__)
