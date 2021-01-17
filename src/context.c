@@ -42,6 +42,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     sh_ctx_reset_path(ctx);
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
+    my_vec_init(&ctx->line_buf, sizeof(char));
     return 0;
 }
 
@@ -49,4 +50,5 @@ void sh_ctx_drop(sh_ctx_t *ctx)
 {
     my_vec_free(&ctx->env, &sh_free_entry);
     my_vec_free(&ctx->path, &sh_free_entry);
+    my_vec_free(&ctx->line_buf, NULL);
 }

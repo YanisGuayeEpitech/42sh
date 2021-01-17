@@ -19,6 +19,8 @@ typedef struct {
     int is_tty;
     /// The exit code of the previous program.
     int exit_code;
+    /// The current line buffer.
+    my_vec_t line_buf;
 } sh_ctx_t;
 
 /// Initializes the shell's context

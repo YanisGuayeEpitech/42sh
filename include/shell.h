@@ -8,6 +8,7 @@
 #ifndef __SHELL_H__
 #define __SHELL_H__
 
+#include <sys/types.h>
 #include "context.h"
 #include "error.h"
 
@@ -107,5 +108,12 @@ sh_error_t sh_check_var_name(char const *name, size_t name_len);
 ///
 /// @returns The current working directory.
 char *sh_get_cwd(void);
+
+/// Reads the next line from stdin.
+///
+/// @param ctx The shell context.
+///
+/// @returns The number of bytes read, or -1 on error.
+ssize_t sh_read_line(sh_ctx_t *ctx);
 
 #endif // !defined(__SHELL_H__)

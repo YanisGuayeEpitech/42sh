@@ -28,6 +28,7 @@ create_file_path.c \
 env.c              \
 error.c            \
 parsing.c          \
+read_line.c        \
 reset_path.c       \
 util.c             \
 
