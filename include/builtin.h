@@ -12,7 +12,7 @@
 
 typedef struct {
     char const *name;
-    int (*run)(sh_ctx_t *, int *, size_t, char **);
+    int (*run)(sh_ctx_t *, int *, size_t, char const *[]);
 } sh_builtin_t;
 
 /// Fetches a builtin command by name.
@@ -22,8 +22,8 @@ typedef struct {
 /// @return The builtin, or @c NULL if not found.
 sh_builtin_t const *sh_get_builtin(char const *name);
 
-int sh_exec_builtin(
-    sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc, char *argv[]);
+int sh_exec_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
+    char const *argv[]);
 
 typedef enum {
     /// '-p' option.
@@ -38,15 +38,17 @@ typedef enum {
 
 void sh_dirs_run(sh_ctx_t *ctx, sh_dirs_options_t options);
 
-int sh_builtin_cd(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+int sh_builtin_cd(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_dirs(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
-int sh_builtin_env(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
+int sh_builtin_env(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_exit(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_setenv(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_unsetenv(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[]);
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 
 #endif // !defined(__SHELL_BUILTIN_H__)

@@ -26,7 +26,8 @@ void sh_dirs_run(sh_ctx_t *ctx, sh_dirs_options_t options)
     (void)ctx;
 }
 
-int sh_builtin_dirs(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+int sh_builtin_dirs(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     my_fprintf(MY_STDERR, "%s: Not yet implemented.\n");
     (void)ctx;

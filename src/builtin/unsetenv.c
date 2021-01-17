@@ -11,7 +11,7 @@
 #include "shell.h"
 
 int sh_builtin_unsetenv(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     if (argc == 1)
         return sh_rerror(argv[0], SH_TOO_FEW_ARGS, 1);

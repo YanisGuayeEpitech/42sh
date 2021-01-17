@@ -5,25 +5,19 @@
 ** Starts the shell
 */
 
-#include <libmy/io.h>
-#include <stdlib.h>
 #include "shell.h"
 
 void sh_start(sh_ctx_t *ctx)
 {
-    char *line = NULL;
-    size_t alloc_size = 0;
-    ssize_t line_size;
+    my_vec_t args;
 
-    (void)ctx;
+    my_vec_init(&args, sizeof(char *));
     sh_print_prompt(ctx);
-    line_size = my_getline(&line, &alloc_size, MY_STDIN);
-    while (line_size > 0) {
-        if (sh_exec(ctx, line) < 0)
+    while (sh_read_args(ctx, &args) && args.length > 1) {
+        if (sh_exec(ctx, args.length - 1, (char const **)args.data) < 0)
             break;
         sh_print_prompt(ctx);
-        line_size = my_getline(&line, &alloc_size, MY_STDIN);
     }
     sh_print(ctx, "exit\n");
-    free(line);
+    my_vec_free(&args, &sh_free_entry);
 }

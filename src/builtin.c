@@ -39,8 +39,8 @@ sh_builtin_t const *sh_get_builtin(char const *name)
     return &BUILTINS_DATA[pos];
 }
 
-int sh_exec_builtin(
-    sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc, char *argv[])
+int sh_exec_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
+    char const *argv[])
 {
     int should_exit = 0;
 

@@ -9,7 +9,8 @@
 #include "builtin.h"
 #include "shell.h"
 
-int sh_builtin_exit(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+int sh_builtin_exit(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     int code = 0;
 

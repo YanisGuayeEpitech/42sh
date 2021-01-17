@@ -11,7 +11,7 @@
 #include "shell.h"
 
 int sh_builtin_setenv(
-    sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     sh_error_t code;
 

@@ -8,7 +8,8 @@
 #include <libmy/io.h>
 #include "builtin.h"
 
-int sh_builtin_env(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+int sh_builtin_env(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     size_t env_len = ctx->env.length - 1;
 

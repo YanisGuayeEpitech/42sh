@@ -23,6 +23,7 @@ TEST_CLIBS := -lcriterion -lgcov -L$(LIBMY_PATH) -lmy
 
 # Sources
 SRCS_BASE :=       \
+args.c             \
 context.c          \
 create_file_path.c \
 env.c              \

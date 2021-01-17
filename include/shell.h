@@ -22,8 +22,13 @@ void sh_start(sh_ctx_t *ctx);
 /// Executes the given line.
 ///
 /// @param ctx The shell context.
-/// @param line The line to execute.
-int sh_exec(sh_ctx_t *ctx, char const *line);
+/// @param argc The number of arguments, excluding the null terminator, always
+/// greater than zero.
+/// @param argv A null-terminated list of arguments, should contain at least
+/// one argument.
+///
+/// @returns A negative value if the shell should exit.
+int sh_exec(sh_ctx_t *ctx, size_t argc, char const *argv[]);
 
 /// Prints the passed message only if stdin is a tty.
 ///
@@ -125,5 +130,13 @@ SH_INLINE int sh_is_arg_sep(char c)
 {
     return c == ' ' || c == '\t';
 }
+
+/// Reads the list of arguments from stdin.
+///
+/// @param ctx The shell context.
+/// @param args The argument vector, must be initialized beforehand.
+///
+/// @return Whether the read was successful
+int sh_read_args(sh_ctx_t *ctx, my_vec_t *args);
 
 #endif // !defined(__SHELL_H__)

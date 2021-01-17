@@ -75,7 +75,8 @@ static int sh_cd_dir(sh_ctx_t *ctx, char const *path)
     return 0;
 }
 
-int sh_builtin_cd(sh_ctx_t *ctx, int *should_exit, size_t argc, char *argv[])
+int sh_builtin_cd(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     sh_dirs_options_t options = 0;
     size_t pos = 1;
