@@ -9,6 +9,7 @@
 #define __SHELL_CONTEXT_H__
 
 #include <libmy/collections.h>
+#include "definition.h"
 
 typedef struct {
     /// A vector of the environment entries.
@@ -39,5 +40,10 @@ void sh_ctx_drop(sh_ctx_t *ctx);
 ///
 /// @param ctx The shell context.
 void sh_ctx_reset_path(sh_ctx_t *ctx);
+
+SH_INLINE char *sh_get_line_buf(sh_ctx_t *ctx)
+{
+    return (char *)ctx->line_buf.data;
+}
 
 #endif // !defined(__SHELL_CONTEXT_H__)
