@@ -7,7 +7,7 @@
 
 #include <errno.h>
 #include <libmy/io.h>
-#include <stdio.h>
+#include <string.h>
 #include "shell.h"
 
 static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
@@ -48,7 +48,7 @@ int sh_perror_errno(char const *prefix)
         my_eputs(prefix);
         my_eputs(": ");
     }
-    my_flush_stderr();
-    perror(NULL);
+    my_eputs(strerror(errno));
+    my_eputs(".\n");
     return errno;
 }
