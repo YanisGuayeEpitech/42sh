@@ -43,7 +43,7 @@ Test(sh_read_line, empty_line, .init = &setup, .fini = &finish)
     fputc('\n', in);
     fflush(in);
     cr_assert_eq(sh_read_line(&ctx), 1);
-    cr_assert_eq(ctx.line_buf.length, 2);
+    cr_assert_eq(ctx.line_buf.length, 0);
     cr_assert_geq(ctx.line_buf.capacity, 2);
     cr_assert_str_eq(ctx.line_buf.data, "\n");
     sh_ctx_drop(&ctx);
@@ -59,13 +59,13 @@ Test(sh_read_line, multi_line, .init = &setup, .fini = &finish)
     fputs("This is a test\n", in);
     fflush(in);
     cr_assert_eq(sh_read_line(&ctx), 15);
-    cr_assert_eq(ctx.line_buf.length, 16);
+    cr_assert_eq(ctx.line_buf.length, 14);
     cr_assert_geq(ctx.line_buf.capacity, 16);
     cr_assert_str_eq(ctx.line_buf.data, "This is a test\n");
     fputs("yeast\n", in);
     fflush(in);
     cr_assert_eq(sh_read_line(&ctx), 6);
-    cr_assert_eq(ctx.line_buf.length, 7);
+    cr_assert_eq(ctx.line_buf.length, 5);
     cr_assert_geq(ctx.line_buf.capacity, 16);
     cr_assert_str_eq(ctx.line_buf.data, "yeast\n");
     fclose(stdin);
