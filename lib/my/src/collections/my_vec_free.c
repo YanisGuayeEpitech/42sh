@@ -28,7 +28,7 @@ MY_API void my_vec_free(my_vec_t *vec, void (*elem_free)(void *))
 {
     if (!vec)
         return;
-    if (!vec->data || !vec->capacity || !vec->length) {
+    if (!vec->data || !vec->capacity) {
         my_vec_reinit(vec);
         return;
     }
