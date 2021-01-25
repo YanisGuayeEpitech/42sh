@@ -15,9 +15,11 @@ LIBMY := $(LIBMY_PATH)/libmy.a
 # Compiler Flags
 CPPFLAGS := -iquote include
 CFLAGS := -Wall -Wextra -Werror -Wshadow -O1
+DEBUG_CFLAGS := -Wall -Wextra -Og -g
 UNIT_TEST_CFLAGS := -Wall -Wextra -Werror -Wshadow
 TEST_CFLAGS := -Wall -Wextra -Werror -Wshadow \
 -fprofile-arcs -ftest-coverage --coverage
+
 CLIBS := -L$(LIBMY_PATH) -lmy
 TEST_CLIBS := -lcriterion -lgcov -L$(LIBMY_PATH) -lmy
 
@@ -120,6 +122,9 @@ $(TEST_TARGET): $(LIBMY) $(TEST_OBJS_DIRS) $(TEST_OBJS)
 	$(call retrieve_libmy_properties)
 	$(CC) $(TEST_CFLAGS) $(CPPFLAGS) -o $@ $(TEST_OBJS) $(TEST_CLIBS)
 
+debug: CFLAGS += $(DEBUG_CFLAGS)
+debug: all
+
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(TEST_OBJS)
@@ -159,4 +164,4 @@ run_test: tests_run
 
 re: fclean all
 
-.PHONY: all clean fclean re docs docs_open coverage tests_run test_run run_tests run_test
+.PHONY: all debug clean fclean re docs docs_open coverage tests_run test_run run_tests run_test
