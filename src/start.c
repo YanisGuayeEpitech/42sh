@@ -13,8 +13,9 @@ void sh_start(sh_ctx_t *ctx)
 
     my_vec_init(&args, sizeof(char *));
     sh_print_prompt(ctx);
-    while (sh_read_args(ctx, &args) && args.length > 1) {
-        if (sh_exec(ctx, args.length - 1, (char const **)args.data) < 0)
+    while (sh_read_args(ctx, &args)) {
+        if (args.length > 1
+            && sh_exec(ctx, args.length - 1, (char const **)args.data) < 0)
             break;
         sh_print_prompt(ctx);
     }
