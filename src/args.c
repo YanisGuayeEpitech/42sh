@@ -5,6 +5,7 @@
 ** Parses args from stdin
 */
 
+#include <libmy/printf.h>
 #include <stdlib.h>
 #include <string.h>
 #include "shell.h"
@@ -17,10 +18,48 @@ static int sh_copy_char(my_vec_t *arg, char c)
     return -1;
 }
 
+static int sh_read_unquoted_arg(sh_ctx_t *ctx, my_vec_t *arg, size_t *pos)
+{
+    char c;
+
+    while (*pos < ctx->line_buf.length) {
+        c = sh_get_line_buf(ctx)[*pos];
+        if (sh_is_arg_sep(c) || c == '"' || c == '\'')
+            break;
+        if (sh_copy_char(arg, c))
+            return -1;
+        ++(*pos);
+    }
+    return 1;
+}
+
+static int sh_read_quoted_arg(
+    sh_ctx_t *ctx, my_vec_t *arg, size_t *pos, char end)
+{
+    char c;
+
+    ++(*pos);
+    while (*pos < ctx->line_buf.length) {
+        c = sh_get_line_buf(ctx)[*pos];
+        if (c == end)
+            break;
+        if (sh_copy_char(arg, c))
+            return -1;
+        ++(*pos);
+    }
+    if (*pos >= ctx->line_buf.length) {
+        my_fprintf(MY_STDERR, "Unmatched '%c'\n", end);
+        my_flush_stderr();
+        return -2;
+    }
+    ++(*pos);
+    return 1;
+}
+
 static int sh_read_next_arg(sh_ctx_t *ctx, my_vec_t *args, size_t *pos)
 {
     my_vec_t arg;
-    char terminator = '\0';
+    int ret;
 
     while (*pos < ctx->line_buf.length
         && sh_is_arg_sep(sh_get_line_buf(ctx)[*pos]))
@@ -28,17 +67,16 @@ static int sh_read_next_arg(sh_ctx_t *ctx, my_vec_t *args, size_t *pos)
     if (*pos >= ctx->line_buf.length)
         return 0;
     my_vec_init(&arg, sizeof(char));
-    while (*pos < ctx->line_buf.length
-        && !sh_is_arg_sep(sh_get_line_buf(ctx)[*pos])) {
-        if (sh_copy_char(&arg, sh_get_line_buf(ctx)[*pos]))
-            return -1;
-        ++(*pos);
-    }
-    if (my_vec_push(&arg, &terminator) != MY_VEC_OK) {
+    if (sh_get_line_buf(ctx)[*pos] == '\''
+        || sh_get_line_buf(ctx)[*pos] == '"')
+        ret = sh_read_quoted_arg(ctx, &arg, pos, sh_get_line_buf(ctx)[*pos]);
+    else
+        ret = sh_read_unquoted_arg(ctx, &arg, pos);
+    if (ret == -1 || my_vec_push(&arg, "") != MY_VEC_OK) {
         my_vec_free(&arg, NULL);
         return -1;
     }
-    return my_vec_push(args, &arg.data) == MY_VEC_OK ? 1 : -1;
+    return my_vec_push(args, &arg.data) == MY_VEC_OK ? ret : -1;
 }
 
 int sh_read_args(sh_ctx_t *ctx, my_vec_t *args)
@@ -55,7 +93,11 @@ int sh_read_args(sh_ctx_t *ctx, my_vec_t *args)
         while (ret > 0)
             ret = sh_read_next_arg(ctx, args, &pos);
     }
-    if (ret < 0 || my_vec_push(args, &elem) != MY_VEC_OK)
+    if (ret == -2) {
+        ctx->exit_code = 1;
+        args->length = 0;
+    }
+    if (ret == -1 || my_vec_push(args, &elem) != MY_VEC_OK)
         return 0;
     return 1;
 }
