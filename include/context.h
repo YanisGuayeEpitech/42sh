@@ -22,6 +22,8 @@ typedef struct {
     int exit_code;
     /// The current line buffer.
     my_vec_t line_buf;
+    /// The previous working directory, initialized to @c NULL.
+    char *old_pwd;
 } sh_ctx_t;
 
 /// Initializes the shell's context

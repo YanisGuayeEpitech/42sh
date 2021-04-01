@@ -7,6 +7,7 @@
 
 #include <libmy/printf.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include "builtin.h"
 #include "shell.h"
@@ -61,17 +62,22 @@ static int sh_cd_home(sh_ctx_t *ctx, char const *name)
 
 static int sh_cd_dir(sh_ctx_t *ctx, char const *path)
 {
-    char **oldpwd;
+    char *cwd;
 
-    if (path == NULL) {
-        oldpwd = sh_env_get_entry(ctx, "OLDPWD", 6);
-        if (oldpwd)
-            path = *oldpwd + 7;
-    }
-    path = path ? path : "";
-    if (chdir(path) < 0)
+    if (path == NULL)
+        path = ctx->old_pwd;
+    path = path != NULL ? path : "";
+    cwd = sh_get_cwd();
+    if (cwd == NULL)
+        return sh_rerror(NULL, SH_OUT_OF_MEMORY, 1);
+    if (chdir(path) < 0) {
+        free(cwd);
         return sh_rerror_errno(path, 1);
-    (void)ctx;
+    }
+    sh_env_set(ctx, "OLDPWD", cwd);
+    if (ctx->old_pwd != NULL)
+        free(ctx->old_pwd);
+    ctx->old_pwd = cwd;
     return 0;
 }
 
