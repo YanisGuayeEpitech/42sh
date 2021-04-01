@@ -20,6 +20,7 @@ typedef enum {
     SH_TOO_FEW_ARGS,
     SH_CD_NO_HOME_DIR,
     SH_CD_HOME_DIR,
+    SH_OUT_OF_MEMORY,
     SH_ERROR_MAX,
 } sh_error_t;
 

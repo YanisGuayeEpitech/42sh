@@ -20,6 +20,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_TOO_FEW_ARGS] = "Too few arguments",
     [SH_CD_NO_HOME_DIR] = "No home directory",
     [SH_CD_HOME_DIR] = "Can't change to home directory",
+    [SH_OUT_OF_MEMORY] = "Out of memory",
 };
 
 char const *sh_strerror(sh_error_t code)
