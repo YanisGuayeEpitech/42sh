@@ -11,27 +11,10 @@
 #include <libmy/printf.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "builtin.h"
 #include "shell.h"
-
-static int sh_handle_status(sh_ctx_t *ctx, int status)
-{
-    if (WIFEXITED(status)) {
-        ctx->exit_code = WEXITSTATUS(status);
-        return 0;
-    } else if (WIFSIGNALED(status)) {
-        my_eputs(strsignal(WTERMSIG(status)));
-        if (WCOREDUMP(status))
-            my_eputs(" (core dumped)");
-        my_eputc('\n');
-        my_flush_stderr();
-        return 0;
-    }
-    return 1;
-}
 
 static int sh_exec_args(sh_ctx_t *ctx, char const *path, char const *argv[])
 {

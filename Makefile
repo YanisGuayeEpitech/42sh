@@ -49,6 +49,7 @@ find_executable.c  \
 main.c             \
 print.c            \
 start.c            \
+status.c           \
 
 INCS_BASE :=       \
 builtin.h          \

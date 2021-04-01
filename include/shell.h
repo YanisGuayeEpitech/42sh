@@ -30,6 +30,8 @@ void sh_start(sh_ctx_t *ctx);
 /// @returns A negative value if the shell should exit.
 int sh_exec(sh_ctx_t *ctx, size_t argc, char const *argv[]);
 
+int sh_handle_status(sh_ctx_t *ctx, int status);
+
 /// Prints the passed message only if stdin is a tty.
 ///
 /// @param ctx The shell context.
