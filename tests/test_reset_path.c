@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell1
+** minishell2
 ** File description:
 ** Tests the sh_ctx_reset_path function
 */

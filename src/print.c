@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell1
+** minishell2
 ** File description:
 ** Prints message if it's a tty
 */
