@@ -5,8 +5,6 @@
 ** Functions to operate on null-terminated string keys
 */
 
-#include <assert.h>
-
 #include "libmy/memory/alloc.h"
 #include "libmy/collections/hash_map.h"
 

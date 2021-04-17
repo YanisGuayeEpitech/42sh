@@ -10,6 +10,7 @@ set(HASH_MAP_SRC
     ${SRCROOT}/my_hash_map_get.c
     ${SRCROOT}/my_hash_map_hash_key.c
     ${SRCROOT}/my_hash_map_init.c
+    ${SRCROOT}/my_hash_map_insert_entry.c
     ${SRCROOT}/my_hash_map_insert.c
     ${SRCROOT}/my_hash_map_iter.c
     ${SRCROOT}/my_hash_map_remove.c

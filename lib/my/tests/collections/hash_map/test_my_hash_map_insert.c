@@ -74,7 +74,7 @@ Test(my_hash_map_insert, map_growth)
     key = "some other key";
     cr_assert_eq(MY_MAP_OK, my_hash_map_insert(&map, &key, &value));
     key = "yet another key";
-    cr_assert_eq(MY_MAP_OK, my_hash_map_insert(&map, &key, &value));
+    cr_assert_neq(NULL, my_hash_map_insert_entry(&map, &key, &value));
     cr_assert(my_hash_map_contains(&map, &key));
     my_hash_map_drop(&map);
 }

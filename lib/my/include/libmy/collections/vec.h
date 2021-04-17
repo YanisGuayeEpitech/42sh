@@ -162,7 +162,6 @@ MY_INLINE void *my_vec_get(my_vec_t const *vec, size_t index)
 {
     assert(vec != NULL);
     assert(vec->data != NULL);
-    assert(index < vec->length);
     return (void *)((char *)vec->data + vec->elem_size * index);
 }
 

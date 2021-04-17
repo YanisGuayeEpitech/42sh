@@ -14,14 +14,14 @@
 #include "libmy/internal/types.h"
 #include "libmy/collections/hash_map.h"
 
-typedef struct p_my_hash_map_item {
+typedef struct p_my_hash_map_entry {
     my_u64_t hash;
-    struct p_my_hash_map_item *next;
+    struct p_my_hash_map_entry *next;
     char kv;
-} p_my_hash_map_item_t;
+} my_hash_map_entry_t;
 
-#define P_MY_HM_KEY(m, i) ((void *)(((char *)(i)) + (m)->key_offset))
-#define P_MY_HM_VAL(m, i) ((void *)(((char *)(i)) + (m)->value_offset))
+#define P_MY_HM_KEY(m, e) ((void *)(((char *)(e)) + (m)->key_offset))
+#define P_MY_HM_VAL(m, e) ((void *)(((char *)(e)) + (m)->value_offset))
 
 MY_INLINE int p_my_map_kvtypes_is_valid(my_map_kvtypes_t const *kvtypes)
 {

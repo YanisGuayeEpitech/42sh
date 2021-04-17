@@ -19,6 +19,8 @@
 
 MY_API_BEGIN
 
+#include <assert.h>
+
 #include "libmy/hash.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,9 +111,10 @@ struct my_map_kvtypes {
 /// @since 0.3.2
 typedef struct my_map_kvtypes my_map_kvtypes_t;
 
-#ifndef LIBMY_SKIP_DOCS
-typedef struct p_my_hash_map_item p_my_hash_map_item_t;
-#endif
+/// The storage location of a key-value pair.
+///
+/// @since 0.3.6
+typedef struct p_my_hash_map_entry my_hash_map_entry_t;
 
 /// The hash map structure.
 /// You must initialize this structure using the @ref my_hash_map_init or
@@ -120,7 +123,7 @@ typedef struct p_my_hash_map_item p_my_hash_map_item_t;
 /// @since 0.3.2
 struct my_hash_map {
     /// @publicsection
-    /// The number of items stored in this map.
+    /// The number of entries stored in this map.
     ///
     /// @since 0.3.2
     size_t length;
@@ -129,14 +132,14 @@ struct my_hash_map {
     /// @since 0.3.2
     size_t capacity;
     /// The capacity doubling threshold.
-    /// The map will grow if the number of items divided by the current
+    /// The map will grow if the number of entries divided by the current
     /// capacity execeeds this number.
     /// Needs to be between 0 and 1 (exclusive).
     ///
     /// @since 0.3.2
     double load_factor;
     /// @privatesection
-    p_my_hash_map_item_t **buckets;
+    my_hash_map_entry_t **buckets;
     size_t key_size;
     size_t key_offset;
     size_t value_size;
@@ -214,7 +217,7 @@ MY_COLLECTIONS_API my_map_err_t my_hash_map_init_capacity(
 /// @param key A pointer to the key, must not be @c NULL.
 /// @param value A pointer to the value, must not be @c NULL.
 ///
-/// @return @c MY_MAP_ALLOC if item allocation failed, or @c MY_MAP_OK
+/// @returns @c MY_MAP_ALLOC if entry allocation failed, or @c MY_MAP_OK
 /// otherwise.
 /// @since 0.3.2
 MY_COLLECTIONS_API my_map_err_t my_hash_map_insert(
@@ -239,7 +242,7 @@ MY_COLLECTIONS_API int my_hash_map_contains(
 /// @since 0.3.2
 MY_COLLECTIONS_API void *my_hash_map_get(my_hash_map_t *map, void const *key);
 
-/// Removes a key-value pair for the hash map, if present.
+/// Removes a key-value pair from the hash map, if present.
 /// Calls both @ref my_map_kvtypes::key_drop and
 /// @ref my_map_kvtypes::value_drop if their values given in the creation of
 /// this map was not @c NULL.
@@ -272,6 +275,66 @@ MY_COLLECTIONS_API my_u64_t my_hash_map_hash_key(
     my_hash_map_t const *map, void const *key);
 
 ////////////////////////////////////////////////////////////////////////////////
+// Entry API
+////////////////////////////////////////////////////////////////////////////////
+
+/// Fetches the entry associated with the given @c key.
+///
+/// @param map The hash map, must not be @c NULL.
+/// @param key A pointer to the key, must not be @c NULL.
+///
+/// @returns A pointer to entry where @c key is stored, or @c NULL if not
+/// present.
+/// @since 0.3.6
+MY_COLLECTIONS_API my_hash_map_entry_t *my_hash_map_get_entry(
+    my_hash_map_t *map, void const *key);
+
+/// Puts the given key-value pair into the hash map.
+/// Updates the value if @c key is already present in the map and drops the old
+/// value if @ref my_map_kvtypes::value_drop was not @c NULL.
+///
+/// @param map The hash map, must not be @c NULL.
+/// @param key A pointer to the key, must not be @c NULL.
+/// @param value A pointer to the value, if @c NULL the element will be removed
+/// from the map if it exists.
+///
+/// @returns A pointer to the updated/created entry, or @c NULL if either
+/// @c value was @c NULL or entry allocation failed.
+/// @since 0.3.6
+MY_COLLECTIONS_API my_hash_map_entry_t *my_hash_map_insert_entry(
+    my_hash_map_t *map, void *key, void *value);
+
+/// Fetches the key associated with the given entry.
+///
+/// @param map The hash map, must not be @c NULL.
+/// @param entry The map entry, must not be @c NULL.
+///
+/// @returns The key, must @b not be modified.
+/// @since 0.3.6
+MY_INLINE const void *my_hash_map_entry_key(
+    my_hash_map_t *map, my_hash_map_entry_t const *entry)
+{
+    assert(map != NULL);
+    assert(entry != NULL);
+    return P_MY_HM_KEY(map, entry);
+}
+
+/// Fetches the value associated with the given entry.
+///
+/// @param map The hash map, must not be @c NULL.
+/// @param entry The map entry, must not be @c NULL.
+///
+/// @returns The value, can be modified.
+/// @since 0.3.6
+MY_INLINE void *my_hash_map_entry_value(
+    my_hash_map_t *map, my_hash_map_entry_t const *entry)
+{
+    assert(map != NULL);
+    assert(entry != NULL);
+    return P_MY_HM_VAL(map, entry);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Hash Map Iteration
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -291,9 +354,9 @@ struct my_hash_map_iter {
     /// @since 0.3.2
     void *value;
     /// @privatesection
-    /// The index of the current item's bucket.
+    /// The index of the current entry's bucket.
     size_t bucket_index;
-    p_my_hash_map_item_t const *next_item;
+    my_hash_map_entry_t const *next_entry;
 };
 
 /// Same as @ref my_hash_map_iter.
@@ -317,13 +380,13 @@ MY_COLLECTIONS_API void my_hash_map_iter_init(
 ///
 /// @param iter The iterator, must not be @c NULL.
 ///
-/// @returns 1 if a next item is available, 0 otherwise.
+/// @returns 1 if a next entry is available, 0 otherwise.
 /// @since 0.3.2
 MY_COLLECTIONS_API int my_hash_map_iter_has_next(
     my_hash_map_iter_t const *iter);
 
-/// Fetches the next item from the map.
-/// If sucessful, the item's key and value can be accessed with
+/// Fetches the next entry from the map.
+/// If sucessful, the entry's key and value can be accessed with
 /// <tt>iter->key</tt> and <tt>iter->value</tt>, respectively.
 ///
 /// The behavior is undefined if the target hash map was modified after the
@@ -331,7 +394,7 @@ MY_COLLECTIONS_API int my_hash_map_iter_has_next(
 ///
 /// @param iter The iterator, must not be @c NULL.
 ///
-/// @returns 1 if an item was fetched, 0 otherwise.
+/// @returns 1 if an entry was fetched, 0 otherwise.
 /// @since 0.3.2
 MY_COLLECTIONS_API int my_hash_map_iter_next(my_hash_map_iter_t *iter);
 

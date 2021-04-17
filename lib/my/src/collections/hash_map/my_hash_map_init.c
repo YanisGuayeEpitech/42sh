@@ -5,7 +5,6 @@
 ** Initializes hash maps
 */
 
-#include <assert.h>
 #include <stdlib.h>
 
 #include "libmy/memory.h"
@@ -38,11 +37,11 @@ static size_t my_hash_map_adjust_capacity(size_t capacity)
     return capacity + 1;
 }
 
-/// Computes offsets for the key and value fields of an item.
+/// Computes offsets for the key and value fields of an entry.
 static void my_hash_map_set_offsets(
     my_hash_map_t *map, my_map_kvtypes_t const *kvtypes)
 {
-    size_t kvoffset = offsetof(p_my_hash_map_item_t, kv);
+    size_t kvoffset = offsetof(my_hash_map_entry_t, kv);
     size_t d = kvtypes->key_align - kvoffset % kvtypes->key_align;
 
     map->key_offset = (d == kvtypes->key_align ? 0 : d) + kvoffset;

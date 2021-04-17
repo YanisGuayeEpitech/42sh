@@ -5,8 +5,6 @@
 ** Computes the hash of a key
 */
 
-#include <assert.h>
-
 #include "libmy/collections/hash_map.h"
 
 MY_COLLECTIONS_API my_u64_t my_hash_map_hash_key(
