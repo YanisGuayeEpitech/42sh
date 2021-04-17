@@ -23,10 +23,12 @@
 #endif // defined(__cplusplus)
 
 #if __GNUC__ >= 4
-#define MY_API MY_ATTRIBUTE(visibility("default"))
+#define MY_API_IMPORT MY_ATTRIBUTE(visibility("default"))
+#define MY_API_EXPORT MY_ATTRIBUTE(visibility("default"))
 #define MY_LOCAL MY_ATTRIBUTE(visibility("hidden"))
 #else // __GNUC__ < 4
-#define MY_API
+#define MY_API_IMPORT
+#define MY_API_EXPORT
 #define MY_LOCAL
 #endif // __GNUC__ >= 4
 

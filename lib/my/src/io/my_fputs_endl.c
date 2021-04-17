@@ -7,17 +7,17 @@
 
 #include "libmy/io.h"
 
-MY_API int my_fputs_endl(char const *str, my_iostream_t *stream)
+MY_IO_API int my_fputs_endl(char const *str, my_iostream_t *stream)
 {
     return my_fputs(str, stream) || my_fputc('\n', stream);
 }
 
-MY_API int my_puts_endl(char const *str)
+MY_IO_API int my_puts_endl(char const *str)
 {
     return my_fputs_endl(str, MY_STDOUT);
 }
 
-MY_API int my_eputs_endl(char const *str)
+MY_IO_API int my_eputs_endl(char const *str)
 {
     return my_fputs_endl(str, MY_STDERR);
 }

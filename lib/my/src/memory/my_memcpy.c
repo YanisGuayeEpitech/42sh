@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "libmy/memory.h"
 
-MY_API void *my_memcpy(void *dest, const void *src, size_t n)
+MY_MEMORY_API void *my_memcpy(void *dest, const void *src, size_t n)
 {
     if (!dest || !src)
         return NULL;

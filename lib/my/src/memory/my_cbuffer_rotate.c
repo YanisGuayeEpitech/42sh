@@ -7,7 +7,7 @@
 
 #include "libmy/memory.h"
 
-MY_API void my_cbuffer_rotate_left(my_cbuffer_t *buf, size_t amt)
+MY_MEMORY_API void my_cbuffer_rotate_left(my_cbuffer_t *buf, size_t amt)
 {
     char *data = buf->data;
 
@@ -27,7 +27,7 @@ MY_API void my_cbuffer_rotate_left(my_cbuffer_t *buf, size_t amt)
     }
 }
 
-MY_API void my_cbuffer_rotate_right(my_cbuffer_t *buf, size_t amt)
+MY_MEMORY_API void my_cbuffer_rotate_right(my_cbuffer_t *buf, size_t amt)
 {
     char *data = buf->data;
 

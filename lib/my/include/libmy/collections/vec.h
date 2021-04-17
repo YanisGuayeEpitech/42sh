@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2020
+** EPITECH PROJECT, 2021
 ** LibMy - collections module
 ** File description:
 ** The vector definitions
@@ -16,20 +16,14 @@
 #ifndef __LIBMY_VEC_H__
 #define __LIBMY_VEC_H__
 
-#include "libmy/internal/attributes.h"
+#include "libmy/collections/config.h"
 
 MY_API_BEGIN
 
-#ifndef LIBMY_MODULE_COLLECTIONS
-#error "LibMy: 'libmy/collections/vec.h' is included, \
-but collections module is not present"
-#endif
-
-#ifndef LIBMY_ALLOW_MALLOC
-#error "LibMy: collections module requires the 'allow_malloc' flag"
-#endif
-
+#include <assert.h>
 #include <stddef.h>
+
+#include "libmy/memory/memory.h"
 
 /// A contiguous growable array type.
 ///
@@ -102,8 +96,8 @@ MY_INLINE my_vec_err_t my_vec_wrap_err(my_vec_err_t *loc, my_vec_err_t err)
 ///          or @ref MY_VEC_OK othewise.
 ///
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_init_capacity(my_vec_t *vec, size_t capacity,
-size_t elem_size);
+MY_COLLECTIONS_API my_vec_err_t my_vec_init_capacity(
+    my_vec_t *vec, size_t capacity, size_t elem_size);
 
 /// Initializes a @ref my_vec_t with a capacity of zero.
 ///
@@ -125,7 +119,8 @@ MY_INLINE my_vec_err_t my_vec_init(my_vec_t *vec, size_t elem_size)
 ///
 /// @return @ref MY_VEC_ALLOC if an allocation error has occured.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_copy(my_vec_t *dst, my_vec_t const *src);
+MY_COLLECTIONS_API my_vec_err_t my_vec_copy(
+    my_vec_t *dst, my_vec_t const *src);
 
 /// Copies the contents of @c src into dst, reusing dst's memory if enough
 /// capacity is present @b and the element size is the same.
@@ -139,7 +134,8 @@ MY_API my_vec_err_t my_vec_copy(my_vec_t *dst, my_vec_t const *src);
 ///
 /// @return @ref MY_VEC_ALLOC if an allocation error has occured.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_copy_into(my_vec_t *dst, my_vec_t const *src);
+MY_COLLECTIONS_API my_vec_err_t my_vec_copy_into(
+    my_vec_t *dst, my_vec_t const *src);
 
 /// Frees the given @ref my_vec_t.
 ///
@@ -149,7 +145,7 @@ MY_API my_vec_err_t my_vec_copy_into(my_vec_t *dst, my_vec_t const *src);
 ///                  Can be @c NULL.
 ///
 /// @since 0.1.0
-MY_API void my_vec_free(my_vec_t *vec, void (*elem_free)(void *));
+MY_COLLECTIONS_API void my_vec_free(my_vec_t *vec, void (*elem_free)(void *));
 
 /// Returns a pointer at position @c index of the given vector.
 /// For a checked version, see @ref my_vec_try_get.
@@ -164,6 +160,9 @@ MY_API void my_vec_free(my_vec_t *vec, void (*elem_free)(void *));
 /// @since 0.1.0
 MY_INLINE void *my_vec_get(my_vec_t const *vec, size_t index)
 {
+    assert(vec != NULL);
+    assert(vec->data != NULL);
+    assert(index < vec->length);
     return (void *)((char *)vec->data + vec->elem_size * index);
 }
 
@@ -178,9 +177,10 @@ MY_INLINE void *my_vec_get(my_vec_t const *vec, size_t index)
 /// @returns @ref MY_VEC_OUT_OF_BOUNDS if index is greater than
 ///          @ref my_vec_t::length, @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_INLINE my_vec_err_t my_vec_try_get(my_vec_t const *vec, size_t index,
-void **elem)
+MY_INLINE my_vec_err_t my_vec_try_get(
+    my_vec_t const *vec, size_t index, void **elem)
 {
+    assert(vec != NULL);
     if (index >= vec->length)
         return MY_VEC_OUT_OF_BOUNDS;
     *elem = my_vec_get(vec, index);
@@ -199,8 +199,8 @@ void **elem)
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
 ///          @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_set_capacity(my_vec_t *vec, size_t new_capacity,
-void (*elem_free)(void *));
+MY_COLLECTIONS_API my_vec_err_t my_vec_set_capacity(
+    my_vec_t *vec, size_t new_capacity, void (*elem_free)(void *));
 
 /// Reserves capacity for at least @c additional more elements.
 /// The collection may reserve more space to avoid frequent reallocations.
@@ -214,7 +214,8 @@ void (*elem_free)(void *));
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
 ///          @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_reserve(my_vec_t *vec, size_t additional);
+MY_COLLECTIONS_API my_vec_err_t my_vec_reserve(
+    my_vec_t *vec, size_t additional);
 
 /// Shrinks the capacity of the vector as much as possible.
 ///
@@ -223,7 +224,7 @@ MY_API my_vec_err_t my_vec_reserve(my_vec_t *vec, size_t additional);
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
 ///          @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_shrink_to_fit(my_vec_t *vec);
+MY_COLLECTIONS_API my_vec_err_t my_vec_shrink_to_fit(my_vec_t *vec);
 
 /// Appends an element to the back of the collection.
 /// The contents of @c elem will be copied into the vector and
@@ -236,7 +237,7 @@ MY_API my_vec_err_t my_vec_shrink_to_fit(my_vec_t *vec);
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
 ///          @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_push(my_vec_t *vec, void *elem);
+MY_COLLECTIONS_API my_vec_err_t my_vec_push(my_vec_t *vec, void *elem);
 
 /// Appends multiple elements to the back of the collection.
 /// The contents of @c elem will be copied into the vector and
@@ -251,8 +252,8 @@ MY_API my_vec_err_t my_vec_push(my_vec_t *vec, void *elem);
 ///          @ref MY_VEC_CAPACITY_OVERFLOW if the new capacity exceeds
 ///          the vec's maximum, @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_push_multiple(my_vec_t *vec, void *elems,
-size_t count);
+MY_COLLECTIONS_API my_vec_err_t my_vec_push_multiple(
+    my_vec_t *vec, void *elems, size_t count);
 
 /// Removes the last element from a vector and writes it to @c dst.
 /// This does not shrink the vector's capacity.
@@ -261,7 +262,7 @@ size_t count);
 /// @param[out] dst Where the popped element will be written to.
 ///
 /// @since 0.1.0
-MY_API void my_vec_pop(my_vec_t *vec, void *dst);
+MY_COLLECTIONS_API void my_vec_pop(my_vec_t *vec, void *dst);
 
 /// Removes the last @c count elements from a vector and writes them to @c dst.
 /// This does not shrink the vector's capacity.
@@ -272,8 +273,10 @@ MY_API void my_vec_pop(my_vec_t *vec, void *dst);
 /// @param count    the number of elements to pop.
 ///
 /// @since 0.1.0
-MY_API void my_vec_pop_multiple(my_vec_t *vec, void *dst, size_t count);
+MY_COLLECTIONS_API void my_vec_pop_multiple(
+    my_vec_t *vec, void *dst, size_t count);
 
+/// @todo NOT YET IMPLEMENTED!
 /// Inserts an element at position @c index within the vector,
 /// shifting all elements after it to the right.
 ///
@@ -286,7 +289,8 @@ MY_API void my_vec_pop_multiple(my_vec_t *vec, void *dst, size_t count);
 ///          @ref MY_VEC_CAPACITY_OVERFLOW if the new capacity exceeds
 ///          the vec's maximum, @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_insert(my_vec_t *vec, void *elem, size_t index);
+MY_COLLECTIONS_API my_vec_err_t my_vec_insert(
+    my_vec_t *vec, void *elem, size_t index);
 
 /// Inserts @c count elements at position @c index within the vector,
 /// shifting all elements after them to the right.
@@ -301,8 +305,46 @@ MY_API my_vec_err_t my_vec_insert(my_vec_t *vec, void *elem, size_t index);
 ///          @ref MY_VEC_CAPACITY_OVERFLOW if the new capacity exceeds
 ///          the vec's maximum, @ref MY_VEC_OK otherwise.
 /// @since 0.1.0
-MY_API my_vec_err_t my_vec_insert_multiple(my_vec_t *vec, void *elem,
-size_t index, size_t count);
+MY_COLLECTIONS_API my_vec_err_t my_vec_insert_multiple(
+    my_vec_t *vec, void *elem, size_t index, size_t count);
+
+/// Change the value of an element at position @c index within the vector.
+///
+/// @param vec   The vector, must be initialized.
+/// @param new_value The new value of the element. Must be a valid pointer.
+/// @param index The position of the changed element.
+///
+/// @returns @ref MY_VEC_OUT_OF_BOUNDS if index is out of bounds, or @ref
+/// MY_VEC_OK otherwise.
+/// @author Andréas Leroux
+/// @since 0.3.4
+MY_COLLECTIONS_API my_vec_err_t my_vec_change_value(
+    my_vec_t *vec, void *elem, size_t index);
+
+/// Swap the elements at position @c index_1 and @c index_2 within the vector.
+///
+/// @param vec The vector, must be initialized.
+/// @param index_1 The position of the first swapped element.
+/// @param index_2 The position of the second swapped element.
+///
+/// @since 0.3.5
+MY_INLINE void my_vec_swap(my_vec_t *vec, size_t index_1, size_t index_2)
+{
+    my_memswap(
+        my_vec_get(vec, index_1), my_vec_get(vec, index_2), vec->elem_size);
+}
+
+/// Reverses the elements within the vector.
+///
+/// @param vec The vector, must be initialized.
+///
+/// @since 0.3.5
+MY_INLINE void my_vec_reverse(my_vec_t *vec)
+{
+    assert(vec != NULL);
+    assert(vec->length == 0 || vec->data != NULL);
+    my_memrev(vec->data, vec->length, vec->elem_size);
+}
 
 /// Removes the element at position @c index and writes it to @c dst,
 /// shifting all elements after it to the left.
@@ -311,8 +353,8 @@ size_t index, size_t count);
 /// @param[out] dst Where the removed element will be written to.
 /// @param index    The position of the removed element.
 ///
-/// @since 0.1.0
-MY_API void my_vec_remove(my_vec_t *vec, void *dst, size_t index);
+/// @since 0.2.1
+MY_COLLECTIONS_API void my_vec_remove(my_vec_t *vec, void *dst, size_t index);
 
 /// Removes @c count elements at position @c index and writes them to @c dst,
 /// shifting all elements after them to the left.
@@ -322,9 +364,9 @@ MY_API void my_vec_remove(my_vec_t *vec, void *dst, size_t index);
 /// @param index    The starting position of the removed elements.
 /// @param count    The number of elements to remove.
 ///
-/// @since 0.1.0
-MY_API void my_vec_remove_multiple(my_vec_t *vec, void *dst, size_t index,
-size_t count);
+/// @since 0.2.1
+MY_COLLECTIONS_API void my_vec_remove_multiple(
+    my_vec_t *vec, void *dst, size_t index, size_t count);
 
 /// Ensures the vector has enough capacity to hold @c min_cap elemements.
 ///
@@ -333,7 +375,8 @@ size_t count);
 ///
 /// @returns @ref MY_VEC_OK is successful,
 /// @ref MY_VEC_ALLOC or @ref MY_VEC_CAPACITY_OVERFLOW in case of error.
-MY_API my_vec_err_t my_vec_ensure_capacity(my_vec_t *vec, size_t min_cap);
+MY_COLLECTIONS_API my_vec_err_t my_vec_ensure_capacity(
+    my_vec_t *vec, size_t min_cap);
 
 /// Extends the vector to be of length @c length with the provided element.
 /// Does nothing of <tt>length <= vec->length</tt>.
@@ -345,8 +388,8 @@ MY_API my_vec_err_t my_vec_ensure_capacity(my_vec_t *vec, size_t min_cap);
 ///
 /// @returns @ref MY_VEC_OK is successful,
 /// @ref MY_VEC_ALLOC or @ref MY_VEC_CAPACITY_OVERFLOW in case of error.
-MY_API my_vec_err_t my_vec_extend_to_length(my_vec_t *vec, void *elem,
-size_t length);
+MY_COLLECTIONS_API my_vec_err_t my_vec_extend_to_length(
+    my_vec_t *vec, void *elem, size_t length);
 
 /// Casts and dereferences an pointer to an element of a vector.
 ///
@@ -355,7 +398,7 @@ size_t length);
 ///
 /// @returns The element.
 /// @since 0.1.0
-#define MY_VEC_CAST_ELEM(type, ptr) (*((type *)ptr))
+#define MY_VEC_CAST_ELEM(type, ptr) (*((type *)(ptr)))
 
 /// Fetches an element from the given vector and casts it.
 ///
@@ -366,8 +409,20 @@ size_t length);
 ///
 /// @returns The element.
 /// @since 0.1.0
-#define MY_VEC_GET_ELEM(type, vec, index) MY_VEC_CAST_ELEM(type, \
-my_vec_get(vec, index))
+#define MY_VEC_GET_ELEM(type, vec, index) \
+    MY_VEC_CAST_ELEM(type, my_vec_get((vec), (index)))
+
+/// Fetches an element from the given vector and casts it.
+/// Same as @ref MY_VEC_GET_ELEM, but shorter.
+///
+/// @param type  The type of element.
+/// @param vec   The vector, must be initialized.
+/// @param index The position of the element.
+///              Must not exceed @ref my_vec_t::length.
+///
+/// @returns The element.
+/// @since 0.3.4
+#define MY_VEC_GET(type, vec, index) MY_VEC_GET_ELEM(type, vec, index)
 
 MY_API_END
 

@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API int my_stricmp(char const *s1, char const *s2)
+MY_ASCII_API int my_stricmp(char const *s1, char const *s2)
 {
     if (!s1 && s2)
         return -1;

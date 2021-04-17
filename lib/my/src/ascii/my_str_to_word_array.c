@@ -54,7 +54,7 @@ static int copy_word(char *words[], char const **str, int i)
     return 0;
 }
 
-MY_API char **my_str_to_word_array(char const *str)
+MY_ASCII_API char **my_str_to_word_array(char const *str)
 {
     int count = count_words(str);
     char **words = malloc(sizeof(*words) * (count + 1));

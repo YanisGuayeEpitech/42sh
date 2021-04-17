@@ -1,35 +1,30 @@
 /*
-** EPITECH PROJECT, 2020
+** EPITECH PROJECT, 2021
 ** LibMy - io module
 ** File description:
 ** Reads the contents of the standard input
 */
 
+#include <stdlib.h>
+#include <unistd.h>
+#include "libmy/collections.h"
 #include "libmy/core.h"
 #include "libmy/io.h"
-#include "libmy/collections.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 static size_t read_to_vec(my_vec_t *vec, size_t to_read, my_iostream_t *stream)
 {
-    size_t min_capacity = to_read + vec->length + 1;
     size_t read;
 
-    if (min_capacity > vec->capacity) {
-        size_t new_capacity = MY_MAX(min_capacity, vec->capacity * 2);
-
-        if (my_vec_set_capacity(vec, new_capacity, NULL))
-            return 0;
-    }
+    if (my_vec_ensure_capacity(vec, to_read + vec->length + 1))
+        return 0;
     read = my_fread(((char *)vec->data) + vec->length, 1, to_read, stream);
     vec->length += read;
     ((char *)vec->data)[vec->length] = '\0';
     return read;
 }
 
-MY_API char *my_fread_to_string(size_t count, size_t *output_len,
-my_iostream_t *stream)
+MY_IO_API char *my_fread_to_string(
+    size_t count, size_t *output_len, my_iostream_t *stream)
 {
     my_vec_t output;
 
@@ -39,7 +34,8 @@ my_iostream_t *stream)
         return NULL;
     output.length = 0;
     while (output.length < count) {
-        size_t read = read_to_vec(&output, count - output.length, stream);
+        size_t most = count - output.length;
+        size_t read = read_to_vec(&output, MY_MIN(most, MY_READ_SIZE), stream);
 
         if (read > 0)
             continue;

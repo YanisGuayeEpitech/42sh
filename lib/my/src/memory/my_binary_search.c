@@ -21,7 +21,7 @@ static size_t array_offset(my_array_t const *base, my_array_t const *shifted)
         / base->elem_size;
 }
 
-MY_API size_t my_binary_search(
+MY_MEMORY_API size_t my_binary_search(
     my_array_t const *array_param, void const *to_find, int (*cmp)())
 {
     my_array_t array = *array_param;

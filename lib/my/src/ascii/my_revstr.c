@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_revstr(char *str)
+MY_ASCII_API char *my_revstr(char *str)
 {
     int len = 0;
     int mid;

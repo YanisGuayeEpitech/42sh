@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strstr(char const *str, char const *to_find)
+MY_ASCII_API char *my_strstr(char const *str, char const *to_find)
 {
     if (!str || !to_find)
         return NULL;

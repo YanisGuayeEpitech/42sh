@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API char *my_strlowcase(char *str)
+MY_ASCII_API char *my_strlowcase(char *str)
 {
     if (!str)
         return str;

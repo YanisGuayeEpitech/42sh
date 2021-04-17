@@ -8,7 +8,7 @@
 #include "libmy/ascii.h"
 #include "libmy/io.h"
 
-MY_API int my_fputs(char const *str, my_iostream_t *stream)
+MY_IO_API int my_fputs(char const *str, my_iostream_t *stream)
 {
     size_t len;
 
@@ -22,12 +22,12 @@ MY_API int my_fputs(char const *str, my_iostream_t *stream)
     return my_fwrite(str, len, 1, stream) == 0;
 }
 
-MY_API int my_puts(char const *str)
+MY_IO_API int my_puts(char const *str)
 {
     return my_fputs(str, MY_STDOUT);
 }
 
-MY_API int my_eputs(char const *str)
+MY_IO_API int my_eputs(char const *str)
 {
     return my_fputs(str, MY_STDERR);
 }

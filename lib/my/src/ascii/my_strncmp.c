@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API int my_strncmp(char const *s1, char const *s2, int n)
+MY_ASCII_API int my_strncmp(char const *s1, char const *s2, int n)
 {
     int i = 0;
     unsigned char *str1;

@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API int my_str_isnum(char const *str)
+MY_ASCII_API int my_str_isnum(char const *str)
 {
     if (!str)
         return 0;

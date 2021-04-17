@@ -38,12 +38,12 @@ static int my_getnbr_start(char const **str)
     return (int)(neg ? -n : n);
 }
 
-MY_API int my_getnbr(char const *str)
+MY_PARSING_API int my_getnbr(char const *str)
 {
     return my_getnbr_start(&str);
 }
 
-MY_API int my_getnbr_strict(char const *str)
+MY_PARSING_API int my_getnbr_strict(char const *str)
 {
     int result = my_getnbr_start(&str);
 

@@ -5,10 +5,10 @@
 ** Flushes a stream
 */
 
+#include <unistd.h>
 #include "libmy/core.h"
 #include "libmy/io.h"
 #include "libmy/memory.h"
-#include <unistd.h>
 
 static int write_until_empty(p_my_iostream_unix_t *stream)
 {
@@ -35,7 +35,7 @@ MY_LOCAL int p_my_fflush_unix(p_my_iostream_unix_t *stream)
     return 0;
 }
 
-MY_API int my_fflush(my_iostream_t *stream)
+MY_IO_API int my_fflush(my_iostream_t *stream)
 {
     p_my_fflush_impl_t func = stream->vtable->flush;
 

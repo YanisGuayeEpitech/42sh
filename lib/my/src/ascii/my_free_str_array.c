@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "libmy/ascii.h"
 
-MY_API void my_free_str_array(char *array[], int len)
+MY_ASCII_API void my_free_str_array(char *array[], int len)
 {
     if (!array)
         return;

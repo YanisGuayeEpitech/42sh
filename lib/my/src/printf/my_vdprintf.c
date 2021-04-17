@@ -7,7 +7,7 @@
 
 #include "libmy/printf.h"
 
-MY_API int my_vdprintf(int fd, char const *fmt, va_list args)
+MY_PRINTF_API int my_vdprintf(int fd, char const *fmt, va_list args)
 {
     unsigned char buf[MY_PRINTF_BUF_SIZE];
     my_iostream_t stream;

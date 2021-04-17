@@ -32,7 +32,6 @@ Test(my_get_void_input, base)
 
     cr_assert_neq(my_get_void_input(), NULL);
     cr_assert_neq(MY_VOID_IN, NULL);
-    cr_assert_eq(void_input->vtable->read, p_my_fread_void);
     cr_assert_eq(void_input->vtable->write, NULL);
 }
 
@@ -43,6 +42,4 @@ Test(my_get_void_output, base)
     cr_assert_neq(my_get_void_output(), NULL);
     cr_assert_neq(MY_VOID_OUT, NULL);
     cr_assert_eq(void_output->vtable->read, NULL);
-    cr_assert_eq(void_output->vtable->write, p_my_fwrite_void);
-    cr_assert_eq(void_output->vtable->eof, p_my_feof_void);
 }

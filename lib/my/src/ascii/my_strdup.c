@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strdup(char const *src)
+MY_ASCII_API char *my_strdup(char const *src)
 {
     char *dup;
 

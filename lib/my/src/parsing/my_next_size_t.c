@@ -15,7 +15,7 @@ static int my_next_size_t_set_zero(size_t *dst)
     return 0;
 }
 
-MY_API int my_next_size_t(char const **str, size_t *dst)
+MY_PARSING_API int my_next_size_t(char const **str, size_t *dst)
 {
     size_t num = 0;
 

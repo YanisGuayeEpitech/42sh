@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API char *my_strncat(char *dest, char const *src, int nb)
+MY_ASCII_API char *my_strncat(char *dest, char const *src, int nb)
 {
     char *d = dest;
 

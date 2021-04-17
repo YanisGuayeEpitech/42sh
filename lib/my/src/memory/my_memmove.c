@@ -7,10 +7,10 @@
 
 #include "libmy/memory.h"
 
-MY_API void *my_memmove(void *d, const void *s, size_t n)
+MY_MEMORY_API void *my_memmove(void *d, const void *s, size_t n)
 {
-    unsigned char	*dst = (unsigned char *)d;
-    unsigned char	*src = (unsigned char *)s;
+    unsigned char *dst = (unsigned char *)d;
+    unsigned char *src = (unsigned char *)s;
 
     if (!d || !s)
         return NULL;

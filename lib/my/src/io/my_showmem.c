@@ -51,7 +51,7 @@ static void show_line(char const *str, int offset, int size)
     my_putchar('\n');
 }
 
-MY_API int my_showmem(char const *str, int size)
+MY_IO_API int my_showmem(char const *str, int size)
 {
     int aligned_size;
 

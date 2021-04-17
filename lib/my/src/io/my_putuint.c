@@ -7,7 +7,7 @@
 
 #include "libmy/io.h"
 
-MY_API int my_putuint_fd(int fd, unsigned nb)
+MY_IO_API int my_putuint_fd(int fd, unsigned nb)
 {
     unsigned power = 1;
 
@@ -20,7 +20,7 @@ MY_API int my_putuint_fd(int fd, unsigned nb)
     return 0;
 }
 
-MY_API int my_putuint(unsigned nb)
+MY_IO_API int my_putuint(unsigned nb)
 {
     return my_putuint_fd(1, nb);
 }

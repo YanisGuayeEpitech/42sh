@@ -48,7 +48,7 @@ MY_LOCAL ssize_t my_getdelim_add_null_byte(my_vec_t *line, ssize_t ret)
     return ret;
 }
 
-MY_API ssize_t my_getdelim(
+MY_IO_API ssize_t my_getdelim(
     char **line, size_t *alloc_size, char delim, my_iostream_t *stream)
 {
     my_vec_t linevec;

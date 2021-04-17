@@ -8,7 +8,7 @@
 #include "libmy/core.h"
 #include "libmy/memory.h"
 
-MY_API void *my_cbuffer_read_front(
+MY_MEMORY_API void *my_cbuffer_read_front(
     my_cbuffer_t const *buf, void *dst, size_t size)
 {
     size_t first_len;
@@ -23,7 +23,7 @@ MY_API void *my_cbuffer_read_front(
     return dst;
 }
 
-MY_API void *my_cbuffer_read_back(
+MY_MEMORY_API void *my_cbuffer_read_back(
     my_cbuffer_t const *buf, void *dst, size_t size)
 {
     size_t sizes[2];
@@ -46,7 +46,7 @@ MY_API void *my_cbuffer_read_back(
     return dst;
 }
 
-MY_API void *my_cbuffer_read_at(
+MY_MEMORY_API void *my_cbuffer_read_at(
     my_cbuffer_t const *buf, void *dst, size_t size, size_t offset)
 {
     my_cbuffer_t tmp = *buf;

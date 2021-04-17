@@ -7,7 +7,8 @@
 
 #include "libmy/memory.h"
 
-MY_API void *my_cbuffer_pop_front(my_cbuffer_t *buf, void *dst, size_t size)
+MY_MEMORY_API void *my_cbuffer_pop_front(
+    my_cbuffer_t *buf, void *dst, size_t size)
 {
     my_cbuffer_read_front(buf, dst, size);
     buf->tail = my_cbuffer_wrap_add(buf, buf->tail, size);
@@ -15,7 +16,8 @@ MY_API void *my_cbuffer_pop_front(my_cbuffer_t *buf, void *dst, size_t size)
     return dst;
 }
 
-MY_API void *my_cbuffer_pop_back(my_cbuffer_t *buf, void *dst, size_t size)
+MY_MEMORY_API void *my_cbuffer_pop_back(
+    my_cbuffer_t *buf, void *dst, size_t size)
 {
     my_cbuffer_read_back(buf, dst, size);
     buf->head = my_cbuffer_wrap_sub(buf, buf->head, size);

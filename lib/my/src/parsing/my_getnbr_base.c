@@ -7,6 +7,7 @@
 
 #include <limits.h>
 #include "libmy/ascii.h"
+#include "libmy/parsing.h"
 
 static int my_char_pos(char const *str, char c, int len)
 {
@@ -28,7 +29,7 @@ static int get_negative(char const **str, int *neg)
     return 0;
 }
 
-MY_API int my_getnbr_base(char const *str, char const *base)
+MY_PARSING_API int my_getnbr_base(char const *str, char const *base)
 {
     int radix;
     long long n = 0;

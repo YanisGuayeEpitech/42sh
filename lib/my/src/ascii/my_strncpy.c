@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strncpy(char *dest, char const *src, int n)
+MY_ASCII_API char *my_strncpy(char *dest, char const *src, int n)
 {
     int i = 0;
 

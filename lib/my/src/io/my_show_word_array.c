@@ -7,7 +7,7 @@
 
 #include "libmy/io.h"
 
-MY_API int my_show_word_array(char * const *tab)
+MY_IO_API int my_show_word_array(char *const *tab)
 {
     if (!tab)
         return -1;

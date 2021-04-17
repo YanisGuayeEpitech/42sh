@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strchr(const char *str, char c)
+MY_ASCII_API char *my_strchr(const char *str, char c)
 {
     if (!str)
         return NULL;

@@ -7,7 +7,8 @@
 
 #include "libmy/memory.h"
 
-MY_API void *my_cbuffer_get_first_part(my_cbuffer_t const *buf, size_t *size)
+MY_MEMORY_API void *my_cbuffer_get_first_part(
+    my_cbuffer_t const *buf, size_t *size)
 {
     size_t end = buf->head;
 
@@ -18,7 +19,8 @@ MY_API void *my_cbuffer_get_first_part(my_cbuffer_t const *buf, size_t *size)
     return (void *)((char *)buf->data + buf->tail);
 }
 
-MY_API void *my_cbuffer_get_second_part(my_cbuffer_t const *buf, size_t *size)
+MY_MEMORY_API void *my_cbuffer_get_second_part(
+    my_cbuffer_t const *buf, size_t *size)
 {
     if (!my_cbuffer_is_contiguous(buf)) {
         if (size)

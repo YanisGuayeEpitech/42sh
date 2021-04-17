@@ -7,7 +7,7 @@
 
 #include "libmy/memory.h"
 
-MY_API void my_cbuffer_push_front(
+MY_MEMORY_API void my_cbuffer_push_front(
     my_cbuffer_t *buf, void const *src, size_t size)
 {
     my_cbuffer_write_front(buf, src, size);
@@ -15,7 +15,7 @@ MY_API void my_cbuffer_push_front(
     buf->len += size;
 }
 
-MY_API void my_cbuffer_push_back(
+MY_MEMORY_API void my_cbuffer_push_back(
     my_cbuffer_t *buf, void const *src, size_t size)
 {
     my_cbuffer_write_back(buf, src, size);

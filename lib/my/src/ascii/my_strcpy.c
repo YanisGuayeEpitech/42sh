@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strcpy(char *dest, char const *src)
+MY_ASCII_API char *my_strcpy(char *dest, char const *src)
 {
     if (!dest || !src)
         return NULL;

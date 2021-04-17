@@ -34,7 +34,7 @@ MY_LOCAL size_t p_my_fread_void(
     return 0;
 }
 
-MY_API size_t my_fread(
+MY_IO_API size_t my_fread(
     void *ptr, size_t size, size_t nmemb, my_iostream_t *stream)
 {
     p_my_fread_impl_t func = stream->vtable->read;

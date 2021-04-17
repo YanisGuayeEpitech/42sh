@@ -7,12 +7,12 @@
 
 #include "libmy/io.h"
 
-MY_API int my_is_input_stream(my_iostream_t const *stream)
+MY_IO_API int my_is_input_stream(my_iostream_t const *stream)
 {
     return stream->vtable->read != NULL;
 }
 
-MY_API int my_is_output_stream(my_iostream_t const *stream)
+MY_IO_API int my_is_output_stream(my_iostream_t const *stream)
 {
     return stream->vtable->write != NULL;
 }

@@ -16,7 +16,7 @@ static void display_non_printable_char(char c)
     my_putchar(BASE_HEXADECIMAL[(int)c % 16]);
 }
 
-MY_API int my_showstr(char const *str)
+MY_IO_API int my_showstr(char const *str)
 {
     if (!str)
         return -1;

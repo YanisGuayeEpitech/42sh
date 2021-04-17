@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API char *my_strupcase(char *str)
+MY_ASCII_API char *my_strupcase(char *str)
 {
     if (!str)
         return str;

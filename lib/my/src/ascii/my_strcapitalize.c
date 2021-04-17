@@ -14,7 +14,7 @@ static char capitalize_char(char c, int word_start)
     return my_tolower(c);
 }
 
-MY_API char *my_strcapitalize(char *str)
+MY_ASCII_API char *my_strcapitalize(char *str)
 {
     int word_start = 1;
 

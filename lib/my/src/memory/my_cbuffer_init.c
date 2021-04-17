@@ -7,7 +7,8 @@
 
 #include "libmy/memory.h"
 
-MY_API void my_cbuffer_init(my_cbuffer_t *buf, void *data, size_t capacity)
+MY_MEMORY_API void my_cbuffer_init(
+    my_cbuffer_t *buf, void *data, size_t capacity)
 {
     buf->data = data;
     buf->cap = capacity;

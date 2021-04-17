@@ -60,7 +60,7 @@ typedef union {
     p_my_iostream_memory_t memory_stream;
 } p_my_iostream_t;
 
-#ifdef LIBMY_ALLOW_READ
+#if LIBMY_ALLOW_READ
 MY_LOCAL size_t p_my_fread_unix(
     p_my_iostream_unix_t *input, void *ptr, size_t size, size_t nmemb);
     #define P_MY_FREAD_UNIX ((p_my_fread_impl_t)&p_my_fread_unix)
@@ -99,7 +99,7 @@ MY_LOCAL void *p_my_fget_buffer_unix(
 MY_LOCAL void *p_my_fget_buffer_memory(
     p_my_iostream_memory_t const *stream, size_t *size);
 
-#ifdef LIBMY_ALLOW_CLOSE
+#if LIBMY_ALLOW_CLOSE
 MY_LOCAL int p_my_fclose_unix(p_my_iostream_unix_t *stream);
     #define P_MY_FCLOSE_UNIX ((p_my_fclose_impl_t)&p_my_fclose_unix)
 #else

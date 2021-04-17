@@ -7,8 +7,8 @@
 
 #include "libmy/io.h"
 
-MY_API size_t my_fputuintmax_t_base(uintmax_t nb, char const *base,
-size_t radix, my_iostream_t *stream)
+MY_IO_API size_t my_fputuintmax_t_base(
+    uintmax_t nb, char const *base, size_t radix, my_iostream_t *stream)
 {
     size_t bytes = 0;
     uintmax_t pow = 1;

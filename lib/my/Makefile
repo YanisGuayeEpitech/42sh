@@ -1,73 +1,52 @@
-### DO NOT EDIT, for project settings, see 'settings.mk' ###
+BUILD_DIR := build
 
--include definitions.mk
+CONFIG_FLAGS := -G"Unix Makefiles" -B$(BUILD_DIR) -DLIBMY_BUILD_DOC=TRUE
 
-$(call retrieve_config)
+CONFIG_FLAGS_RELEASE := -DCMAKE_BUILD_TYPE=Release $(CONFIG_FLAGS)
+CONFIG_FLAGS_DEBUG := -DCMAKE_BUILD_TYPE=Debug $(CONFIG_FLAGS)
+CONFIG_FLAGS_TEST := -DLIBMY_BUILD_TEST_SUITE=TRUE -DLIBMY_USE_GCOV=TRUE $(CONFIG_FLAGS_DEBUG)
 
-### RULES ###
+BUILD_FLAGS_RELEASE := --config Release -j
+BUILD_FLAGS_DEBUG := --config Debug -j
+BUILD_FLAGS_TEST := --config Debug -j
 
 all:
-	@if make -sq $(TARGET) $(TEST_TARGET); then  \
-		echo "make: Nothing to be done for 'all'"; \
-	else \
-		make -sq $(TARGET) || make -j $(PARALLEL_JOBS) -Oline --no-print-directory $(TARGET); \
-		make -sq $(TEST_TARGET) || make -j $(PARALLEL_JOBS) -Oline --no-print-directory $(TEST_TARGET); \
-	fi
-
-$(TARGET): $(OBJS_DIRS) $(OBJS)
-	$(AR) $(ARFLAGS) $@ $(OBJS)
-
-$(TEST_TARGET): $(TEST_OBJS_DIRS) $(TEST_OBJS)
-	$(CC) $(CMACROS) $(TEST_CFLAGS) $(CPPFLAGS) $(TEST_CLIBS) $(TEST_OBJS) -o $@
-
-$(OBJS_DIRS) $(TEST_OBJS_DIRS):
-	$(MKDIR) $@
-
-# main object files
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCS)
-	$(CC) $(CMACROS) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-
-# object files for testing targets
-$(TEST_OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCS)
-	$(CC) $(CMACROS) $(CPPFLAGS) $(TEST_CFLAGS) $(TEST_CLIBS) -c $< -o $@
-
-# object files for testing functions
-$(TEST_OBJ_PATH)/%.o: $(TEST_PATH)/%.c $(INCS)
-	$(CC) $(CMACROS) $(CPPFLAGS) $(UNIT_TEST_CFLAGS) $(TEST_CLIBS) -c $< -o $@
+	cmake $(CONFIG_FLAGS_RELEASE)
+	cmake --build $(BUILD_DIR) $(BUILD_FLAGS_RELEASE)
 
 clean:
-	$(RM) $(OBJS) 2> /dev/null || true
-	$(RM) $(TEST_OBJS) 2> /dev/null || true
-	$(RM) $(TEST_OBJS:.o=.gcda) 2> /dev/null || true
-	$(RM) $(TEST_OBJS:.o=.gcno) 2> /dev/null || true
-	$(RMDIR) $(OBJS_DIRS) 2> /dev/null || true
-	$(RMDIR) $(TEST_OBJS_DIRS) 2> /dev/null || true
+	rm -rf $(BUILD_DIR)/CMakeFiles
+	rm -rf $(BUILD_DIR)/src
 
 fclean: clean
-	$(RM) $(TARGET) 2> /dev/null || true
-	$(RM) $(TEST_TARGET) 2> /dev/null || true
-	make -C config fclean
+	rm -rf $(BUILD_DIR)
+	rm -rf doc/html doc/Doxyfile
+	rm -rf include/libmy/config.h
 
-re: fclean before_all all
+debug:
+	cmake $(CONFIG_FLAGS_DEBUG)
+	cmake --build $(BUILD_DIR) $(BUILD_FLAGS_DEBUG)
 
-before_all:
-	make -C config re $(CONFIG)
+re: fclean all
 
-docs: $(INCS)
-	(cd $(DOC_PATH) && doxygen)
+docs: all
+	(cd $(BUILD_DIR) && cmake --build . --target doc)
 
-docs_open:
-	$(OPEN_DOCS) $(DOC_PATH)/html/index.html > /dev/null
+open_docs:
+	xdg-open doc/html/index.html > /dev/null
+docs_open: open_docs
+
+run_tests: fclean
+	cmake $(CONFIG_FLAGS_TEST) .
+	cmake --build $(BUILD_DIR) $(BUILD_FLAGS_TEST)
+	(cd build && ctest --verbose) || true
+
+run_test: run_tests
+tests_run: run_tests
+test_run: run_test
 
 coverage:
-	$(COVERAGE) $(TEST_OBJ_PATH)
-	$(COVERAGE) --branch $(TEST_OBJ_PATH)
+	gcovr .
+	gcovr --branch .
 
-tests_run:
-	@make -sq $(TEST_TARGET) || make -j $(PARALLEL_JOBS) -Oline --no-print-directory $(TEST_TARGET);
-	@$(RM) $(TEST_OBJS:.o=.gcda) 2> /dev/null || true
-	./$(TEST_TARGET) --filter="$(filter)*"
-
-run_tests: tests_run
-
-.PHONY: before_all all fclean clean re before_all tests_run run_tests
+.PHONY: all clean fclean debug re docs open_docs docs_open run_tests run_test tests_run test_run coverage

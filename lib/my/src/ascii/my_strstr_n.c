@@ -5,12 +5,12 @@
 ** Finds a substring in a string
 */
 
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
 #include "libmy/ascii.h"
 
-MY_API char *my_strstr_n(char const *str, int str_len,
-char const *to_find, int to_find_len)
+MY_ASCII_API char *my_strstr_n(
+    char const *str, int str_len, char const *to_find, int to_find_len)
 {
     if (!str || !to_find || to_find_len == 0)
         return NULL;
@@ -22,8 +22,8 @@ char const *to_find, int to_find_len)
         char const *start = str + i;
         int j = 0;
 
-        while (j < to_find_len &&
-            start[j] && to_find[j] && start[j] == to_find[j])
+        while (j < to_find_len && start[j] && to_find[j]
+            && start[j] == to_find[j])
             ++j;
         if (j == to_find_len || !to_find[j])
             return (char *)start;

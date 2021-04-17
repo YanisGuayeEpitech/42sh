@@ -8,8 +8,8 @@
 #include "libmy/ascii.h"
 #include "libmy/printf.h"
 
-static int print_regular(my_iostream_t *out, const char *start, const char *end,
-size_t *char_count)
+static int print_regular(
+    my_iostream_t *out, const char *start, const char *end, size_t *char_count)
 {
     size_t to_write;
     size_t written;
@@ -23,7 +23,7 @@ size_t *char_count)
 }
 
 static int print_conv(my_iostream_t *out, p_my_printf_conv_t *conv,
-size_t *char_count, char const **prev)
+    size_t *char_count, char const **prev)
 {
     int ret;
 
@@ -38,10 +38,11 @@ size_t *char_count, char const **prev)
     return 0;
 }
 
-MY_API int my_vfprintf(my_iostream_t *out, char const *fmt, va_list va_args)
+MY_PRINTF_API int my_vfprintf(
+    my_iostream_t *out, char const *fmt, va_list va_args)
 {
     size_t arg_count = p_my_printf_count_parameters(fmt);
-    size_t count_pos[2] = { 0 };
+    size_t count_pos[2] = {0};
     p_my_printf_arg_type_t types[arg_count];
     p_my_printf_arg_t args[arg_count];
     p_my_printf_conv_t conv;

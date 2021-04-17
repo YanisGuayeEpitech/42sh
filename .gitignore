@@ -1,4 +1,22 @@
-bin
+# Binary files
+*.o
+*.gcno
+*.gcda
+*.a
 mysh
-unit_tests
-vgcore*
+
+# Documentation
+doc/html
+Doxyfile
+
+# CMake
+build
+CMakeFiles
+
+# VSCode
+.vscode/settings.json
+.vscode/launch.json
+
+# Local Test Files
+test.sh
+test_data

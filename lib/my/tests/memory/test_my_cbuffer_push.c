@@ -10,7 +10,7 @@
 
 Test(my_cbuffer_push_front, empty_buf)
 {
-    char data[10] = "ABCDEFGHIJ";
+    char data[11] = "ABCDEFGHIJ";
     my_cbuffer_t buf = {data, 10, 0, 0, 0};
 
     my_cbuffer_push_front(&buf, "test", 4);
@@ -23,7 +23,7 @@ Test(my_cbuffer_push_front, empty_buf)
 
 Test(my_cbuffer_push_front, contiguous_to_contiguous)
 {
-    char data[10] = "ABCDefgHIJ";
+    char data[11] = "ABCDefgHIJ";
     my_cbuffer_t buf = {data, 10, 3, 4, 7};
 
     my_cbuffer_push_front(&buf, "test", 4);
@@ -36,7 +36,7 @@ Test(my_cbuffer_push_front, contiguous_to_contiguous)
 
 Test(my_cbuffer_push_front, contiguous_to_split)
 {
-    char data[10] = "ABCdefgHIJ";
+    char data[11] = "ABCdefgHIJ";
     my_cbuffer_t buf = {data, 10, 4, 3, 7};
 
     my_cbuffer_push_front(&buf, "test", 4);
@@ -49,7 +49,7 @@ Test(my_cbuffer_push_front, contiguous_to_split)
 
 Test(my_cbuffer_push_front, split_to_split)
 {
-    char data[10] = "abCDEFGHij";
+    char data[11] = "abCDEFGHij";
     my_cbuffer_t buf = {data, 10, 4, 8, 2};
 
     my_cbuffer_push_front(&buf, "test", 4);
@@ -62,7 +62,7 @@ Test(my_cbuffer_push_front, split_to_split)
 
 Test(my_cbuffer_push_back, empty_buf)
 {
-    char data[10] = "ABCDEFGHIJ";
+    char data[11] = "ABCDEFGHIJ";
     my_cbuffer_t buf = {data, 10, 0, 0, 0};
 
     my_cbuffer_push_back(&buf, "test", 4);
@@ -75,7 +75,7 @@ Test(my_cbuffer_push_back, empty_buf)
 
 Test(my_cbuffer_push_back, contiguous_to_contiguous)
 {
-    char data[10] = "ABcdefGHIJ";
+    char data[11] = "ABcdefGHIJ";
     my_cbuffer_t buf = {data, 10, 4, 2, 6};
 
     my_cbuffer_push_back(&buf, "test", 4);
@@ -88,7 +88,7 @@ Test(my_cbuffer_push_back, contiguous_to_contiguous)
 
 Test(my_cbuffer_push_back, contiguous_to_split)
 {
-    char data[10] = "ABCDefgHIJ";
+    char data[11] = "ABCDefgHIJ";
     my_cbuffer_t buf = {data, 10, 3, 4, 7};
 
     my_cbuffer_push_back(&buf, "test", 4);
@@ -101,7 +101,7 @@ Test(my_cbuffer_push_back, contiguous_to_split)
 
 Test(my_cbuffer_push_back, split_to_split)
 {
-    char data[10] = "abCDEFGHij";
+    char data[11] = "abCDEFGHij";
     my_cbuffer_t buf = {data, 10, 4, 8, 2};
 
     my_cbuffer_push_back(&buf, "test", 4);

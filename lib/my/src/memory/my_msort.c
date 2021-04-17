@@ -43,25 +43,26 @@ static void merge_sort(char *da, char *db, size_t dims[3], my_comparator_t cmp)
     if (dims[2] <= dims[1])
         return;
     mid = split(dims, beg);
-    merge_sort(da, db, (size_t[3]){ dims[0], dims[1], mid }, cmp);
-    merge_sort(da, db, (size_t[3]){ dims[0], mid + 1, dims[2] }, cmp);
+    merge_sort(da, db, (size_t[3]){dims[0], dims[1], mid}, cmp);
+    merge_sort(da, db, (size_t[3]){dims[0], mid + 1, dims[2]}, cmp);
     beg[0] = dims[1];
     beg[1] = mid + 1;
     for (size_t i = dims[1]; i <= dims[2]; ++i) {
-        if (beg[0] == mid + 1 || (beg[1] != dims[2] + 1 &&
-            (*cmp)(da + beg[0] * dims[0], da + beg[1] * dims[0]) >= 0))
+        if (beg[0] == mid + 1
+            || (beg[1] != dims[2] + 1
+                && (*cmp)(da + beg[0] * dims[0], da + beg[1] * dims[0]) >= 0))
             c2wa(db + i * dims[0], da + beg[1] * dims[0], dims[0], beg + 1);
         else
             c2wa(db + i * dims[0], da + beg[0] * dims[0], dims[0], beg);
     }
     my_memcpy(da + dims[1] * dims[0], db + dims[1] * dims[0],
-    (dims[2] - dims[1] + 1) * dims[0]);
+        (dims[2] - dims[1] + 1) * dims[0]);
 }
 
-MY_API void my_msort(void *data[2], size_t nmemb, size_t size,
-my_comparator_t cmp)
+MY_MEMORY_API void my_msort(
+    void *data[2], size_t nmemb, size_t size, my_comparator_t cmp)
 {
     if (nmemb <= 1)
         return;
-    merge_sort(data[0], data[1], (size_t[3]){ size, 0, nmemb - 1 }, cmp);
+    merge_sort(data[0], data[1], (size_t[3]){size, 0, nmemb - 1}, cmp);
 }

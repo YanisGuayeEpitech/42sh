@@ -9,7 +9,7 @@
 #include "libmy/core.h"
 #include "libmy/memory.h"
 
-MY_API void *my_realloc(void *ptr, size_t old_size, size_t new_size)
+MY_MEMORY_API void *my_realloc(void *ptr, size_t old_size, size_t new_size)
 {
     void *new_ptr;
 

@@ -27,7 +27,7 @@ static int my_put_nbr_get_power_of_ten(int nb)
     return power;
 }
 
-MY_API int my_put_nbr_fd(int fd, int nb)
+MY_IO_API int my_put_nbr_fd(int fd, int nb)
 {
     int power = my_put_nbr_get_power_of_ten(nb);
 
@@ -44,7 +44,7 @@ MY_API int my_put_nbr_fd(int fd, int nb)
     return 0;
 }
 
-MY_API int my_put_nbr(int nb)
+MY_IO_API int my_put_nbr(int nb)
 {
     return my_put_nbr_fd(1, nb);
 }

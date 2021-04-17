@@ -7,7 +7,7 @@
 
 #include "libmy/printf.h"
 
-MY_API int my_snprintf(char *str, size_t size, const char *fmt, ...)
+MY_PRINTF_API int my_snprintf(char *str, size_t size, const char *fmt, ...)
 {
     va_list args;
     int ret;

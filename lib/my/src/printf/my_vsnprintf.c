@@ -8,7 +8,8 @@
 #include "libmy/core.h"
 #include "libmy/printf.h"
 
-MY_API int my_vsnprintf(char *str, size_t size, const char *fmt, va_list args)
+MY_PRINTF_API int my_vsnprintf(
+    char *str, size_t size, const char *fmt, va_list args)
 {
     if (str && size > 0) {
         my_iostream_t stream;

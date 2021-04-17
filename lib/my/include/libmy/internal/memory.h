@@ -12,7 +12,23 @@
 
 MY_API_BEGIN
 
+#include "libmy/internal/types.h"
 #include "libmy/memory/cbuffer.h"
+
+typedef union {
+    my_u8_t data[2];
+    my_u16_t num;
+} my_m16_t;
+
+typedef union {
+    my_u8_t data[4];
+    my_u32_t num;
+} my_m32_t;
+
+typedef union {
+    my_u8_t data[8];
+    my_u64_t num;
+} my_m64_t;
 
 MY_INLINE size_t my_cbuffer_wrap_add(
     my_cbuffer_t const *buf, size_t index, size_t to_add)

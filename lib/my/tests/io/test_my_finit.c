@@ -5,8 +5,8 @@
 ** Tests the my_finit function
 */
 
-#include <criterion/criterion.h>
 #include <stdlib.h>
+#include <criterion/criterion.h>
 #include "libmy/io.h"
 
 Test(my_finit_input_fd, base)
@@ -15,15 +15,7 @@ Test(my_finit_input_fd, base)
 
     cr_assert_eq(my_finit_input_fd(42, &input), 0);
     cr_assert_neq(input.vtable, NULL);
-    cr_assert_eq(input.vtable->read, P_MY_FREAD_UNIX);
     cr_assert_eq(input.vtable->write, NULL);
-    cr_assert_eq(input.vtable->flush, &p_my_fflush_unix);
-    cr_assert_eq(input.vtable->destroy, &p_my_ffree_unix);
-    cr_assert_eq(input.vtable->eof, &p_my_feof_unix);
-    cr_assert_eq(input.vtable->set_threshold, &p_my_fset_threshold_unix);
-    cr_assert_eq(input.vtable->set_buffer, &p_my_fset_buffer_unix);
-    cr_assert_eq(input.vtable->get_buffer, &p_my_fget_buffer_unix);
-    cr_assert_eq(input.vtable->close, P_MY_FCLOSE_UNIX);
     cr_assert_eq(input.unix_stream.fd, 42);
     cr_assert_eq(input.unix_stream.is_eof, 0);
     cr_assert_eq(input.unix_stream.buf, NULL);
@@ -40,14 +32,6 @@ Test(my_finit_output_fd, base)
     cr_assert_eq(my_finit_output_fd(42, &output), 0);
     cr_assert_neq(output.vtable, NULL);
     cr_assert_eq(output.vtable->read, NULL);
-    cr_assert_eq(output.vtable->write, &p_my_fwrite_unix);
-    cr_assert_eq(output.vtable->flush, &p_my_fflush_unix);
-    cr_assert_eq(output.vtable->destroy, &p_my_ffree_unix);
-    cr_assert_eq(output.vtable->eof, &p_my_feof_unix);
-    cr_assert_eq(output.vtable->set_threshold, &p_my_fset_threshold_unix);
-    cr_assert_eq(output.vtable->set_buffer, &p_my_fset_buffer_unix);
-    cr_assert_eq(output.vtable->get_buffer, &p_my_fget_buffer_unix);
-    cr_assert_eq(output.vtable->close, P_MY_FCLOSE_UNIX);
     cr_assert_eq(output.unix_stream.fd, 42);
     cr_assert_eq(output.unix_stream.is_eof, 0);
     cr_assert_eq(output.unix_stream.buf, NULL);
@@ -64,14 +48,11 @@ Test(my_finit_input_memory, base)
 
     cr_assert_eq(my_finit_input_memory(buf, 5, &input), 0);
     cr_assert_neq(input.vtable, NULL);
-    cr_assert_eq(input.vtable->read, &p_my_fread_memory);
     cr_assert_eq(input.vtable->write, NULL);
     cr_assert_eq(input.vtable->flush, NULL);
     cr_assert_eq(input.vtable->destroy, NULL);
-    cr_assert_eq(input.vtable->eof, &p_my_feof_memory);
     cr_assert_eq(input.vtable->set_threshold, NULL);
     cr_assert_eq(input.vtable->set_buffer, NULL);
-    cr_assert_eq(input.vtable->get_buffer, &p_my_fget_buffer_memory);
     cr_assert_eq(input.vtable->close, NULL);
     cr_assert_eq(input.memory_stream.buf, buf);
     cr_assert_eq(input.memory_stream.count, 0);
@@ -86,13 +67,10 @@ Test(my_finit_output_memory, base)
     cr_assert_eq(my_finit_output_memory(buf, 5, &output), 0);
     cr_assert_neq(output.vtable, NULL);
     cr_assert_eq(output.vtable->read, NULL);
-    cr_assert_eq(output.vtable->write, &p_my_fwrite_memory);
     cr_assert_eq(output.vtable->flush, NULL);
     cr_assert_eq(output.vtable->destroy, NULL);
-    cr_assert_eq(output.vtable->eof, &p_my_feof_memory);
     cr_assert_eq(output.vtable->set_threshold, NULL);
     cr_assert_eq(output.vtable->set_buffer, NULL);
-    cr_assert_eq(output.vtable->get_buffer, &p_my_fget_buffer_memory);
     cr_assert_eq(output.vtable->close, NULL);
     cr_assert_eq(output.memory_stream.buf, buf);
     cr_assert_eq(output.memory_stream.count, 0);

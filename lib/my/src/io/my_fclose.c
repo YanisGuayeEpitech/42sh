@@ -7,7 +7,7 @@
 
 #include "libmy/io.h"
 
-MY_API int my_fclose(my_iostream_t *stream)
+MY_IO_API int my_fclose(my_iostream_t *stream)
 {
     p_my_fclose_impl_t func = stream->vtable->close;
 

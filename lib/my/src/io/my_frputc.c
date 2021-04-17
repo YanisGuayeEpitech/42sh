@@ -7,7 +7,7 @@
 
 #include "libmy/io.h"
 
-MY_API int my_frputc(char c, size_t count, my_iostream_t *stream)
+MY_IO_API int my_frputc(char c, size_t count, my_iostream_t *stream)
 {
     int ret;
 
@@ -19,12 +19,12 @@ MY_API int my_frputc(char c, size_t count, my_iostream_t *stream)
     return 0;
 }
 
-MY_API int my_rputc(char c, size_t count)
+MY_IO_API int my_rputc(char c, size_t count)
 {
     return my_frputc(c, count, MY_STDOUT);
 }
 
-MY_API int my_erputc(char c, size_t count)
+MY_IO_API int my_erputc(char c, size_t count)
 {
     return my_frputc(c, count, MY_STDERR);
 }

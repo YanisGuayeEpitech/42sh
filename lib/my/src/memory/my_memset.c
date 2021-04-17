@@ -7,7 +7,7 @@
 
 #include "libmy/memory.h"
 
-MY_API void *my_memset(void *mem, unsigned char byte, size_t size)
+MY_MEMORY_API void *my_memset(void *mem, unsigned char byte, size_t size)
 {
     if (!mem)
         return mem;

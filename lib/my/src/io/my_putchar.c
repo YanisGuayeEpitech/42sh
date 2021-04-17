@@ -8,12 +8,12 @@
 #include <unistd.h>
 #include "libmy/io.h"
 
-MY_API void my_putchar(char c)
+MY_IO_API void my_putchar(char c)
 {
     write(1, &c, 1);
 }
 
-MY_API void my_putchar_fd(int fd, char c)
+MY_IO_API void my_putchar_fd(int fd, char c)
 {
     write(fd, &c, 1);
 }

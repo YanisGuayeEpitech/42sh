@@ -25,7 +25,7 @@ MY_LOCAL void *p_my_fget_buffer_memory(
     return stream->buf;
 }
 
-MY_API void *my_fget_buffer(size_t *size, my_iostream_t const *stream)
+MY_IO_API void *my_fget_buffer(size_t *size, my_iostream_t const *stream)
 {
     p_my_fget_buf_impl_t func = stream->vtable->get_buffer;
 

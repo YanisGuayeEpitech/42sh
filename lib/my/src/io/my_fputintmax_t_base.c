@@ -26,8 +26,8 @@ static intmax_t get_pow_of_radix(intmax_t nb, intmax_t radix)
     return power;
 }
 
-MY_API size_t my_fputintmax_t_base(intmax_t nb, char const *base, size_t radix,
-my_iostream_t *stream)
+MY_IO_API size_t my_fputintmax_t_base(
+    intmax_t nb, char const *base, size_t radix, my_iostream_t *stream)
 {
     size_t bytes = 0;
     intmax_t pow = get_pow_of_radix(nb, radix);

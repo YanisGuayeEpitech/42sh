@@ -7,7 +7,7 @@
 
 #include "libmy/ascii.h"
 
-MY_API size_t my_strlen(char const *str)
+MY_ASCII_API size_t my_strlen(char const *str)
 {
     size_t i = 0;
 

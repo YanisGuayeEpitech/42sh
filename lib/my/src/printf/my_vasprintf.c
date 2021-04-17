@@ -5,11 +5,11 @@
 ** Formatted printing to an allocated string, with a va_list.
 */
 
+#include <stdlib.h>
 #include "libmy/core.h"
 #include "libmy/printf.h"
-#include <stdlib.h>
 
-MY_API int my_vasprintf(char **strp, const char *fmt, va_list args)
+MY_PRINTF_API int my_vasprintf(char **strp, const char *fmt, va_list args)
 {
     va_list copy;
     int len;

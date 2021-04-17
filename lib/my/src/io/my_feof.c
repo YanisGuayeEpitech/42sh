@@ -23,7 +23,7 @@ MY_LOCAL int p_my_feof_void(void const *stream)
     return 0;
 }
 
-MY_API int my_feof(my_iostream_t *stream)
+MY_IO_API int my_feof(my_iostream_t *stream)
 {
     p_my_feof_impl_t func = stream->vtable->eof;
 

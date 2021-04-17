@@ -6,11 +6,11 @@
 */
 
 #include "libmy/core.h"
-#include "libmy/memory.h"
 #include "libmy/io.h"
+#include "libmy/memory.h"
 
-static void transfer_buf(const void **ptr, size_t *bytes,
-p_my_iostream_unix_t *stream)
+static void transfer_buf(
+    const void **ptr, size_t *bytes, p_my_iostream_unix_t *stream)
 {
     size_t to_transfer = MY_MIN(*bytes, stream->buf_cap - stream->buf_len);
 
@@ -20,8 +20,8 @@ p_my_iostream_unix_t *stream)
     *bytes -= to_transfer;
 }
 
-MY_LOCAL size_t p_my_fwrite_unix(p_my_iostream_unix_t *output, const void *ptr,
-size_t size, size_t nmemb)
+MY_LOCAL size_t p_my_fwrite_unix(
+    p_my_iostream_unix_t *output, const void *ptr, size_t size, size_t nmemb)
 {
     size_t bytes = size * nmemb;
     size_t threshold;
@@ -39,8 +39,8 @@ size_t size, size_t nmemb)
     return nmemb;
 }
 
-MY_LOCAL size_t p_my_fwrite_memory(p_my_iostream_memory_t *output,
-const void *ptr, size_t size, size_t nmemb)
+MY_LOCAL size_t p_my_fwrite_memory(
+    p_my_iostream_memory_t *output, const void *ptr, size_t size, size_t nmemb)
 {
     size_t bytes;
 
@@ -52,8 +52,8 @@ const void *ptr, size_t size, size_t nmemb)
     return bytes / size;
 }
 
-MY_LOCAL size_t p_my_fwrite_void(void *output, const void *ptr,
-size_t size, size_t nmemb)
+MY_LOCAL size_t p_my_fwrite_void(
+    void *output, const void *ptr, size_t size, size_t nmemb)
 {
     (void)output;
     (void)ptr;
@@ -61,8 +61,8 @@ size_t size, size_t nmemb)
     return nmemb;
 }
 
-MY_API size_t my_fwrite(const void *ptr, size_t size, size_t nmemb,
-my_iostream_t *stream)
+MY_IO_API size_t my_fwrite(
+    const void *ptr, size_t size, size_t nmemb, my_iostream_t *stream)
 {
     p_my_fwrite_impl_t func = stream->vtable->write;
 

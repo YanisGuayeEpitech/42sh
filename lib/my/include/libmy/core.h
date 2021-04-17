@@ -18,10 +18,7 @@
 
 MY_API_BEGIN
 
-#ifndef LIBMY_MODULE_CORE
-#error "LibMy: 'libmy/core.h' is included, \
-but core module is not present"
-#endif // defined(LIBMY_MODULE_CORE)
+#include "libmy/internal/types.h"
 
 /// Computes the absolute value of @c x.
 ///

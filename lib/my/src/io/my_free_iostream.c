@@ -7,17 +7,17 @@
 
 #include "libmy/io.h"
 
-MY_API void my_free_stdin(void)
+MY_IO_API void my_free_stdin(void)
 {
     my_ffree(MY_STDIN);
 }
 
-MY_API void my_free_stdout(void)
+MY_IO_API void my_free_stdout(void)
 {
     my_ffree(MY_STDOUT);
 }
 
-MY_API void my_free_stderr(void)
+MY_IO_API void my_free_stderr(void)
 {
     my_ffree(MY_STDERR);
 }

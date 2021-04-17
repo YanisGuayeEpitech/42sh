@@ -16,7 +16,7 @@
 // CASE 1: T = 7, H = 3: [###H...T##] -> [###H.T####]
 // CASE 2: T = 1, H = 5: [.T###H....] -> [#####H...T]
 // CASE 3: T = 2, H = 8: [..T#####H.] -> [T#######H.]
-MY_API void my_cbuffer_write_front(
+MY_MEMORY_API void my_cbuffer_write_front(
     my_cbuffer_t *buf, void const *src, size_t size)
 {
     if (buf->tail > buf->head) {
@@ -41,7 +41,7 @@ MY_API void my_cbuffer_write_front(
 // CASE 1: T = 7, H = 3: [###H...T##] -> [#####H.T##]
 // CASE 2: T = 5, H = 9: [.....T###H] -> [#H...T####]
 // CASE 3: T = 2, H = 8: [..T#####H.] -> [H.T#######]
-MY_API void my_cbuffer_write_back(
+MY_MEMORY_API void my_cbuffer_write_back(
     my_cbuffer_t *buf, void const *src, size_t size)
 {
     if (buf->tail <= buf->head && buf->head > buf->cap - size) {

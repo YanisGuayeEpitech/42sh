@@ -37,7 +37,7 @@ static const p_my_iostream_vtable_t MEMORY_OUTPUT_VTABLE = {
     .eof = (p_my_feof_impl_t)p_my_feof_memory,
     .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_memory};
 
-MY_API int my_finit_input_fd(int fd, my_iostream_t *stream)
+MY_IO_API int my_finit_input_fd(int fd, my_iostream_t *stream)
 {
     p_my_iostream_unix_t *input = &(stream->unix_stream);
 
@@ -52,7 +52,7 @@ MY_API int my_finit_input_fd(int fd, my_iostream_t *stream)
     return 0;
 }
 
-MY_API int my_finit_input_memory(
+MY_IO_API int my_finit_input_memory(
     void const *ptr, size_t len, my_iostream_t *stream)
 {
     p_my_iostream_memory_t *input = &(stream->memory_stream);
@@ -64,7 +64,7 @@ MY_API int my_finit_input_memory(
     return 0;
 }
 
-MY_API int my_finit_output_fd(int fd, my_iostream_t *stream)
+MY_IO_API int my_finit_output_fd(int fd, my_iostream_t *stream)
 {
     p_my_iostream_unix_t *output = &(stream->unix_stream);
 
@@ -79,7 +79,7 @@ MY_API int my_finit_output_fd(int fd, my_iostream_t *stream)
     return 0;
 }
 
-MY_API int my_finit_output_memory(
+MY_IO_API int my_finit_output_memory(
     void *ptr, size_t limit, my_iostream_t *stream)
 {
     p_my_iostream_memory_t *output = &(stream->memory_stream);

@@ -7,7 +7,7 @@
 
 #include "libmy/printf.h"
 
-MY_API int my_fprintf(my_iostream_t *out, char const *fmt, ...)
+MY_PRINTF_API int my_fprintf(my_iostream_t *out, char const *fmt, ...)
 {
     va_list args;
     int ret;
