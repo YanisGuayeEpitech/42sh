@@ -19,6 +19,6 @@ void sh_token_stream_reset(sh_token_stream_t *stream)
 {
     assert(stream != NULL);
     stream->line_buf.length = 0;
-    stream->tokens.length = 0;
+    my_vec_clear(&stream->tokens, &sh_drop_token);
     stream->line_pos = 0;
 }

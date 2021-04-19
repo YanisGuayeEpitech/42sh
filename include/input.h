@@ -19,6 +19,10 @@ typedef enum sh_token_type {
     SH_TOKEN_STRING,
     SH_TOKEN_PIPE,
     SH_TOKEN_SEMICOLON,
+    SH_TOKEN_LT,
+    SH_TOKEN_GT,
+    SH_TOKEN_LT_LT,
+    SH_TOKEN_GT_GT,
     SH_TOKEN_TYPE_COUNT,
 } sh_token_type_t;
 
@@ -52,7 +56,7 @@ ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count);
 SH_INLINE size_t sh_token_stream_next(
     sh_token_stream_t *stream, size_t token_count)
 {
-    stream->tokens.length = 0;
+    sh_token_stream_reset(stream);
     return sh_token_stream_push(stream, token_count);
 }
 
@@ -61,6 +65,8 @@ SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)
     assert(stream != NULL);
     return stream->line_pos >= stream->line_buf.length;
 }
+
+void sh_drop_token(void *token);
 
 /// Is @c c an argument separator character?
 ///

@@ -9,7 +9,7 @@
 
 #include "input.h"
 
-static void sh_free_token(void *token)
+void sh_drop_token(void *token)
 {
     sh_token_t *t = token;
 
@@ -25,5 +25,5 @@ void sh_token_stream_drop(sh_token_stream_t *stream)
     if (stream == NULL)
         return;
     my_vec_free(&stream->line_buf, NULL);
-    my_vec_free(&stream->line_buf, &sh_free_token);
+    my_vec_free(&stream->tokens, &sh_drop_token);
 }
