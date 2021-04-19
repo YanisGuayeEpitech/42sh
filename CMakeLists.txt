@@ -6,9 +6,17 @@ project(Minishell2 C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
+# Add ./cmake/modules to the module path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
 # Unit testing
 if (BUILD_TEST_SUITE)
+    # Check for criterion
+    find_package(Criterion REQUIRED)
     set(LIBMY_BUILD_TEST_SUITE True)
+    if (USE_GCOV)
+        set(LIBMY_USE_GCOV True)
+    endif()
     enable_testing()
 endif()
 
@@ -16,12 +24,12 @@ if (CMAKE_COMPILER_IS_GNUCC)
     # Compile Options
     add_compile_options(
        "-Wall" "-Wextra" "-Wshadow"
-       "$<$<CONFIG:RELEASE>:-O3>"
+       "$<$<CONFIG:RELEASE>:-O3;-fno-builtin>"
        "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
     )
 
     # Enable test coverage
-    if (LIBMY_USE_GCOV)
+    if (USE_GCOV)
         add_link_options("-lgcov" "--coverage")
         add_compile_options("--coverage" "-fprofile-arcs" "-ftest-coverage")
     endif()
@@ -49,3 +57,7 @@ set(LIBMY_ALLOWED_FUNCTIONS
 add_subdirectory(lib/my)
 
 add_subdirectory(src)
+
+if (BUILD_TEST_SUITE)
+    add_subdirectory(tests)
+endif()

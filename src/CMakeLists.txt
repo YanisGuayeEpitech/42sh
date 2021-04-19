@@ -16,7 +16,6 @@ set(SRC
     ${SRCROOT}/error.c
     ${SRCROOT}/exec.c
     ${SRCROOT}/find_executable.c
-    ${SRCROOT}/main.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c
     ${SRCROOT}/read_line.c
@@ -30,10 +29,15 @@ add_subdirectory(builtin)
 
 source_group("" FILES ${SRC})
 
-add_executable(mysh ${SRC})
+add_library(mysh-lib STATIC ${SRC})
+add_executable(mysh ${SRCROOT}/main.c)
+
+target_link_libraries(mysh-lib PUBLIC my-ascii my-collections my-hash my-io my-memory my-parsing my-printf)
+target_link_libraries(mysh PRIVATE mysh-lib)
+
+target_include_directories(mysh-lib PUBLIC ${INCROOT} ${LIBMY_INCLUDE_DIR})
+
 add_custom_command(TARGET mysh
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mysh> ${PROJECT_SOURCE_DIR})
 
-target_link_libraries(mysh PRIVATE my-ascii my-collections my-hash my-io my-memory my-parsing my-printf)
-target_include_directories(mysh PRIVATE ${INCROOT} ${LIBMY_INCLUDE_DIR})
