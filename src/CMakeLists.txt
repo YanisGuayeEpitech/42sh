@@ -7,7 +7,6 @@ set(SRC
     ${INCROOT}/definition.h
     ${INCROOT}/error.h
     ${INCROOT}/shell.h
-    ${SRCROOT}/args.c
     ${SRCROOT}/builtin.c
     ${SRCROOT}/context.c
     ${SRCROOT}/create_file_path.c
@@ -18,7 +17,6 @@ set(SRC
     ${SRCROOT}/find_executable.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c
-    ${SRCROOT}/read_line.c
     ${SRCROOT}/reset_path.c
     ${SRCROOT}/start.c
     ${SRCROOT}/status.c

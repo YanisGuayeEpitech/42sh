@@ -19,6 +19,7 @@ typedef enum sh_token_type {
     SH_TOKEN_STRING,
     SH_TOKEN_PIPE,
     SH_TOKEN_SEMICOLON,
+    SH_TOKEN_TYPE_COUNT,
 } sh_token_type_t;
 
 typedef struct sh_token {
@@ -68,7 +69,7 @@ SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)
 /// @returns Whether the given character is an argument separator.
 SH_INLINE bool sh_is_arg_sep(char c)
 {
-    return c == ' ' || c == '\t';
+    return c == ' ' || c == '\t' || c == '\n';
 }
 
 #define SH_STREAM_LINE(stream)           ((char *)(stream)->line_buf.data)

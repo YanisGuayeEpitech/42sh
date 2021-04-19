@@ -9,6 +9,7 @@
 #define __SHELL_CONTEXT_H__
 
 #include <libmy/collections.h>
+
 #include "definition.h"
 
 typedef struct {
@@ -20,8 +21,6 @@ typedef struct {
     int is_tty;
     /// The exit code of the previous program.
     int exit_code;
-    /// The current line buffer.
-    my_vec_t line_buf;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
     /// The pipe file descriptors.
@@ -42,12 +41,7 @@ void sh_ctx_drop(sh_ctx_t *ctx);
 
 /// Reads the path environment variable
 ///
-/// @param ctx The shell context.
+/// @param ctx The shell context.>
 void sh_ctx_reset_path(sh_ctx_t *ctx);
-
-SH_INLINE char *sh_get_line_buf(sh_ctx_t *ctx)
-{
-    return (char *)ctx->line_buf.data;
-}
 
 #endif // !defined(__SHELL_CONTEXT_H__)

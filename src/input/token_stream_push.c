@@ -20,9 +20,9 @@ ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count)
         if (!sh_token_stream_parse(
                 stream, my_vec_get(&stream->tokens, stream->tokens.length)))
             return -1;
-        ++stream->tokens.length;
         if (sh_token_stream_is_eol(stream))
             break;
+        ++stream->tokens.length;
     }
     return c;
 }

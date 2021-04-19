@@ -36,12 +36,13 @@ static bool sh_token_unquoted_string(
     sh_token_stream_t *stream, sh_token_t *token)
 {
     my_vec_t str;
+    size_t buf_len = stream->line_buf.length - 1;
     size_t len = 0;
     char c;
 
     --stream->line_pos;
     my_vec_init(&str, sizeof(char));
-    for (; stream->line_pos + len < stream->line_buf.length; ++len) {
+    for (; stream->line_pos + len < buf_len; ++len) {
         c = *SH_STREAM_CURRENT(stream, len);
         if (sh_is_arg_sep(c) || c == '"' || c == '\'')
             break;
@@ -60,7 +61,7 @@ static bool sh_token_stream_fill_line(sh_token_stream_t *stream)
     ssize_t bytes_read = my_getline(
         (char **)&stream->line_buf.data, &stream->line_buf.capacity, MY_STDIN);
 
-    stream->line_buf.length = bytes_read < 1 ? 0 : (size_t)bytes_read - 1;
+    stream->line_buf.length = bytes_read < 0 ? 0 : (size_t)bytes_read;
     stream->line_pos = 0;
     return bytes_read > 0;
 }
