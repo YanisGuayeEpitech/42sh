@@ -191,8 +191,7 @@ MY_INLINE my_vec_err_t my_vec_try_get(
 ///
 /// @param vec          The vector, must be initialized.
 /// @param new_capacity The new capacity of the vector.
-/// @param elem_free    A function that free elements of this vector,
-///                     called @ref my_vec_t::length times.
+/// @param elem_free    A function that frees elements of this vector.
 ///                     Can be @c NULL.
 ///
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
@@ -200,6 +199,18 @@ MY_INLINE my_vec_err_t my_vec_try_get(
 /// @since 0.1.0
 MY_COLLECTIONS_API my_vec_err_t my_vec_set_capacity(
     my_vec_t *vec, size_t new_capacity, void (*elem_free)(void *));
+
+/// Frees all the elements contained inside this vector while conversing the
+/// current capacity.
+///
+/// @param vec The vector, must be initialized.
+/// @param elem_free A function that frees elements of this vector,
+/// called @ref my_vec_t::length times. Can be @c NULL.
+/// @since 0.3.7
+MY_INLINE void my_vec_clear(my_vec_t *vec, void (*elem_free)(void *))
+{
+    my_vec_set_capacity(vec, 0, elem_free);
+}
 
 /// Reserves capacity for at least @c additional more elements.
 /// The collection may reserve more space to avoid frequent reallocations.
@@ -374,6 +385,7 @@ MY_COLLECTIONS_API void my_vec_remove_multiple(
 ///
 /// @returns @ref MY_VEC_OK is successful,
 /// @ref MY_VEC_ALLOC or @ref MY_VEC_CAPACITY_OVERFLOW in case of error.
+/// @since 0.2.1
 MY_COLLECTIONS_API my_vec_err_t my_vec_ensure_capacity(
     my_vec_t *vec, size_t min_cap);
 
@@ -387,6 +399,7 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_ensure_capacity(
 ///
 /// @returns @ref MY_VEC_OK is successful,
 /// @ref MY_VEC_ALLOC or @ref MY_VEC_CAPACITY_OVERFLOW in case of error.
+/// @since 0.2.1
 MY_COLLECTIONS_API my_vec_err_t my_vec_extend_to_length(
     my_vec_t *vec, void *elem, size_t length);
 

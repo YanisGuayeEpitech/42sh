@@ -23,9 +23,10 @@ Test(my_vec_set_capacity, zero_capacity_frees_data_null_elem_free)
     array[2] = strdup("a");
     array[3] = strdup("test");
 
-    vec = (my_vec_t){ (void *)array, 4, 4, sizeof(*array) };
+    vec = (my_vec_t){(void *)array, 4, 4, sizeof(*array)};
     cr_assert_eq(my_vec_set_capacity(&vec, 0, NULL), MY_VEC_OK);
     cr_assert_eq(vec.capacity, 0);
+    cr_assert_eq(vec.length, 0);
 }
 
 Test(my_vec_set_capacity, grow)
@@ -38,7 +39,7 @@ Test(my_vec_set_capacity, grow)
     array[2] = strdup("a");
     array[3] = strdup("test");
 
-    vec = (my_vec_t){ (void *)array, 4, 4, sizeof(*array) };
+    vec = (my_vec_t){(void *)array, 4, 4, sizeof(*array)};
     cr_assert_eq(my_vec_set_capacity(&vec, 5, &elem_free), MY_VEC_OK);
     vec.length = 5;
 
@@ -62,10 +63,9 @@ Test(my_vec_set_capacity, shrink)
     array[2] = strdup("a");
     array[3] = strdup("test");
 
-    vec = (my_vec_t){ (void *)array, 4, 4, sizeof(*array) };
+    vec = (my_vec_t){(void *)array, 4, 4, sizeof(*array)};
     cr_assert_eq(my_vec_set_capacity(&vec, 2, &elem_free), MY_VEC_OK);
-    vec.length = 2;
-
+    cr_assert_eq(vec.length, 2);
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &vec, 0), "This");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &vec, 1), "is");
 }
@@ -83,10 +83,9 @@ Test(my_vec_set_capacity, shrink_with_null_elems)
     array[5] = "yup";
     array[6] = "nope";
 
-    vec = (my_vec_t){ (void *)array, 4, 7, sizeof(*array) };
+    vec = (my_vec_t){(void *)array, 4, 7, sizeof(*array)};
     cr_assert_eq(my_vec_set_capacity(&vec, 2, &elem_free), MY_VEC_OK);
-    vec.length = 2;
-
+    cr_assert_eq(vec.length, 2);
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &vec, 0), "This");
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &vec, 1), "is");
 }
