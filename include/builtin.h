@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** minishell2
 ** File description:
-** The shell's context
+** Builtin commands execution
 */
 
 #ifndef __SHELL_BUILTIN_H__

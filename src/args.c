@@ -24,7 +24,7 @@ static int sh_read_unquoted_arg(sh_ctx_t *ctx, my_vec_t *arg, size_t *pos)
 
     while (*pos < ctx->line_buf.length) {
         c = sh_get_line_buf(ctx)[*pos];
-        if (sh_is_arg_sep(c) || c == '"' || c == '\'')
+        if (c == '"' || c == '\'')
             break;
         if (sh_copy_char(arg, c))
             return -1;
@@ -61,8 +61,7 @@ static int sh_read_next_arg(sh_ctx_t *ctx, my_vec_t *args, size_t *pos)
     my_vec_t arg;
     int ret;
 
-    while (*pos < ctx->line_buf.length
-        && sh_is_arg_sep(sh_get_line_buf(ctx)[*pos]))
+    while (*pos < ctx->line_buf.length)
         ++(*pos);
     if (*pos >= ctx->line_buf.length)
         return 0;

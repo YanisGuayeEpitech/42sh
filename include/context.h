@@ -24,6 +24,8 @@ typedef struct {
     my_vec_t line_buf;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
+    /// The pipe file descriptors.
+    int pipe_fd[2];
 } sh_ctx_t;
 
 /// Initializes the shell's context

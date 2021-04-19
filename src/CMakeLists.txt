@@ -26,6 +26,7 @@ set(SRC
 )
 
 add_subdirectory(builtin)
+add_subdirectory(input)
 
 source_group("" FILES ${SRC})
 

@@ -18,6 +18,8 @@ Test(sh_ctx_init, empty_env)
     cr_assert_eq(ctx.env.capacity, 1);
     cr_assert_eq(ctx.env.length, 1);
     cr_assert_eq(ctx.exit_code, 0);
+    cr_assert_eq(ctx.pipe_fd[0], -1);
+    cr_assert_eq(ctx.pipe_fd[1], -1);
     cr_assert_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 0), NULL);
 }
 
@@ -34,6 +36,8 @@ Test(sh_ctx_init, no_path)
     cr_assert_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), NULL);
     cr_assert_eq(ctx.is_tty, 0);
     cr_assert_eq(ctx.exit_code, 0);
+    cr_assert_eq(ctx.pipe_fd[0], -1);
+    cr_assert_eq(ctx.pipe_fd[1], -1);
 }
 
 Test(sh_ctx_init, normal_env)
@@ -50,6 +54,8 @@ Test(sh_ctx_init, normal_env)
     cr_assert_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 3), NULL);
     cr_assert_eq(ctx.is_tty, 0);
     cr_assert_eq(ctx.exit_code, 0);
+    cr_assert_eq(ctx.pipe_fd[0], -1);
+    cr_assert_eq(ctx.pipe_fd[1], -1);
 }
 
 Test(sh_ctx_drop, normal)

@@ -44,6 +44,8 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->exit_code = 0;
     my_vec_init(&ctx->line_buf, sizeof(char));
     ctx->old_pwd = NULL;
+    ctx->pipe_fd[0] = -1;
+    ctx->pipe_fd[1] = -1;
     return 0;
 }
 
@@ -54,4 +56,6 @@ void sh_ctx_drop(sh_ctx_t *ctx)
     my_vec_free(&ctx->line_buf, NULL);
     free(ctx->old_pwd);
     ctx->old_pwd = NULL;
+    ctx->pipe_fd[0] = -1;
+    ctx->pipe_fd[1] = -1;
 }

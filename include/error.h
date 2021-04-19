@@ -10,7 +10,7 @@
 
 #include "definition.h"
 
-typedef enum {
+typedef enum sh_error {
     SH_OK = 0,
     SH_EXPRESSION_SYNTAX,
     SH_BAD_NUMBER,
