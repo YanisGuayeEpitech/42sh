@@ -20,8 +20,8 @@ typedef enum sh_token_type {
     SH_TOKEN_PIPE,
     SH_TOKEN_SEMICOLON,
     SH_TOKEN_LT,
-    SH_TOKEN_GT,
     SH_TOKEN_LT_LT,
+    SH_TOKEN_GT,
     SH_TOKEN_GT_GT,
     SH_TOKEN_TYPE_COUNT,
 } sh_token_type_t;
@@ -77,6 +77,10 @@ SH_INLINE bool sh_is_arg_sep(char c)
 {
     return c == ' ' || c == '\t' || c == '\n';
 }
+
+bool sh_token_quoted_string(
+    sh_token_stream_t *stream, sh_token_t *token, char term);
+bool sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token);
 
 #define SH_STREAM_LINE(stream)           ((char *)(stream)->line_buf.data)
 #define SH_STREAM_OFFSET(stream, offset) (SH_STREAM_LINE((stream)) + (offset))

@@ -8,5 +8,6 @@ set(SRC
     ${SRCROOT}/token_stream_init.c
     ${SRCROOT}/token_stream_parse.c
     ${SRCROOT}/token_stream_push.c
+    ${SRCROOT}/token_string.c
     PARENT_SCOPE
 )
