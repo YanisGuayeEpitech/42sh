@@ -121,6 +121,7 @@ MY_MEMORY_API void my_swap_ptr(
 /// @param size The number of bytes to fill.
 ///
 /// @returns A pointer to the memory area @c mem.
+/// @since 0.1.0
 MY_MEMORY_API void *my_memset(void *mem, unsigned char byte, size_t size);
 
 /// Scans the given memory for a byte.
@@ -131,8 +132,23 @@ MY_MEMORY_API void *my_memset(void *mem, unsigned char byte, size_t size);
 ///
 /// @returns A pointer to the matching byte or @c NULL if the byte does not
 /// occur in the given memory area.
+/// @since 0.1.0
 MY_MEMORY_API void *my_memchr(
     void const *mem, unsigned char byte, size_t length);
+
+/// Compares the first @c len bytes (each interpreted as unsigned char) if the
+/// memory areas @c s1 and @c s2.
+///
+/// @param s1 A pointer to the first memory area, cannot be @c NULL.
+/// @param s2 A pointer to the second memory area, cannot be @c NULL.
+/// @param len The number of bytes to compare.
+///
+/// @returns An int less than, equal to, or greater than zero if the first n
+/// bytes of @c s1 is found, respectively, to be less than, to match or be
+/// greater than the first n bytes of @c s2.
+/// If @c len is zero, 0 is returned.
+/// @since 0.3.7
+MY_MEMORY_API int my_memcmp(const void *s1, const void *s2, size_t len);
 
 /// The type of comparision function used by @ref my_msort.
 ///
@@ -163,6 +179,7 @@ MY_MEMORY_API void my_msort(
 /// @param shift The amount of bits to rotate.
 ///
 /// @returns The rotated number.
+/// @since 0.2.0
 MY_INLINE my_u64_t my_u64_rotate_left(my_u64_t num, unsigned shift)
 {
     shift &= 63;
@@ -177,6 +194,7 @@ MY_INLINE my_u64_t my_u64_rotate_left(my_u64_t num, unsigned shift)
 /// @param shift The amount of bits to rotate.
 ///
 /// @returns The rotated number.
+/// @since 0.2.0
 MY_INLINE my_u64_t my_u64_rotate_right(my_u64_t num, unsigned shift)
 {
     shift &= 63;

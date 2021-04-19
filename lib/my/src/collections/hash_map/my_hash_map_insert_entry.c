@@ -60,7 +60,7 @@ static int my_hash_map_add_entry(
         return 1;
     (*loc)->hash = hash;
     (*loc)->next = NULL;
-    my_memcpy(my_hash_map_entry_key(map, *loc), kv[0], map->key_size);
+    my_memcpy((void *)my_hash_map_entry_key(map, *loc), kv[0], map->key_size);
     my_memcpy(my_hash_map_entry_value(map, *loc), kv[1], map->value_size);
     ++(map->length);
     return 0;

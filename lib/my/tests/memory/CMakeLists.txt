@@ -11,6 +11,7 @@ set(SRC
     ${SRCROOT}/test_my_cbuffer_write.c
     ${SRCROOT}/test_my_endian.c
     ${SRCROOT}/test_my_memchr.c
+    ${SRCROOT}/test_my_memcmp.c
     ${SRCROOT}/test_my_memcpy.c
     ${SRCROOT}/test_my_memmove.c
     ${SRCROOT}/test_my_memrev.c
@@ -23,6 +24,7 @@ set(SRC
 if (LIBMY_ALLOW_MALLOC_FREE)
     set(SRC
         ${SRCROOT}/test_my_calloc.c
+        ${SRCROOT}/test_my_memdup.c
         ${SRCROOT}/test_my_realloc.c
         ${SRCROOT}/test_my_sfree.c
         ${SRC}

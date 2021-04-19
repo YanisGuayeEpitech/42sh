@@ -57,22 +57,6 @@ Test(my_hash_map_init_capacity, zero_key_align)
         MY_MAP_INVALID_KVTYPES, my_hash_map_init_capacity(&map, &kvtypes, 0));
 }
 
-Test(my_hash_map_init_capacity, zero_value_size)
-{
-    my_hash_map_t map;
-    my_map_kvtypes_t kvtypes = {
-        .key_size = sizeof(char *),
-        .key_align = alignof(char *),
-        .value_size = 0,
-        .value_align = sizeof(int),
-        .compare = MY_HASH_MAP_CSTR_CMP,
-        .hash = MY_HASH_MAP_CSTR_HASH,
-    };
-
-    cr_assert_eq(
-        MY_MAP_INVALID_KVTYPES, my_hash_map_init_capacity(&map, &kvtypes, 0));
-}
-
 Test(my_hash_map_init_capacity, zero_value_align)
 {
     my_hash_map_t map;

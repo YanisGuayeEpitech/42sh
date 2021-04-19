@@ -26,8 +26,7 @@ typedef struct p_my_hash_map_entry {
 MY_INLINE int p_my_map_kvtypes_is_valid(my_map_kvtypes_t const *kvtypes)
 {
     return kvtypes->key_size > 0 && kvtypes->key_align > 0
-        && kvtypes->value_size > 0 && kvtypes->value_align > 0
-        && kvtypes->compare != NULL;
+        && kvtypes->value_align > 0 && kvtypes->compare != NULL;
 }
 
 MY_LOCAL int p_my_hash_map_init_buckets(my_hash_map_t *map);

@@ -11,8 +11,8 @@ MY_MEMORY_API void my_cbuffer_rotate_left(my_cbuffer_t *buf, size_t amt)
 {
     char *data = buf->data;
 
-    amt %= buf->len;
-    if (buf->len == 0 || amt == 0)
+    amt %= buf->len == 0 ? 1 : buf->len;
+    if (amt == 0)
         return;
     if (buf->head == buf->tail) {
         buf->head = my_cbuffer_wrap_add(buf, buf->head, amt);
@@ -31,8 +31,8 @@ MY_MEMORY_API void my_cbuffer_rotate_right(my_cbuffer_t *buf, size_t amt)
 {
     char *data = buf->data;
 
-    amt %= buf->len;
-    if (buf->len == 0 || amt == 0)
+    amt %= buf->len == 0 ? 1 : buf->len;
+    if (amt == 0)
         return;
     if (buf->head == buf->tail) {
         buf->head = my_cbuffer_wrap_sub(buf, buf->head, amt);

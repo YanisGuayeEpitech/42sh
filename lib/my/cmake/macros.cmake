@@ -58,7 +58,12 @@ macro(libmy_add_module target)
             set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCOV_LINK_FLAGS}")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
         endif()
-        target_compile_options(${target} PRIVATE -O1 -Wall -Wextra -Wshadow -Wno-abi)
+        # Compile Options
+        target_compile_options(${target} PRIVATE
+            "-Wall" "-Wextra" "-Wshadow" "-Wno-abi"
+            "$<$<CONFIG:RELEASE>:-O3;-fno-builtin>"
+            "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
+        )
     endif()
 
     # define LIBMY_STATIC if the build type is not set to 'shared'

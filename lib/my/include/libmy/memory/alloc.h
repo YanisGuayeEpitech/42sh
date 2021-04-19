@@ -64,6 +64,16 @@ MY_MEMORY_API void *my_realloc(void *ptr, size_t old_size, size_t new_size);
 /// @since 0.3.2
 MY_MEMORY_API void *my_sfree(void **ptr);
 
+/// Allocates a copy of the first @c size bytes of the passed memory area.
+///
+/// @param mem A pointer to the memory area to duplicate, cannot be @c NULL.
+/// @param size The size of the memory to duplicate.
+///
+/// @returns A pointer to the duplicated memory area, or @c NULL if either @c
+/// size if zero or allocation failed.
+/// @since 0.3.7
+MY_MEMORY_API void *my_memdup(void const *mem, size_t size);
+
 MY_API_END
 
 #endif // LIBMY_ALLOW_MALLOC_FREE

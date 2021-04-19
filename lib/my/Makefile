@@ -2,13 +2,11 @@ BUILD_DIR := build
 
 CONFIG_FLAGS := -G"Unix Makefiles" -B$(BUILD_DIR) -DLIBMY_BUILD_DOC=TRUE
 
-CONFIG_FLAGS_RELEASE := -DCMAKE_BUILD_TYPE=Release $(CONFIG_FLAGS)
-CONFIG_FLAGS_DEBUG := -DCMAKE_BUILD_TYPE=Debug $(CONFIG_FLAGS)
-CONFIG_FLAGS_TEST := -DLIBMY_BUILD_TEST_SUITE=TRUE -DLIBMY_USE_GCOV=TRUE $(CONFIG_FLAGS_DEBUG)
+CONFIG_FLAGS_RELEASE := -DCMAKE_BUILD_TYPE=Release -DLIBMY_BUILD_TEST_SUITE=TRUE $(CONFIG_FLAGS)
+CONFIG_FLAGS_DEBUG := -DCMAKE_BUILD_TYPE=Debug -DLIBMY_BUILD_TEST_SUITE=TRUE -DLIBMY_USE_GCOV=TRUE $(CONFIG_FLAGS)
 
 BUILD_FLAGS_RELEASE := --config Release -j
 BUILD_FLAGS_DEBUG := --config Debug -j
-BUILD_FLAGS_TEST := --config Debug -j
 
 all:
 	cmake $(CONFIG_FLAGS_RELEASE)
@@ -17,7 +15,6 @@ all:
 clean:
 	rm -rf $(BUILD_DIR)/CMakeFiles
 	rm -rf $(BUILD_DIR)/src
-
 fclean: clean
 	rm -rf $(BUILD_DIR)
 	rm -rf doc/html doc/Doxyfile
@@ -31,16 +28,12 @@ re: fclean all
 
 docs: all
 	(cd $(BUILD_DIR) && cmake --build . --target doc)
-
 open_docs:
 	xdg-open doc/html/index.html > /dev/null
 docs_open: open_docs
 
-run_tests: fclean
-	cmake $(CONFIG_FLAGS_TEST) .
-	cmake --build $(BUILD_DIR) $(BUILD_FLAGS_TEST)
+run_tests: fclean debug
 	(cd build && ctest --verbose) || true
-
 run_test: run_tests
 tests_run: run_tests
 test_run: run_test

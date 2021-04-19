@@ -17,7 +17,9 @@ set(SRC
     ${SRCROOT}/my_cbuffer_rotate.c
     ${SRCROOT}/my_cbuffer_write.c
     ${SRCROOT}/my_memchr.c
+    ${SRCROOT}/my_memcmp.c
     ${SRCROOT}/my_memcpy.c
+    ${SRCROOT}/my_memdup.c
     ${SRCROOT}/my_memmove.c
     ${SRCROOT}/my_memrev.c
     ${SRCROOT}/my_memset.c
