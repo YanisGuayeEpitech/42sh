@@ -9,8 +9,10 @@
 #define __SHELL_H__
 
 #include <sys/types.h>
+
 #include "context.h"
 #include "error.h"
+#include "input.h"
 
 #define IO_BUF_SIZE (1024)
 
@@ -18,6 +20,9 @@
 ///
 /// @param ctx The shell context.
 void sh_start(sh_ctx_t *ctx);
+
+int sh_exec_tokens(
+    sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count]);
 
 /// Executes the given line.
 ///

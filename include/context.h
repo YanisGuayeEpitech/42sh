@@ -23,6 +23,7 @@ typedef struct {
     int exit_code;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
+    my_vec_t args;
     /// The pipe file descriptors.
     int pipe_fd[2];
 } sh_ctx_t;

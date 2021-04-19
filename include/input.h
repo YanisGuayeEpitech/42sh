@@ -53,7 +53,7 @@ bool sh_token_stream_parse(sh_token_stream_t *stream, sh_token_t *token);
 
 ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count);
 
-SH_INLINE size_t sh_token_stream_next(
+SH_INLINE ssize_t sh_token_stream_next(
     sh_token_stream_t *stream, size_t token_count)
 {
     sh_token_stream_reset(stream);
