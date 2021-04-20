@@ -20,8 +20,10 @@ void sh_start(sh_ctx_t *ctx)
             || sh_exec_parse(ctx, stream.tokens.length, stream.tokens.data)
                 < 0)
             break;
+        my_fflush(MY_STDERR);
         sh_print_prompt(ctx);
     }
+    my_fflush(MY_STDERR);
     sh_print(ctx, "exit\n");
     sh_token_stream_drop(&stream);
 }

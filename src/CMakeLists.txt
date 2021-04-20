@@ -17,6 +17,7 @@ set(SRC
     ${SRCROOT}/exec_tokens.c
     ${SRCROOT}/exec_parse.c
     ${SRCROOT}/find_executable.c
+    ${SRCROOT}/lint_tokens.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c
     ${SRCROOT}/reset_path.c

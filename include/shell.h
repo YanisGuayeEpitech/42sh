@@ -21,6 +21,8 @@
 /// @param ctx The shell context.
 void sh_start(sh_ctx_t *ctx);
 
+bool sh_lint_tokens(size_t token_count, sh_token_t tokens[token_count]);
+
 int sh_exec_parse(
     sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count]);
 

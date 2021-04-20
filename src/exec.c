@@ -16,14 +16,14 @@
 #include "builtin.h"
 #include "shell.h"
 
-static void sh_exec_args(sh_ctx_t *ctx, char const *path, char const *argv[])
+static int sh_exec_args(sh_ctx_t *ctx, char const *path, char const *argv[])
 {
     pid_t child_pid;
     int status;
 
     child_pid = fork();
     if (child_pid < 0) {
-        return;
+        return 1;
     } else if (child_pid == 0
         && execve(path, (char *const *)argv, ctx->env.data) < 0) {
         perror(argv[0]);
@@ -32,27 +32,29 @@ static void sh_exec_args(sh_ctx_t *ctx, char const *path, char const *argv[])
     do {
         waitpid(child_pid, &status, 0);
     } while (sh_handle_status(ctx, status));
+    return 0;
 }
 
-static void sh_exec_from_path(sh_ctx_t *ctx, char const *argv[])
+static int sh_exec_from_path(sh_ctx_t *ctx, char const *argv[])
 {
     int is_path = my_strchr(argv[0], '/') != NULL;
     char const *path = is_path ? argv[0] : sh_find_executable(ctx, argv[0]);
+    int ret;
 
     if (!path) {
         my_fprintf(MY_STDERR, "%s: Command not found.\n", argv[0]);
-        ctx->exit_code = 1;
         my_flush_stderr();
-        return;
+        return 1;
     } else if (access(path, X_OK) < 0) {
         perror(argv[0]);
         if (!is_path)
             free((char *)path);
-        return;
+        return 1;
     }
-    sh_exec_args(ctx, path, argv);
+    ret = sh_exec_args(ctx, path, argv);
     if (!is_path)
         free((char *)path);
+    return ret;
 }
 
 int sh_exec(sh_ctx_t *ctx, size_t argc, char const *argv[])
@@ -64,6 +66,6 @@ int sh_exec(sh_ctx_t *ctx, size_t argc, char const *argv[])
     if (builtin)
         ret = sh_exec_builtin(builtin, ctx, argc, argv);
     else
-        sh_exec_from_path(ctx, argv);
+        ret = sh_exec_from_path(ctx, argv);
     return ret;
 }

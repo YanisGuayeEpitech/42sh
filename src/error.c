@@ -21,6 +21,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_CD_NO_HOME_DIR] = "No home directory",
     [SH_CD_HOME_DIR] = "Can't change to home directory",
     [SH_OUT_OF_MEMORY] = "Out of memory",
+    [SH_INVALID_NULL_COMMAND] = "Invalid null command",
 };
 
 char const *sh_strerror(sh_error_t code)

@@ -84,6 +84,12 @@ SH_INLINE bool sh_is_token_char(char c)
         || c == '>';
 }
 
+bool sh_token_consume(
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type);
+
+bool sh_token_consume_except(
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type);
+
 bool sh_token_quoted_string(
     sh_token_stream_t *stream, sh_token_t *token, char term);
 bool sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token);

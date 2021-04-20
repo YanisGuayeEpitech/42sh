@@ -4,6 +4,7 @@ set(INCROOT ${PROJECT_SOURCE_DIR}/include)
 set(SRC
     ${SRC}
     ${INCROOT}/input.h
+    ${SRCROOT}/token_consume.c
     ${SRCROOT}/token_stream_drop.c
     ${SRCROOT}/token_stream_init.c
     ${SRCROOT}/token_stream_parse.c
