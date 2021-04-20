@@ -12,16 +12,19 @@ static int sh_exec_parse_pipes(
 {
     size_t end;
     int ret;
+    sh_pipe_pos_t pipe_pos = SH_PIPE_BEGIN;
 
     while (token_count > 0) {
         end = 0;
         while (end < token_count && tokens[end].token_type != SH_TOKEN_PIPE)
             ++end;
-        ret = sh_exec_tokens(ctx, end, tokens);
+        ret = sh_exec_tokens(
+            ctx, end, tokens, end == token_count ? SH_PIPE_END : pipe_pos);
         if (ret != 0)
             return ret;
         tokens += end;
         token_count -= end;
+        pipe_pos = SH_PIPE_MIDDLE;
         sh_token_consume(&token_count, &tokens, SH_TOKEN_PIPE);
     }
     return 0;

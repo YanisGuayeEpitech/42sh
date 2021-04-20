@@ -24,8 +24,8 @@ static const char *sh_token_as_str(sh_token_t const *token)
     return value == NULL ? token->str : value;
 }
 
-int sh_exec_tokens(
-    sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
+int sh_exec_tokens(sh_ctx_t *ctx, size_t token_count,
+    sh_token_t tokens[token_count], sh_pipe_pos_t pipe_pos)
 {
     char const *value;
 
@@ -40,5 +40,5 @@ int sh_exec_tokens(
     }
     value = NULL;
     my_vec_push(&ctx->args, &value);
-    return sh_exec(ctx, ctx->args.length, ctx->args.data);
+    return sh_exec(ctx, ctx->args.length, ctx->args.data, pipe_pos);
 }
