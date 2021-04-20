@@ -17,7 +17,7 @@ ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count)
     for (; c < token_count; ++c) {
         if (my_vec_reserve(&stream->tokens, 1) != MY_VEC_OK)
             return SH_OUT_OF_MEMORY;
-        if (!sh_token_stream_parse(
+        if (!sh_token_parse(
                 stream, my_vec_get(&stream->tokens, stream->tokens.length)))
             return -1;
         if (sh_token_stream_is_eol(stream))

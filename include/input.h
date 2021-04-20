@@ -49,7 +49,7 @@ void sh_token_stream_init(sh_token_stream_t *stream);
 void sh_token_stream_reset(sh_token_stream_t *stream);
 void sh_token_stream_drop(sh_token_stream_t *stream);
 
-bool sh_token_stream_parse(sh_token_stream_t *stream, sh_token_t *token);
+bool sh_token_parse(sh_token_stream_t *stream, sh_token_t *token);
 
 ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count);
 

@@ -39,7 +39,7 @@ static bool sh_token_double(sh_token_stream_t *stream, char lexeme,
     return true;
 }
 
-bool sh_token_stream_parse(sh_token_stream_t *stream, sh_token_t *token)
+bool sh_token_parse(sh_token_stream_t *stream, sh_token_t *token)
 {
     assert(stream != NULL);
     assert(token != NULL);
