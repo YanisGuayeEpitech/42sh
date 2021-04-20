@@ -78,6 +78,12 @@ SH_INLINE bool sh_is_arg_sep(char c)
     return c == ' ' || c == '\t' || c == '\n';
 }
 
+SH_INLINE bool sh_is_token_char(char c)
+{
+    return c == '"' || c == '\'' || c == '|' || c == ';' || c == '<'
+        || c == '>';
+}
+
 bool sh_token_quoted_string(
     sh_token_stream_t *stream, sh_token_t *token, char term);
 bool sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token);

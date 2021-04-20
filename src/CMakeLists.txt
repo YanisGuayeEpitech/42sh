@@ -15,6 +15,7 @@ set(SRC
     ${SRCROOT}/error.c
     ${SRCROOT}/exec.c
     ${SRCROOT}/exec_tokens.c
+    ${SRCROOT}/exec_parse.c
     ${SRCROOT}/find_executable.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c

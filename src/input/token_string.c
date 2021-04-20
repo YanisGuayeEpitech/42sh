@@ -44,7 +44,7 @@ static ssize_t sh_token_unquoted_string_copy(
     my_vec_init(str, sizeof(char));
     for (; stream->line_pos + len < buf_len; ++len) {
         c = *SH_STREAM_CURRENT(stream, len);
-        if (sh_is_arg_sep(c) || c == '"' || c == '\'')
+        if (sh_is_arg_sep(c) || sh_is_token_char(c))
             break;
         if (my_vec_push(str, &c) != MY_VEC_OK) {
             my_vec_free(str, NULL);

@@ -17,7 +17,7 @@ void sh_start(sh_ctx_t *ctx)
     sh_print_prompt(ctx);
     while (sh_token_stream_next(&stream, SIZE_MAX) >= 0) {
         if (my_feof(MY_STDIN)
-            || sh_exec_tokens(ctx, stream.tokens.length, stream.tokens.data)
+            || sh_exec_parse(ctx, stream.tokens.length, stream.tokens.data)
                 < 0)
             break;
         sh_print_prompt(ctx);
