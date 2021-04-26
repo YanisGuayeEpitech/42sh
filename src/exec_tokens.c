@@ -40,5 +40,5 @@ int sh_exec_tokens(sh_ctx_t *ctx, size_t token_count,
     }
     value = NULL;
     my_vec_push(&ctx->args, &value);
-    return sh_exec(ctx, ctx->args.length, ctx->args.data, pipe_pos);
+    return sh_exec(ctx, ctx->args.length - 1, ctx->args.data, pipe_pos);
 }
