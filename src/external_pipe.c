@@ -56,14 +56,11 @@ int sh_external_pipe_dup(
 int sh_external_pipe_close(
     sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2])
 {
-    int ret = 0;
-
     switch (pipe_pos) {
         case SH_PIPE_MIDDLE:
             return sclose(old_pipe_fd) || sclose(old_pipe_fd + 1);
         case SH_PIPE_END:
             return sclose(ctx->pipe_fd) || sclose(ctx->pipe_fd + 1);
-        default: break;
+        default: return 0;
     }
-    return ret;
 }
