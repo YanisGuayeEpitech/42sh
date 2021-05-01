@@ -9,7 +9,7 @@
 #include <libmy/printf.h>
 #include <stdlib.h>
 
-#include "input.h"
+#include "token.h"
 
 int sh_token_quoted_string(
     sh_token_stream_t *stream, sh_token_t *token, char term)

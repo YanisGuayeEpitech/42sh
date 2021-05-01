@@ -12,7 +12,7 @@
 
 #include "context.h"
 #include "error.h"
-#include "input.h"
+#include "token.h"
 
 #define IO_BUF_SIZE (1024)
 

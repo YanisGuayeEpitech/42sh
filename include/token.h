@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** minishell2
 ** File description:
-** User input parsing
+** User input tokenization
 */
 
 #ifndef __SHELL_INPUT__

@@ -5,7 +5,7 @@
 ** Consumes a token from the given array
 */
 
-#include "input.h"
+#include "token.h"
 
 bool sh_token_consume(
     size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type)

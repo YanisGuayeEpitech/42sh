@@ -9,7 +9,7 @@
 #define __SHELL_COMMAND_H__
 
 #include "builtin.h"
-#include "input.h"
+#include "token.h"
 
 typedef enum sh_pipe_pos {
     SH_PIPE_BEGIN,

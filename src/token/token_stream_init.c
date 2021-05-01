@@ -5,7 +5,7 @@
 ** Initializes a token stream
 */
 
-#include "input.h"
+#include "token.h"
 
 void sh_token_stream_init(sh_token_stream_t *stream)
 {

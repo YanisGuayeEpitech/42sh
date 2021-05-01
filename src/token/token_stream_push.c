@@ -7,7 +7,7 @@
 
 #include <libmy/io/iostream.h>
 
-#include "input.h"
+#include "token.h"
 
 static int sh_token_stream_fill_line(sh_token_stream_t *stream)
 {

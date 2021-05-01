@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-#include "input.h"
+#include "token.h"
 
 void sh_drop_token(void *token)
 {

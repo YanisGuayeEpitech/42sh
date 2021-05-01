@@ -5,7 +5,7 @@
 ** Parses the next token
 */
 
-#include "input.h"
+#include "token.h"
 
 static int sh_token_simple(sh_token_type_t token_type, sh_token_t *token)
 {

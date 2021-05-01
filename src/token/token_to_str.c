@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <libmy/ascii/ascii.h>
 
-#include "input.h"
+#include "token.h"
 
 static const char *SH_TOKEN_STR[SH_TOKEN_TYPE_COUNT] = {
     [SH_TOKEN_STRING] = NULL,

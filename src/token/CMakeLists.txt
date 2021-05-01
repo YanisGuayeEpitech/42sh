@@ -1,9 +1,9 @@
-set(SRCROOT ${PROJECT_SOURCE_DIR}/src/input)
+set(SRCROOT ${PROJECT_SOURCE_DIR}/src/token)
 set(INCROOT ${PROJECT_SOURCE_DIR}/include)
 
 set(SRC
     ${SRC}
-    ${INCROOT}/input.h
+    ${INCROOT}/token.h
     ${SRCROOT}/token_consume.c
     ${SRCROOT}/token_stream_drop.c
     ${SRCROOT}/token_stream_init.c

@@ -23,7 +23,7 @@ set(SRC
 
 add_subdirectory(builtin)
 add_subdirectory(command)
-add_subdirectory(input)
+add_subdirectory(token)
 add_subdirectory(util)
 
 source_group("" FILES ${SRC})
