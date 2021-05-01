@@ -75,9 +75,9 @@ static int sh_exec_parse_semicolons(
         while (
             end < token_count && tokens[end].token_type != SH_TOKEN_SEMICOLON)
             ++end;
-        ret = sh_exec_parse_pipes(ctx, end, tokens) < 0;
+        ret = sh_exec_parse_pipes(ctx, end, tokens);
         if (ret != 0)
-            return 0;
+            return ret;
         tokens += end;
         token_count -= end;
     } while (end != 0);
