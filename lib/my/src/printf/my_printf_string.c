@@ -7,6 +7,7 @@
 
 #include "libmy/core.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static const char *OCTAL = "01234567";
 
@@ -25,7 +26,7 @@ static int write_char_octal(my_iostream_t *out, char c)
 }
 
 static int write_string(my_iostream_t *output, p_my_printf_conv_t const *conv,
-const char *str, size_t len)
+    const char *str, size_t len)
 {
     size_t max;
     int need_quotes = PGET_FLAG(ALT);
@@ -35,8 +36,8 @@ const char *str, size_t len)
     if ((need_quotes && my_fputc('"', output)) || (!need_quotes && len == 0))
         return need_quotes;
     if (!PGET_SPEC(STRING_OCTAL))
-        return my_fwrite(str, len, 1, output) != 1 ||
-            (need_quotes && my_fputc('"', output));
+        return my_fwrite(str, len, 1, output) != 1
+            || (need_quotes && my_fputc('"', output));
     max = SIZE_MAX;
     if (PGET_FLAG(HAS_PRECISION))
         max = conv->precision;
@@ -47,16 +48,16 @@ const char *str, size_t len)
 }
 
 MY_LOCAL int p_my_printf_string(my_iostream_t *output,
-p_my_printf_conv_t const *conv, size_t len, size_t zeros)
+    p_my_printf_conv_t const *conv, size_t len, size_t zeros)
 {
     char const *str = conv->value.string_arg;
 
     (void)zeros;
     if (!str)
         str = "(null)";
-    if (p_my_printf_lpad(output, conv, len, ' ') ||
-        write_string(output, conv, str, len) ||
-        p_my_printf_rpad(output, conv, len, ' '))
+    if (p_my_printf_lpad(output, conv, len, ' ')
+        || write_string(output, conv, str, len)
+        || p_my_printf_rpad(output, conv, len, ' '))
         return -1;
     return MY_MAX(len, conv->field_width);
 }

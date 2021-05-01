@@ -4,6 +4,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src/collections/vec)
 set(VECTOR_SRC
     ${INCROOT}/vec.h
     ${SRCROOT}/my_vec_change_value.c
+    ${SRCROOT}/my_vec_clear.c
     ${SRCROOT}/my_vec_copy.c
     ${SRCROOT}/my_vec_ensure_capacity.c
     ${SRCROOT}/my_vec_extend_to_length.c

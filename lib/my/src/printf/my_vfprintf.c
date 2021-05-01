@@ -7,6 +7,7 @@
 
 #include "libmy/ascii.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static int print_regular(
     my_iostream_t *out, const char *start, const char *end, size_t *char_count)

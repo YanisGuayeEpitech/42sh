@@ -207,10 +207,7 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_set_capacity(
 /// @param elem_free A function that frees elements of this vector,
 /// called @ref my_vec_t::length times. Can be @c NULL.
 /// @since 0.3.7
-MY_INLINE void my_vec_clear(my_vec_t *vec, void (*elem_free)(void *))
-{
-    my_vec_set_capacity(vec, 0, elem_free);
-}
+MY_COLLECTIONS_API void my_vec_clear(my_vec_t *vec, void (*elem_free)(void *));
 
 /// Reserves capacity for at least @c additional more elements.
 /// The collection may reserve more space to avoid frequent reallocations.

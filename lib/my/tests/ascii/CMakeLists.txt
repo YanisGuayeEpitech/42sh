@@ -30,9 +30,12 @@ if (LIBMY_ALLOW_MALLOC_FREE)
     set(SRC
         ${SRCROOT}/test_my_free_str_array.c
         ${SRCROOT}/test_my_strdup.c
+        ${SRCROOT}/test_my_strndup.c
         ${SRCROOT}/test_my_str_to_word_array.c
         ${SRC}
     )
 endif()
 
-libmy_add_test(test-libmy-ascii "${SRC}" my-ascii)
+add_subdirectory(character)
+
+libmy_add_test(test-libmy-ascii "${SRC};${CHARACTER_SRC}" my-ascii)

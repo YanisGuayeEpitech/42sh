@@ -6,6 +6,7 @@
 */
 
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static const p_my_printf_length_t LENGTH_MODIFIERS[256] = {
     ['h'] = P_MY_PRINTF_LEN_SHORT,
@@ -13,7 +14,7 @@ static const p_my_printf_length_t LENGTH_MODIFIERS[256] = {
     ['L'] = P_MY_PRINTF_LEN_LONG_DOUBLE,
     ['j'] = P_MY_PRINTF_LEN_INTMAX_T,
     ['z'] = P_MY_PRINTF_LEN_SIZE_T,
-    ['t'] = P_MY_PRINTF_LEN_PTRDIFF_T
+    ['t'] = P_MY_PRINTF_LEN_PTRDIFF_T,
 };
 
 MY_LOCAL p_my_printf_length_t p_my_printf_get_len_modifier(char const **src)

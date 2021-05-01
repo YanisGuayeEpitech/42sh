@@ -2,6 +2,7 @@ set(SRCROOT "${PROJECT_SOURCE_DIR}/tests/collections/vec")
 
 set(VECTOR_SRC
     ${SRCROOT}/test_my_vec_change_value.c
+    ${SRCROOT}/test_my_vec_clear.c
     ${SRCROOT}/test_my_vec_copy.c
     ${SRCROOT}/test_my_vec_ensure_capacity.c
     ${SRCROOT}/test_my_vec_extend_to_length.c

@@ -2,13 +2,6 @@ set(SRCROOT "${PROJECT_SOURCE_DIR}/tests/memory")
 
 set(SRC
     ${SRCROOT}/test_my_binary_search.c
-    ${SRCROOT}/test_my_cbuffer_get_parts.c
-    ${SRCROOT}/test_my_cbuffer_init.c
-    ${SRCROOT}/test_my_cbuffer_pop.c
-    ${SRCROOT}/test_my_cbuffer_push.c
-    ${SRCROOT}/test_my_cbuffer_read.c
-    ${SRCROOT}/test_my_cbuffer_rotate.c
-    ${SRCROOT}/test_my_cbuffer_write.c
     ${SRCROOT}/test_my_endian.c
     ${SRCROOT}/test_my_memchr.c
     ${SRCROOT}/test_my_memcmp.c
@@ -22,13 +15,8 @@ set(SRC
 )
 
 if (LIBMY_ALLOW_MALLOC_FREE)
-    set(SRC
-        ${SRCROOT}/test_my_calloc.c
-        ${SRCROOT}/test_my_memdup.c
-        ${SRCROOT}/test_my_realloc.c
-        ${SRCROOT}/test_my_sfree.c
-        ${SRC}
-    )
+    add_subdirectory(alloc)
 endif()
+add_subdirectory(cbuffer)
 
-libmy_add_test(test-libmy-memory "${SRC}" my-memory)
+libmy_add_test(test-libmy-memory "${SRC};${ALLOC_SRC};${CBUFFER_SRC}" my-memory)

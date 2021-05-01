@@ -6,6 +6,7 @@ set(SRC
     ${INCROOT}/hash/config.h
     ${INCROOT}/hash/hash.h
     ${INCROOT}/internal/hash.h
+    ${SRCROOT}/hash.h
     ${SRCROOT}/my_hasher_finish.c
     ${SRCROOT}/my_hasher_init.c
     ${SRCROOT}/my_hasher_write.c

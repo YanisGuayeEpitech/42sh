@@ -7,6 +7,7 @@
 
 #include "libmy/core.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static size_t sint_len(intmax_t num)
 {
@@ -23,8 +24,8 @@ static size_t sint_len(intmax_t num)
     return len;
 }
 
-MY_LOCAL size_t p_my_printf_sint_len(p_my_printf_conv_t const *conv,
-size_t *zeros)
+MY_LOCAL size_t p_my_printf_sint_len(
+    p_my_printf_conv_t const *conv, size_t *zeros)
 {
     intmax_t num = conv->value.sint_arg;
     size_t len = sint_len(num);

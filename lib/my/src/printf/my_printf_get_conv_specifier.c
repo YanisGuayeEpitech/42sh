@@ -6,6 +6,7 @@
 */
 
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static const p_my_printf_specifier_t CONVERSION_SPECIFIERS[256] = {
     ['d'] = P_MY_PRINTF_SPEC_SIGNED,
@@ -31,10 +32,11 @@ static const p_my_printf_specifier_t CONVERSION_SPECIFIERS[256] = {
     ['S'] = P_MY_PRINTF_SPEC_STRING_OCTAL,
     ['p'] = P_MY_PRINTF_SPEC_POINTER,
     ['n'] = P_MY_PRINTF_SPEC_COUNT,
-    ['%'] = P_MY_PRINTF_SPEC_PERCENT
+    ['%'] = P_MY_PRINTF_SPEC_PERCENT,
 };
 
-MY_LOCAL p_my_printf_specifier_t p_my_printf_get_conv_specifier(char const **sr)
+MY_LOCAL p_my_printf_specifier_t p_my_printf_get_conv_specifier(
+    char const **sr)
 {
     p_my_printf_specifier_t spec = CONVERSION_SPECIFIERS[(unsigned char)**sr];
 

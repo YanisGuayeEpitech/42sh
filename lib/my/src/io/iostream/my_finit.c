@@ -7,6 +7,8 @@
 
 #include "libmy/io.h"
 
+#include "iostream.h"
+
 static const p_my_iostream_vtable_t UNIX_INPUT_VTABLE = {
     .read = P_MY_FREAD_UNIX,
     .flush = (p_my_fflush_impl_t)p_my_fflush_unix,
@@ -15,12 +17,14 @@ static const p_my_iostream_vtable_t UNIX_INPUT_VTABLE = {
     .set_threshold = (p_my_fset_threshold_impl_t)p_my_fset_threshold_unix,
     .set_buffer = (p_my_fset_buf_impl_t)p_my_fset_buffer_unix,
     .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_unix,
-    .close = P_MY_FCLOSE_UNIX};
+    .close = P_MY_FCLOSE_UNIX,
+};
 
 static const p_my_iostream_vtable_t MEMORY_INPUT_VTABLE = {
     .read = (p_my_fread_impl_t)p_my_fread_memory,
     .eof = (p_my_feof_impl_t)p_my_feof_memory,
-    .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_memory};
+    .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_memory,
+};
 
 static const p_my_iostream_vtable_t UNIX_OUTPUT_VTABLE = {
     .write = (p_my_fwrite_impl_t)p_my_fwrite_unix,
@@ -30,12 +34,14 @@ static const p_my_iostream_vtable_t UNIX_OUTPUT_VTABLE = {
     .set_threshold = (p_my_fset_threshold_impl_t)p_my_fset_threshold_unix,
     .set_buffer = (p_my_fset_buf_impl_t)p_my_fset_buffer_unix,
     .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_unix,
-    .close = P_MY_FCLOSE_UNIX};
+    .close = P_MY_FCLOSE_UNIX,
+};
 
 static const p_my_iostream_vtable_t MEMORY_OUTPUT_VTABLE = {
     .write = (p_my_fwrite_impl_t)p_my_fwrite_memory,
     .eof = (p_my_feof_impl_t)p_my_feof_memory,
-    .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_memory};
+    .get_buffer = (p_my_fget_buf_impl_t)p_my_fget_buffer_memory,
+};
 
 MY_IO_API int my_finit_input_fd(int fd, my_iostream_t *stream)
 {

@@ -5,7 +5,6 @@ set(SRC
     ${INCROOT}/printf.h
     ${INCROOT}/printf/config.h
     ${INCROOT}/printf/printf.h
-    ${INCROOT}/internal/printf.h
     ${SRCROOT}/my_asprintf.c
     ${SRCROOT}/my_dprintf.c
     ${SRCROOT}/my_fprintf.c
@@ -24,6 +23,7 @@ set(SRC
     ${SRCROOT}/my_printf_get_len_modifier.c
     ${SRCROOT}/my_printf_get_position.c
     ${SRCROOT}/my_printf_get_type.c
+    ${SRCROOT}/my_printf.h
     ${SRCROOT}/my_printf_next_conversion.c
     ${SRCROOT}/my_printf_pad.c
     ${SRCROOT}/my_printf_parse_conversion.c

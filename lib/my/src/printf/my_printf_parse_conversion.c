@@ -8,9 +8,10 @@
 #include "libmy/core.h"
 #include "libmy/parsing.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
-static void parse_field_width(char const **src,
-p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
+static void parse_field_width(char const **src, p_my_printf_arg_t const args[],
+    size_t *pos, p_my_printf_conv_t *conv)
 {
     size_t width_or_pos = *pos;
     int field_width;
@@ -32,8 +33,8 @@ p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
     }
 }
 
-static void parse_precision(char const **src,
-p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
+static void parse_precision(char const **src, p_my_printf_arg_t const args[],
+    size_t *pos, p_my_printf_conv_t *conv)
 {
     size_t precision_or_pos = *pos;
 
@@ -58,7 +59,7 @@ p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
 }
 
 static void parse_flags_width_precision(char const **src,
-p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
+    p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
 {
     conv->flags = p_my_printf_get_flags(src);
     parse_field_width(src, args, pos, conv);
@@ -66,8 +67,8 @@ p_my_printf_arg_t const args[], size_t *pos, p_my_printf_conv_t *conv)
 }
 
 MY_LOCAL p_my_printf_conv_t p_my_printf_parse_conversion(char const **src,
-p_my_printf_arg_t const args[], p_my_printf_arg_type_t const types[],
-size_t *pos)
+    p_my_printf_arg_t const args[], p_my_printf_arg_type_t const types[],
+    size_t *pos)
 {
     p_my_printf_conv_t conv;
     char const *prev_src = *src;

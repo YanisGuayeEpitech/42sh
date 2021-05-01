@@ -6,6 +6,7 @@
 */
 
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static const p_my_printf_flag_t MY_PRINTF_FLAGS[256] = {
     ['#'] = P_MY_PRINTF_FLAG_ALT,
@@ -14,7 +15,7 @@ static const p_my_printf_flag_t MY_PRINTF_FLAGS[256] = {
     [' '] = P_MY_PRINTF_FLAG_SIGN_BLANK,
     ['+'] = P_MY_PRINTF_FLAG_PLACE_SIGN,
     ['\''] = P_MY_PRINTF_FLAG_GROUP_DIGITS,
-    ['I'] = P_MY_PRINTF_FLAG_ALT_DIGITS
+    ['I'] = P_MY_PRINTF_FLAG_ALT_DIGITS,
 };
 
 MY_LOCAL int p_my_printf_get_flags(char const **flags)

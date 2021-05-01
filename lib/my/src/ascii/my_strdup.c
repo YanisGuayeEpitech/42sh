@@ -6,17 +6,22 @@
 */
 
 #include <stdlib.h>
-#include "libmy/ascii.h"
+
+#include "libmy/ascii/ascii.h"
+#include "libmy/memory/memory.h"
 
 MY_ASCII_API char *my_strdup(char const *src)
 {
     char *dup;
+    size_t len;
 
     if (!src)
         return NULL;
-    dup = malloc(sizeof(*dup) * (my_strlen(src) + 1));
+    len = my_strlen(src);
+    dup = malloc(sizeof(*dup) * (len + 1));
     if (!dup)
         return NULL;
-    my_strcpy(dup, src);
+    my_memcpy(dup, src, len);
+    dup[len] = '\0';
     return dup;
 }

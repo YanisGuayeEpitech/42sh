@@ -17,5 +17,6 @@
 #define __LIBMY_ASCII_H__
 
 #include "libmy/ascii/ascii.h"
+#include "libmy/ascii/character.h"
 
 #endif // !defined(__LIBMY_ASCII_H__)

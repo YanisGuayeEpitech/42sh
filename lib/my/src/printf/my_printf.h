@@ -5,12 +5,10 @@
 ** The internals for the printf module
 */
 
-#ifndef __LIBMY_INTERNAL_PRINTF_H__
-#define __LIBMY_INTERNAL_PRINTF_H__
+#ifndef __LIBMY_SRC_PRINTF_MY_PRINTF_H__
+#define __LIBMY_SRC_PRINTF_MY_PRINTF_H__
 
 #include "libmy/internal/attributes.h"
-
-MY_API_BEGIN
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -383,6 +381,4 @@ MY_LOCAL int p_my_printf_conversion(
 #define PGET_FLAG(f) (conv->flags & P_MY_PRINTF_FLAG_##f)
 #define PGET_SPEC(f) (conv->specifier == P_MY_PRINTF_SPEC_##f)
 
-MY_API_END
-
-#endif
+#endif // !defined(__LIBMY_SRC_PRINTF_MY_PRINTF_H__)

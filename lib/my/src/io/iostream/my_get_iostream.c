@@ -7,11 +7,16 @@
 
 #include "libmy/io.h"
 
+#include "iostream.h"
+
 static const p_my_iostream_vtable_t VOID_INPUT_VTABLE = {
-    .read = p_my_fread_void};
+    .read = p_my_fread_void,
+};
 
 static const p_my_iostream_vtable_t VOID_OUTPUT_VTABLE = {
-    .write = p_my_fwrite_void, .eof = p_my_feof_void};
+    .write = p_my_fwrite_void,
+    .eof = p_my_feof_void,
+};
 
 static const my_iostream_t VOID_INPUT = {.vtable = &VOID_INPUT_VTABLE};
 

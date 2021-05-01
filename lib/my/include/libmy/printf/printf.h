@@ -7,7 +7,30 @@
 
 /// @file
 ///
-/// Defines the printf function and its variants.
+/// Defines the printf family of functions.
+///
+/// The functions in this module support all the standard convertions
+/// specifiers expect for the floating point conversions (%f, %F, %f, %G, %a
+/// and %A) as well the following conversions:
+///
+/// - %b, %B the unsigned integer is converted to unsigned binary notation, if
+/// '#' is supplied then the prefix '0b' or '0B' is prepended if the specifier
+/// if b, or B, respectively.
+///
+/// - %r, %R the unsigned integer is converted to a boolean and printed as
+/// true/TRUE or false/FALSE whether the integer is different to zero
+/// respectively.
+///
+/// - %S the const char * argument is printed as an octal string, accepts
+/// @c NULL pointers.
+///
+/// - %s same as libC printf, prints the nul-terminated string argument, but
+/// can accept @c NULL pointers.
+///
+/// The '#' flag may be used in string coversions (%s and %S) to surrond the
+/// string with double quotes ("").
+///
+/// Positional precision, field width and arguments are supported.
 /// @since 0.3.0
 
 #ifndef __LIBMY_PRINTF_PRINTF_H__
@@ -17,11 +40,12 @@
 
 MY_API_BEGIN
 
-#include "libmy/internal/printf.h"
 #include "libmy/io.h"
 
-/// The buffer size for non-streams versions of printf.
-#define MY_PRINTF_BUF_SIZE ((size_t)256)
+#ifndef MY_PRINTF_BUF_SIZE
+    /// The buffer size for non-streams versions of printf.
+    #define MY_PRINTF_BUF_SIZE ((size_t)256)
+#endif // !defiend(MY_PRINTF_BUF_SIZE)
 
 /// An analogue of the @c printf function from LibC.
 /// See module documentation for more information.
@@ -35,7 +59,7 @@ MY_API_BEGIN
 /// @since 0.2.0
 MY_PRINTF_API int my_printf(char const *fmt, ...);
 
-/// An analogue of the @c dprintf function from LibC.
+/// An analogue of the @c dprintf function from POSIX.1-2008.
 /// See module documentation for more information.
 ///
 /// @param fd  The output file descriptor.
@@ -90,7 +114,7 @@ MY_PRINTF_API int my_sprintf(char *str, char const *fmt, ...);
 /// @since 0.2.0
 MY_PRINTF_API int my_snprintf(char *str, size_t size, const char *fmt, ...);
 
-/// An analogue of the @c asprintf function from LibC.
+/// An analogue of the @c asprintf function from the GNU LibC.
 /// See module documentation for more information.
 ///
 /// @param[out] strp Where the allocated string is stored,
@@ -117,7 +141,7 @@ MY_PRINTF_API int my_asprintf(char **strp, const char *fmt, ...);
 /// @since 0.2.0
 MY_PRINTF_API int my_vprintf(char const *fmt, va_list args);
 
-/// An analogue of the @c vdprintf function from LibC.
+/// An analogue of the @c vdprintf function from POSIX.1-2008.
 /// See module documentation for more information.
 ///
 /// @param fd   The output file descriptor.
@@ -174,7 +198,7 @@ MY_PRINTF_API int my_vsprintf(char *str, char const *fmt, va_list args);
 MY_PRINTF_API int my_vsnprintf(
     char *str, size_t size, const char *fmt, va_list args);
 
-/// An analogue of the @c vasprintf function from LibC.
+/// An analogue of the @c vasprintf function from the GNU LibC.
 /// See module documentation for more information.
 ///
 /// @param[out] strp Where the allocated string is stored,

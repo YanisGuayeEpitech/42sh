@@ -7,6 +7,7 @@
 
 #include "libmy/ascii.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static size_t count_char(unsigned char c, int is_octal)
 {
@@ -29,8 +30,8 @@ static size_t string_conv_len(char const *str, size_t max, int is_octal)
     return len;
 }
 
-MY_LOCAL size_t p_my_printf_string_len(p_my_printf_conv_t const *conv,
-size_t *zeros)
+MY_LOCAL size_t p_my_printf_string_len(
+    p_my_printf_conv_t const *conv, size_t *zeros)
 {
     char const *str = conv->value.string_arg;
     size_t max = SIZE_MAX;

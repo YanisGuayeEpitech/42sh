@@ -7,9 +7,10 @@
 
 #include "libmy/parsing.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
-static void fill_types_in_width(char const **conv, size_t *pos,
-p_my_printf_arg_type_t types[])
+static void fill_types_in_width(
+    char const **conv, size_t *pos, p_my_printf_arg_type_t types[])
 {
     if (**conv > '0' && **conv <= '9') {
         my_next_size_t(conv, NULL);
@@ -23,8 +24,8 @@ p_my_printf_arg_type_t types[])
     }
 }
 
-static void fill_types_in_precision(char const **conv, size_t *pos,
-p_my_printf_arg_type_t types[])
+static void fill_types_in_precision(
+    char const **conv, size_t *pos, p_my_printf_arg_type_t types[])
 {
     if (**conv != '.')
         return;
@@ -41,8 +42,8 @@ p_my_printf_arg_type_t types[])
     }
 }
 
-static void fill_types_in_conversion(char const **conv, size_t *pos,
-p_my_printf_arg_type_t types[])
+static void fill_types_in_conversion(
+    char const **conv, size_t *pos, p_my_printf_arg_type_t types[])
 {
     size_t prev_pos = *pos;
     size_t arg_pos = *pos;
@@ -66,8 +67,8 @@ p_my_printf_arg_type_t types[])
     types[arg_pos] = p_my_printf_get_type(len, spec);
 }
 
-MY_LOCAL void p_my_printf_fill_types(char const *fmt,
-p_my_printf_arg_type_t types[])
+MY_LOCAL void p_my_printf_fill_types(
+    char const *fmt, p_my_printf_arg_type_t types[])
 {
     size_t pos = 0;
 

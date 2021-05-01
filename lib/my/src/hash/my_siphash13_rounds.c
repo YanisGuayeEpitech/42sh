@@ -5,6 +5,7 @@
 ** Rounds for the SipHash 1-3 algorithm
 */
 
+#include "hash.h"
 #include "libmy/hash.h"
 #include "libmy/memory.h"
 

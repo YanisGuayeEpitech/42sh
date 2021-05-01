@@ -8,6 +8,7 @@
 #include "libmy/core.h"
 #include "libmy/parsing.h"
 #include "libmy/printf.h"
+#include "my_printf.h"
 
 static void set_position(char const **conv, size_t *max_pos, size_t *arg_len)
 {
@@ -22,8 +23,8 @@ static void set_position(char const **conv, size_t *max_pos, size_t *arg_len)
     }
 }
 
-static void count_parameters_in_width(char const **conv, size_t *max_pos,
-size_t *arg_len)
+static void count_parameters_in_width(
+    char const **conv, size_t *max_pos, size_t *arg_len)
 {
     if (**conv > '0' && **conv <= '9') {
         size_t tmp = 0;
@@ -34,8 +35,8 @@ size_t *arg_len)
     }
 }
 
-static void count_parameters_in_precision(char const **conv, size_t *max_pos,
-size_t *arg_len)
+static void count_parameters_in_precision(
+    char const **conv, size_t *max_pos, size_t *arg_len)
 {
     if (**conv != '.')
         return;
@@ -48,8 +49,8 @@ size_t *arg_len)
     }
 }
 
-static void count_parameters_in_conversion(char const **conv, size_t *max_pos,
-size_t *arg_len)
+static void count_parameters_in_conversion(
+    char const **conv, size_t *max_pos, size_t *arg_len)
 {
     size_t prev_max = *max_pos;
     size_t prev_len = *arg_len;

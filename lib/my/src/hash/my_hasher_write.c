@@ -5,6 +5,7 @@
 ** Writes data to be hashed
 */
 
+#include "hash.h"
 #include "libmy/core.h"
 #include "libmy/hash.h"
 #include "libmy/memory.h"

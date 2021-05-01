@@ -5,6 +5,7 @@
 ** Finishes the hash process
 */
 
+#include "hash.h"
 #include "libmy/hash.h"
 
 MY_HASH_API my_u64_t my_hasher_finish(my_hasher_t const *hasher_outer)

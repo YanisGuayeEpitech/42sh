@@ -5,8 +5,10 @@
 ** Opens a file stream
 */
 
-#include "my_fopen.h"
+#include <sys/stat.h>
+
 #include "libmy/io/iostream.h"
+#include "my_fopen.h"
 
 static int my_fopen_get_mode(const char *mode_str, int *invalid_mode)
 {
@@ -20,20 +22,32 @@ static int my_fopen_get_mode(const char *mode_str, int *invalid_mode)
     }
 }
 
+static int my_fopen_init_stream(char const *path, int mode, my_iostream_t *ios)
+{
+    int read_mode = mode == P_MY_FOPEN_R || mode == P_MY_FOPEN_R_PLUS;
+    int fd = read_mode
+        ? open(path, mode)
+        : open(path, mode,
+            S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+
+    if (fd < 0)
+        return 1;
+    if (read_mode ? my_finit_input_fd(fd, ios) : my_finit_output_fd(fd, ios)) {
+        my_fclose(ios);
+        return 2;
+    }
+    return 0;
+}
+
 MY_IO_API int my_fopen(
     const char *path, const char *mode_str, my_iostream_t *stream)
 {
     int invalid_mode = 0;
     int mode = my_fopen_get_mode(mode_str, &invalid_mode);
-    int ret;
 
     if (invalid_mode)
+        return 1;
+    if (my_fopen_init_stream(path, mode, stream))
         return 2;
-    ret = open(path, mode);
-    if (ret < 0)
-        return 3;
-    ret = my_finit_input_fd(ret, stream);
-    if (ret != 0)
-        my_fclose(stream);
-    return ret;
+    return 0;
 }

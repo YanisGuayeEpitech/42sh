@@ -5,8 +5,9 @@
 ** Tests the my_strdup function
 */
 
-#include <criterion/criterion.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <criterion/criterion.h>
 #include "libmy/ascii.h"
 
 Test(my_strdup, null_string)
@@ -21,6 +22,7 @@ Test(my_strdup, empty_string)
 
     cr_assert_neq(src, dup);
     cr_assert_str_eq(src, dup);
+    free(dup);
 }
 
 Test(my_strdup, regular_string)
@@ -30,4 +32,5 @@ Test(my_strdup, regular_string)
 
     cr_assert_neq(src, dup);
     cr_assert_str_eq(src, dup);
+    free(dup);
 }

@@ -47,7 +47,20 @@ MY_ASCII_API char *my_strupcase(char *str);
 
 #if LIBMY_ALLOW_MALLOC_FREE
 MY_ASCII_API void my_free_str_array(char *array[], int len);
+
 MY_ASCII_API char *my_strdup(char const *src);
+
+/// Duplicates the given string @c src up to @c n bytes.
+///
+/// @param src The original string, may be @c NULL.
+/// @param n The maximum number of bytes to be copied, if @c src is longer than
+/// @c n, only @c n bytes are copied and a null terminator is added.
+///
+/// @returns The duplicated string, or @c NULL if src was @c NULL or allocation
+/// failed.
+/// @since 0.3.10
+MY_ASCII_API char *my_strndup(char const *src, size_t n);
+
 MY_ASCII_API char **my_str_to_word_array(char const *str);
 #endif
 
@@ -71,80 +84,7 @@ MY_ASCII_API char **my_str_to_word_array(char const *str);
 MY_ASCII_API ssize_t my_str_csplit_iter(
     char const **begin, char const **end, char sep);
 
-MY_INLINE int my_isalpha(char c)
-{
-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-}
-
-MY_INLINE int my_isdigit(char c)
-{
-    return (c >= '0' && c <= '9');
-}
-
-MY_INLINE int my_isalnum(char c)
-{
-    return my_isalpha(c) || my_isdigit(c);
-}
-
-MY_INLINE int my_isblank(char c)
-{
-    return c == ' ' || c == '\t';
-}
-
-MY_INLINE int my_iscntrl(char c)
-{
-    return (c >= 0x00 && c <= 0x1F) || c == 0x7F;
-}
-
-MY_INLINE int my_isgraph(char c)
-{
-    return c > ' ' && c <= '~';
-}
-
-MY_INLINE int my_islower(char c)
-{
-    return c >= 'a' && c <= 'z';
-}
-
-MY_INLINE int my_isprint(char c)
-{
-    return c >= ' ' && c <= '~';
-}
-
-MY_INLINE int my_ispunct(char c)
-{
-    return my_isgraph(c) && !my_isalnum(c);
-}
-
-MY_INLINE int my_isspace(char c)
-{
-    return c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t'
-        || c == '\v';
-}
-
-MY_INLINE int my_isupper(char c)
-{
-    return c >= 'A' && c <= 'Z';
-}
-
-MY_INLINE int my_isxdigit(char c)
-{
-    return my_isdigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
-}
-
-MY_INLINE char my_toupper(char c)
-{
-    if (my_islower(c))
-        return c & 0xdf;
-    return c;
-}
-
-MY_INLINE char my_tolower(char c)
-{
-    if (my_isupper(c))
-        return c | 0x20;
-    return c;
-}
+#include "character.h"
 
 MY_API_END
 

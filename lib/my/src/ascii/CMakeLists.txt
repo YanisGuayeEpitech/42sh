@@ -5,6 +5,7 @@ set(SRC
     ${INCROOT}/ascii.h
     ${INCROOT}/ascii/config.h
     ${INCROOT}/ascii/ascii.h
+    ${INCROOT}/ascii/character.h
     ${SRCROOT}/my_revstr.c
     ${SRCROOT}/my_strcapitalize.c
     ${SRCROOT}/my_strcat.c
@@ -25,6 +26,7 @@ set(SRC
     ${SRCROOT}/my_strncat.c
     ${SRCROOT}/my_strncmp.c
     ${SRCROOT}/my_strncpy.c
+    ${SRCROOT}/my_strndup.c
     ${SRCROOT}/my_strstr.c
     ${SRCROOT}/my_strstr_n.c
     ${SRCROOT}/my_strupcase.c 
