@@ -24,7 +24,7 @@ static bool sh_lint_pipes(size_t token_count, sh_token_t tokens[token_count])
     return true;
 }
 
-bool sh_lint_tokens(size_t token_count, sh_token_t tokens[token_count])
+bool sh_lint(size_t token_count, sh_token_t tokens[token_count])
 {
     size_t end;
 

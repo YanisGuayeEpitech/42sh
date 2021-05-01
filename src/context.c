@@ -9,6 +9,8 @@
 #include <libmy/io.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "command.h"
 #include "shell.h"
 #include "util.h"
 
@@ -41,10 +43,10 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
         return 84;
     my_vec_init(&ctx->path, sizeof(char *));
     sh_ctx_reset_path(ctx);
+    my_vec_init(&ctx->pipeline, sizeof(sh_command_t));
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
     ctx->old_pwd = NULL;
-    my_vec_init(&ctx->args, sizeof(char *));
     ctx->pipe_fd[0] = -1;
     ctx->pipe_fd[1] = -1;
     return 0;
@@ -54,9 +56,9 @@ void sh_ctx_drop(sh_ctx_t *ctx)
 {
     my_vec_free(&ctx->env, &sh_free_entry);
     my_vec_free(&ctx->path, &sh_free_entry);
+    my_vec_free(&ctx->pipeline, (void (*)(void *))(&sh_command_drop));
     free(ctx->old_pwd);
     ctx->old_pwd = NULL;
-    my_vec_free(&ctx->args, NULL);
     ctx->pipe_fd[0] = -1;
     ctx->pipe_fd[1] = -1;
 }

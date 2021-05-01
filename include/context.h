@@ -17,13 +17,14 @@ typedef struct {
     my_vec_t env;
     /// A vector of the entries from the PATH environment variable.
     my_vec_t path;
+    /// A vector of sh_command_t
+    my_vec_t pipeline;
     /// Is stdin a tty?
     int is_tty;
     /// The exit code of the previous program.
     int exit_code;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
-    my_vec_t args;
     /// The pipe file descriptors.
     int pipe_fd[2];
 } sh_ctx_t;

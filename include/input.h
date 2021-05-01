@@ -69,6 +69,8 @@ SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)
 
 void sh_drop_token(void *token);
 
+char *sh_token_to_str(sh_token_t *token);
+
 /// Is @c c an argument separator character?
 ///
 /// @param c The character to check

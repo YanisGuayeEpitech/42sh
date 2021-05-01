@@ -21,32 +21,10 @@
 /// @param ctx The shell context.
 void sh_start(sh_ctx_t *ctx);
 
-bool sh_lint_tokens(size_t token_count, sh_token_t tokens[token_count]);
+bool sh_lint(size_t token_count, sh_token_t tokens[token_count]);
 
-int sh_exec_parse(
+int sh_execute(
     sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count]);
-
-typedef enum sh_pipe_pos {
-    SH_PIPE_BEGIN,
-    SH_PIPE_MIDDLE,
-    SH_PIPE_END,
-} sh_pipe_pos_t;
-
-int sh_exec_tokens(sh_ctx_t *ctx, size_t token_count,
-    sh_token_t tokens[token_count], sh_pipe_pos_t pipe_pos);
-
-/// Executes the given line.
-///
-/// @param ctx The shell context.
-/// @param argc The number of arguments, excluding the null terminator, always
-/// greater than zero.
-/// @param argv A null-terminated list of arguments, should contain at least
-/// one argument.
-/// @param pipe_pos Where this command is located in the pipe chain.
-///
-/// @returns A negative value if the shell should exit.
-int sh_exec(
-    sh_ctx_t *ctx, size_t argc, char const *argv[], sh_pipe_pos_t pipe_pos);
 
 int sh_handle_status(sh_ctx_t *ctx, int status);
 
@@ -60,14 +38,6 @@ void sh_print(sh_ctx_t *ctx, char const *msg);
 ///
 /// @param ctx The shell context.
 void sh_print_prompt(sh_ctx_t *ctx);
-
-/// Finds an executable named @c to_find in one of directories listed in $PATH.
-///
-/// @param ctx The shell context.
-/// @param to_find The executable to find.
-///
-/// @returns The full path of the executable if found, or @c NULL otherwise.
-char *sh_find_executable(sh_ctx_t *ctx, char const *to_find);
 
 /// Fetches an environment variable entry with the given key and key size.
 ///
@@ -117,10 +87,4 @@ sh_error_t sh_check_var_name(char const *name, size_t name_len);
 /// @returns The current working directory.
 char *sh_get_cwd(void);
 
-int sh_external_pipe_setup(
-    sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
-int sh_external_pipe_dup(
-    sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
-int sh_external_pipe_close(
-    sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
 #endif // !defined(__SHELL_H__)

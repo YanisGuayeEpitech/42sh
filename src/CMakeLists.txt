@@ -12,12 +12,8 @@ set(SRC
     ${SRCROOT}/cwd.c
     ${SRCROOT}/env.c
     ${SRCROOT}/error.c
-    ${SRCROOT}/exec.c
-    ${SRCROOT}/external_pipe.c
-    ${SRCROOT}/exec_tokens.c
-    ${SRCROOT}/exec_parse.c
-    ${SRCROOT}/find_executable.c
-    ${SRCROOT}/lint_tokens.c
+    ${SRCROOT}/execute.c
+    ${SRCROOT}/lint.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c
     ${SRCROOT}/reset_path.c
@@ -26,6 +22,7 @@ set(SRC
 )
 
 add_subdirectory(builtin)
+add_subdirectory(command)
 add_subdirectory(input)
 add_subdirectory(util)
 

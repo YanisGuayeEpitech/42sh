@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 
-#include "shell.h"
+#include "command.h"
 
 static int sclose(int *fd)
 {
