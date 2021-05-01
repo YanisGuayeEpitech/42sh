@@ -22,9 +22,6 @@ typedef struct {
 /// @return The builtin, or @c NULL if not found.
 sh_builtin_t const *sh_get_builtin(char const *name);
 
-int sh_exec_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
-    char const *argv[]);
-
 typedef enum {
     /// '-p' option.
     SH_DIRS_PRINT = 1,

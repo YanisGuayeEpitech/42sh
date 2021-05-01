@@ -38,16 +38,3 @@ sh_builtin_t const *sh_get_builtin(char const *name)
         return NULL;
     return &BUILTINS_DATA[pos];
 }
-
-int sh_exec_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
-    char const *argv[])
-{
-    int should_exit = 0;
-
-    ctx->exit_code = (*builtin->run)(ctx, &should_exit, argc, argv);
-    my_flush_stdout();
-    my_flush_stderr();
-    if (should_exit)
-        return -1;
-    return 0;
-}

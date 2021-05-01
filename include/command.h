@@ -19,9 +19,11 @@ typedef enum sh_pipe_pos {
 } sh_pipe_pos_t;
 
 typedef enum sh_command_type {
+    SH_COMMAND_UNRESOLVED,
     SH_COMMAND_EXTERNAL,
     SH_COMMAND_BUILTIN,
-    SH_COMMAND_INVALID,
+    SH_COMMAND_NOT_FOUND,
+    SH_COMMAND_TYPE_COUNT,
 } sh_command_type_t;
 
 typedef struct sh_command_base {
@@ -56,10 +58,15 @@ void sh_command_drop(sh_command_t *command);
 int sh_command_parse(sh_command_t *command, size_t token_count,
     sh_token_t tokens[token_count], sh_pipe_pos_t pipe_pos);
 
-int sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
+bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
 int sh_command_execute(sh_ctx_t *ctx, sh_command_t const *command,
     sh_command_t const *next_command);
+
+int sh_execute_external(sh_ctx_t *ctx, char const *path, char const *argv[],
+    sh_pipe_pos_t pipe_pos);
+int sh_execute_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
+    char const *argv[]);
 
 int sh_external_pipe_setup(
     sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);

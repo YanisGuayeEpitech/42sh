@@ -5,6 +5,8 @@ set(SRC
     ${SRC}
     ${INCROOT}/command.h
     ${SRCROOT}/command_drop.c
+    ${SRCROOT}/command_execute_builtin.c
+    ${SRCROOT}/command_execute_external.c
     ${SRCROOT}/command_execute.c
     ${SRCROOT}/command_init.c
     ${SRCROOT}/command_parse.c

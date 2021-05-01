@@ -49,7 +49,7 @@ static char *sh_find_executable(sh_ctx_t *ctx, char const *to_find)
     return found;
 }
 
-static int sh_command_resolve_external(
+static bool sh_command_resolve_external(
     sh_ctx_t *ctx, sh_command_t *command, char const *name)
 {
     bool is_path = my_strchr(name, '/') != NULL;
@@ -57,32 +57,26 @@ static int sh_command_resolve_external(
     command->external.path =
         is_path ? my_strdup(name) : sh_find_executable(ctx, name);
     if (!command->external.path) {
-        my_fprintf(MY_STDERR, "%s: Command not found.\n", name);
-        my_flush_stderr();
-        return 1;
-    } else if (access(command->external.path, X_OK) < 0) {
-        perror(name);
-        if (!is_path)
-            free((char *)command->external.path);
-        return 1;
+        command->command_type = SH_COMMAND_NOT_FOUND;
+        return false;
     }
     command->command_type = SH_COMMAND_EXTERNAL;
-    return 0;
+    return true;
 }
 
-int sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command)
+bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command)
 {
     sh_builtin_t const *builtin;
     char const *name;
 
     if (command->base.args.length == 0)
-        return 1;
+        return false;
     name = MY_VEC_GET(char const *, &command->base.args, 0);
     builtin = sh_get_builtin(name);
     if (builtin != NULL) {
         command->command_type = SH_COMMAND_BUILTIN;
         command->builtin.builtin = builtin;
-        return 0;
+        return true;
     }
     return sh_command_resolve_external(ctx, command, name);
 }

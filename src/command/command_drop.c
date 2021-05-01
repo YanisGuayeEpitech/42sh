@@ -19,16 +19,15 @@ static void sh_command_free_arg(void *arg)
 void sh_command_reset(sh_command_t *command)
 {
     assert(command->command_type >= 0
-        && command->command_type <= SH_COMMAND_INVALID);
+        && command->command_type < SH_COMMAND_TYPE_COUNT);
     switch (command->command_type) {
         case SH_COMMAND_BUILTIN: command->builtin.builtin = NULL; break;
         case SH_COMMAND_EXTERNAL:
             my_sfree((void **)&command->external.path);
             break;
-        case SH_COMMAND_INVALID: break;
-        default: __builtin_unreachable();
+        default: break;
     }
-    command->command_type = SH_COMMAND_INVALID;
+    command->command_type = SH_COMMAND_UNRESOLVED;
     my_vec_clear(&command->base.args, &sh_free_entry);
     command->base.pipe_pos = SH_PIPE_INVALID;
 }

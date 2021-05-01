@@ -11,6 +11,6 @@
 
 void sh_command_init(sh_command_t *command)
 {
-    *command = (sh_command_t){.command_type = SH_COMMAND_INVALID};
+    *command = (sh_command_t){.command_type = SH_COMMAND_UNRESOLVED};
     my_vec_init(&command->base.args, sizeof(char *));
 }
