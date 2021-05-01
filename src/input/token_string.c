@@ -11,7 +11,7 @@
 
 #include "input.h"
 
-bool sh_token_quoted_string(
+int sh_token_quoted_string(
     sh_token_stream_t *stream, sh_token_t *token, char term)
 {
     char *end = my_memchr(
@@ -21,22 +21,22 @@ bool sh_token_quoted_string(
     if (end == NULL) {
         my_fprintf(MY_STDERR, "Unmatched '%c'\n", end);
         my_flush_stderr();
-        return false;
+        return 1;
     }
     len = (end - SH_STREAM_CURRENT(stream, 0)) + 1;
     *token = (sh_token_t){.token_type = SH_TOKEN_STRING,
         .str = my_memdup(SH_STREAM_CURRENT(stream, 0), sizeof(char) * len)};
     if (token->str == NULL)
-        return false;
+        return 1;
     token->str[len - 1] = '\0';
     stream->line_pos += len;
-    return true;
+    return 0;
 }
 
 static ssize_t sh_token_unquoted_string_copy(
     sh_token_stream_t *stream, my_vec_t *str)
 {
-    size_t buf_len = stream->line_buf.length - 1;
+    size_t buf_len = stream->line_buf.length;
     size_t len = 0;
     char c;
 
@@ -54,7 +54,7 @@ static ssize_t sh_token_unquoted_string_copy(
     return len;
 }
 
-bool sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token)
+int sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token)
 {
     my_vec_t str;
     ssize_t len = sh_token_unquoted_string_copy(stream, &str);
@@ -62,9 +62,9 @@ bool sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token)
 
     if (len < 0 || my_vec_push(&str, &c) != MY_VEC_OK) {
         my_vec_free(&str, NULL);
-        return false;
+        return 1;
     }
     *token = (sh_token_t){.token_type = SH_TOKEN_STRING, .str = str.data};
     stream->line_pos += len;
-    return true;
+    return 0;
 }
