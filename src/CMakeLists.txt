@@ -7,7 +7,6 @@ set(SRC
     ${INCROOT}/definition.h
     ${INCROOT}/error.h
     ${INCROOT}/shell.h
-    ${SRCROOT}/builtin.c
     ${SRCROOT}/context.c
     ${SRCROOT}/cwd.c
     ${SRCROOT}/env.c

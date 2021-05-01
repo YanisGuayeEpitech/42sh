@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** minishell2
 ** File description:
-** Handle builtin commands
+** Fetch builtin commands
 */
 
 #include "builtin.h"
