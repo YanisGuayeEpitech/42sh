@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "shell.h"
+#include "util.h"
 
 static int sh_copy_env(sh_ctx_t *ctx, char **envp)
 {

@@ -8,7 +8,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <criterion/criterion.h>
-#include "shell.h"
+
+#include "util.h"
 
 Test(sh_create_file_path, no_separator)
 {

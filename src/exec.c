@@ -13,8 +13,10 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
 #include "builtin.h"
 #include "shell.h"
+#include "util.h"
 
 static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
 {

@@ -9,7 +9,6 @@ set(SRC
     ${INCROOT}/shell.h
     ${SRCROOT}/builtin.c
     ${SRCROOT}/context.c
-    ${SRCROOT}/create_file_path.c
     ${SRCROOT}/cwd.c
     ${SRCROOT}/env.c
     ${SRCROOT}/error.c
@@ -24,11 +23,11 @@ set(SRC
     ${SRCROOT}/reset_path.c
     ${SRCROOT}/start.c
     ${SRCROOT}/status.c
-    ${SRCROOT}/util.c
 )
 
 add_subdirectory(builtin)
 add_subdirectory(input)
+add_subdirectory(util)
 
 source_group("" FILES ${SRC})
 

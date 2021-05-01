@@ -7,7 +7,9 @@
 
 #include <libmy/ascii.h>
 #include <stdlib.h>
+
 #include "shell.h"
+#include "util.h"
 
 static int sh_copy_path_dir(my_vec_t *pathvec, size_t dir_len, char const *dir)
 {
