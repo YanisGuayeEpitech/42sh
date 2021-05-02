@@ -13,7 +13,6 @@ set(SRC
     ${SRCROOT}/error.c
     ${SRCROOT}/execute.c
     ${SRCROOT}/lint.c
-    ${SRCROOT}/parsing.c
     ${SRCROOT}/print.c
     ${SRCROOT}/reset_path.c
     ${SRCROOT}/start.c
