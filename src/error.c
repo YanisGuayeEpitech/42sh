@@ -24,6 +24,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_INVALID_NULL_COMMAND] = "Invalid null command",
     [SH_MISSING_REDIRECT_NAME] = "Missing name for redirect",
     [SH_AMBIGUOUS_INPUT_REDIRECT] = "Ambiguous input redirect",
+    [SH_AMBIGUOUS_OUTPUT_REDIRECT] = "Ambiguous output redirect",
 };
 
 char const *sh_strerror(sh_error_t code)

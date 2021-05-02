@@ -46,14 +46,12 @@ static int sh_exec_parse_pipes(
     sh_pipe_pos_t pipe_pos = SH_PIPE_BEGIN;
 
     while (tcount > 0) {
-        for (end = 0; end < tcount && tokens[end].token_type != SH_TOKEN_PIPE;)
-            ++end;
+        end = sh_token_find(tcount, tokens, SH_TOKEN_PIPE);
         ret = sh_command_parse(sh_pipeline_push(ctx), end, tokens,
             end == tcount ? SH_PIPE_END : pipe_pos);
         if (ret != 0)
             return ret;
-        tokens += end;
-        tcount -= end;
+        sh_token_advance(&tcount, &tokens, end);
         pipe_pos = SH_PIPE_MIDDLE;
         sh_token_consume(&tcount, &tokens, SH_TOKEN_PIPE);
     }
@@ -67,19 +65,12 @@ static int sh_exec_parse_semicolons(
     int ret;
 
     do {
-        end = 0;
-        while (token_count > 0 && tokens->token_type == SH_TOKEN_SEMICOLON) {
-            --token_count;
-            ++tokens;
-        }
-        while (
-            end < token_count && tokens[end].token_type != SH_TOKEN_SEMICOLON)
-            ++end;
+        sh_token_consume_while(&token_count, &tokens, SH_TOKEN_SEMICOLON);
+        end = sh_token_find(token_count, tokens, SH_TOKEN_SEMICOLON);
         ret = sh_exec_parse_pipes(ctx, end, tokens);
         if (ret != 0)
             return ret;
-        tokens += end;
-        token_count -= end;
+        sh_token_advance(&token_count, &tokens, end);
     } while (end != 0);
     return 0;
 }
@@ -87,11 +78,14 @@ static int sh_exec_parse_semicolons(
 int sh_execute(
     sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
 {
+    sh_error_t err;
     int ret;
 
-    if (!sh_lint(token_count, tokens)) {
+    err = sh_lint(token_count, tokens);
+    if (err != SH_OK) {
         ctx->exit_code = 1;
-        return 1;
+        sh_perror(NULL, err);
+        return ctx->is_tty ? 1 : -1;
     }
     ret = sh_exec_parse_semicolons(ctx, token_count, tokens);
     if (ret > 0)
