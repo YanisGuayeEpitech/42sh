@@ -55,6 +55,7 @@ int sh_command_execute(
         case SH_COMMAND_BUILTIN:
             return sh_execute_builtin(ctx, &command->builtin);
         case SH_COMMAND_NOT_FOUND:
+            ctx->exit_code = 1;
             my_eputs(MY_VEC_GET(char *, &command->base.args, 0));
             my_eputs(": Command not found.\n");
             my_flush_stderr();
