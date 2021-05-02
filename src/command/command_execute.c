@@ -6,6 +6,7 @@
 */
 
 #include <assert.h>
+#include <fcntl.h>
 #include <libmy/printf.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,11 +16,35 @@
 #include "command.h"
 #include "shell.h"
 
-int sh_command_execute(sh_ctx_t *ctx, sh_command_t const *command,
-    sh_command_t const *next_command)
+static int sh_command_open_redirects(sh_ctx_t *ctx, sh_command_t *command)
 {
-    assert(ctx != NULL);
-    assert(command != NULL);
+    int input_fd = -1;
+    int output_fd = -1;
+
+    if (command->base.input != NULL) {
+        input_fd = open(command->base.input, O_RDONLY);
+        if (input_fd < 0) {
+            ctx->exit_code = 1;
+            return sh_rerror_errno(command->base.input, 0);
+        }
+    }
+    if (command->base.output != NULL) {
+        output_fd = open(command->base.output, O_WRONLY | O_CREAT, 0661);
+        if (output_fd < 0) {
+            ctx->exit_code = 1;
+            return sh_rerror_errno(command->base.output, 0);
+        }
+    }
+}
+
+int sh_command_execute(
+    sh_ctx_t *ctx, sh_command_t *command, sh_command_t const *next_command)
+{
+    assert(ctx != NULL && command != NULL);
+    // if (command->base.input != NULL && access(command->base.input, R_OK)) {
+    //    ctx->exit_code = 1;
+    //    return sh_rerror_errno(command->base.input, 0);
+    //}
     switch (command->command_type) {
         case SH_COMMAND_EXTERNAL:
             return sh_execute_external(ctx, command->external.path,

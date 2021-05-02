@@ -6,5 +6,6 @@ set(SRC
     ${INCROOT}/util.h
     ${SRCROOT}/create_file_path.c
     ${SRCROOT}/free_entry.c
+    ${SRCROOT}/sclose.c
     PARENT_SCOPE
 )

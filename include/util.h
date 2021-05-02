@@ -27,4 +27,14 @@ char *sh_create_file_path(
 /// @param ptr The pointer to free.
 void sh_free_entry(void *ptr);
 
+/// Closes the file descriptor at @c fd and sets the value to -1.
+///
+/// Does nothing if @c *fd is already -1.
+///
+/// @param fd A pointer to the file descriptor.
+///
+/// @returns The return value of close(2), or 0 if @c *fd was -1 before the
+/// call.
+int sh_sclose(int *fd);
+
 #endif // !defined(__SHELL_UTIL_H__)
