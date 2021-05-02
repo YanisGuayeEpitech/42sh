@@ -13,6 +13,7 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
     sh_token_t tokens[token_count], sh_pipe_pos_t pipe_pos)
 {
     char const *value;
+    size_t end;
 
     assert(tokens != NULL);
     assert(pipe_pos >= 0 && pipe_pos < SH_PIPE_INVALID);
@@ -21,7 +22,8 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
     command->base.pipe_pos = pipe_pos;
     if (my_vec_ensure_capacity(&command->base.args, token_count + 1))
         return sh_rerror(NULL, SH_OUT_OF_MEMORY, 1);
-    for (size_t i = 0; i < token_count; ++i) {
+    end = sh_token_find(token_count, tokens, SH_REDIRECT_TOKENS);
+    for (size_t i = 0; i < end; ++i) {
         value = sh_token_to_str(&tokens[i]);
         my_vec_push(&command->base.args, &value);
     }

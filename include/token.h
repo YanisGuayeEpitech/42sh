@@ -26,6 +26,10 @@ typedef enum sh_token_type {
     SH_TOKEN_TYPE_COUNT = 1 << 7,
 } sh_token_type_t;
 
+/// All the types of tokens used in redirections (execpt pipe)
+#define SH_REDIRECT_TOKENS \
+    (SH_TOKEN_LT | SH_TOKEN_LT_LT | SH_TOKEN_GT | SH_TOKEN_GT_GT)
+
 typedef struct sh_token {
     sh_token_type_t token_type;
     union {
