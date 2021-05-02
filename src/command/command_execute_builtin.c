@@ -15,8 +15,8 @@ int sh_execute_builtin(sh_ctx_t *ctx, sh_builtin_command_t *command)
 {
     int should_exit = 0;
 
-    ctx->exit_code = (*command->builtin->run)(
-        ctx, &should_exit, command->base.args.length, command->base.args.data);
+    ctx->exit_code = (*command->builtin->run)(ctx, &should_exit,
+        command->base.args.length - 1, command->base.args.data);
     my_flush_stdout();
     my_flush_stderr();
     if (should_exit)
