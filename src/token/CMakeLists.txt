@@ -5,6 +5,7 @@ set(SRC
     ${SRC}
     ${INCROOT}/token.h
     ${SRCROOT}/token_consume.c
+    ${SRCROOT}/token_find.c
     ${SRCROOT}/token_stream_drop.c
     ${SRCROOT}/token_stream_init.c
     ${SRCROOT}/token_stream_parse.c

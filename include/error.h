@@ -22,6 +22,8 @@ typedef enum sh_error {
     SH_CD_HOME_DIR,
     SH_OUT_OF_MEMORY,
     SH_INVALID_NULL_COMMAND,
+    SH_MISSING_REDIRECT_NAME,
+    SH_AMBIGUOUS_INPUT_REDIRECT,
     SH_ERROR_MAX,
 } sh_error_t;
 

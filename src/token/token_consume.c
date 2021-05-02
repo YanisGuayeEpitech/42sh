@@ -8,9 +8,9 @@
 #include "token.h"
 
 bool sh_token_consume(
-    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type)
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
 {
-    if (*token_count > 0 && (*tokens)->token_type == token_type) {
+    if (sh_token_match(*token_count, *tokens, token_types)) {
         ++(*tokens);
         --(*token_count);
         return true;
@@ -19,9 +19,9 @@ bool sh_token_consume(
 }
 
 bool sh_token_consume_except(
-    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type)
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
 {
-    if (*token_count > 0 && (*tokens)->token_type != token_type) {
+    if (sh_token_match_except(*token_count, *tokens, token_types)) {
         ++(*tokens);
         --(*token_count);
         return true;

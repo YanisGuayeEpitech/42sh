@@ -16,14 +16,14 @@
 #include "error.h"
 
 typedef enum sh_token_type {
-    SH_TOKEN_STRING,
-    SH_TOKEN_PIPE,
-    SH_TOKEN_SEMICOLON,
-    SH_TOKEN_LT,
-    SH_TOKEN_LT_LT,
-    SH_TOKEN_GT,
-    SH_TOKEN_GT_GT,
-    SH_TOKEN_TYPE_COUNT,
+    SH_TOKEN_STRING = 1 << 0,
+    SH_TOKEN_PIPE = 1 << 1,
+    SH_TOKEN_SEMICOLON = 1 << 2,
+    SH_TOKEN_LT = 1 << 3,
+    SH_TOKEN_LT_LT = 1 << 4,
+    SH_TOKEN_GT = 1 << 5,
+    SH_TOKEN_GT_GT = 1 << 6,
+    SH_TOKEN_TYPE_COUNT = 1 << 7,
 } sh_token_type_t;
 
 typedef struct sh_token {
@@ -87,11 +87,42 @@ SH_INLINE bool sh_is_token_char(char c)
         || c == '>';
 }
 
+SH_INLINE bool sh_token_match(
+    size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
+{
+    return token_count > 0 && (tokens[0].token_type & token_types);
+}
+
+SH_INLINE bool sh_token_match_except(
+    size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
+{
+    return token_count > 0 && !(tokens[0].token_type & token_types);
+}
+
 bool sh_token_consume(
-    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type);
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types);
+
+SH_INLINE bool sh_token_consume_while(
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
+{
+    while (sh_token_consume(token_count, tokens, token_types))
+        ;
+    return *token_count > 0;
+}
 
 bool sh_token_consume_except(
-    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_type);
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types);
+
+SH_INLINE bool sh_token_consume_until(
+    size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
+{
+    while (sh_token_consume_except(token_count, tokens, token_types))
+        ;
+    return *token_count > 0;
+}
+
+size_t sh_token_find(size_t token_count, sh_token_t const tokens[token_count],
+    sh_token_type_t token_types);
 
 /// @returns 0 on success, 1 on token error, or -1 on EOL.
 int sh_token_quoted_string(
