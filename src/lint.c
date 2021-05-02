@@ -7,37 +7,18 @@
 
 #include "shell.h"
 
-static bool sh_lint_input_redirects(
-    size_t token_count, sh_token_t tokens[token_count], sh_error_t *err)
+static int sh_lint_redirects(size_t token_count,
+    sh_token_t tokens[token_count], sh_error_t *err,
+    sh_token_type_t token_type)
 {
     bool has_redirect = false;
+    int token_types = token_type | (token_type << 1);
 
     while (token_count > 0) {
-        bool new_redirect = sh_token_consume_until(
-            &token_count, &tokens, SH_TOKEN_LT | SH_TOKEN_LT_LT);
+        bool new_redirect =
+            sh_token_consume_until(&token_count, &tokens, token_types);
 
-        if (sh_token_consume(
-                &token_count, &tokens, SH_TOKEN_LT | SH_TOKEN_LT_LT)
-            && !sh_token_consume(&token_count, &tokens, SH_TOKEN_STRING))
-            return sh_serror(err, SH_MISSING_REDIRECT_NAME, false);
-        if (has_redirect && new_redirect)
-            return sh_serror(err, SH_AMBIGUOUS_INPUT_REDIRECT, false);
-        has_redirect |= new_redirect;
-    }
-    return true;
-}
-
-static int sh_lint_output_redirects(
-    size_t token_count, sh_token_t tokens[token_count], sh_error_t *err)
-{
-    bool has_redirect = false;
-
-    while (token_count > 0) {
-        bool new_redirect = sh_token_consume_until(
-            &token_count, &tokens, SH_TOKEN_GT | SH_TOKEN_GT_GT);
-
-        if (sh_token_consume(
-                &token_count, &tokens, SH_TOKEN_GT | SH_TOKEN_GT_GT)
+        if (sh_token_consume(&token_count, &tokens, token_types)
             && !sh_token_consume(&token_count, &tokens, SH_TOKEN_STRING))
             return sh_serror(err, SH_MISSING_REDIRECT_NAME, -1);
         if (has_redirect && new_redirect)
@@ -48,21 +29,25 @@ static int sh_lint_output_redirects(
 }
 
 static bool sh_lint_pipes(
-    size_t token_count, sh_token_t tokens[token_count], sh_error_t *err)
+    size_t tcount, sh_token_t tokens[tcount], sh_error_t *err)
 {
+    size_t old_tcount = tcount;
     size_t end;
-    int redirect_count = sh_lint_output_redirects(token_count, tokens, err);
+    int input_count;
+    int output_count;
 
-    if (redirect_count < 0
-        || !sh_lint_input_redirects(token_count, tokens, err))
-        return false;
-    while (token_count > 0) {
-        end = sh_token_find(token_count, tokens, SH_TOKEN_PIPE);
-        if (redirect_count + (end < token_count) > 1)
+    while (tcount > 0) {
+        end = sh_token_find(tcount, tokens, SH_TOKEN_PIPE);
+        input_count = sh_lint_redirects(end, tokens, err, SH_TOKEN_LT);
+        output_count = sh_lint_redirects(end, tokens, err, SH_TOKEN_GT);
+        if (input_count < 0 || output_count < 0)
+            return false;
+        if (input_count > 1 || (input_count == 1 && old_tcount != tcount))
+            return sh_serror(err, SH_AMBIGUOUS_INPUT_REDIRECT, false);
+        if (output_count + (end < tcount) > 1)
             return sh_serror(err, SH_AMBIGUOUS_OUTPUT_REDIRECT, false);
-        sh_token_advance(&token_count, &tokens, end);
-        if (sh_token_consume(&token_count, &tokens, SH_TOKEN_PIPE)
-            && token_count == 0)
+        sh_token_advance(&tcount, &tokens, end);
+        if (sh_token_consume(&tcount, &tokens, SH_TOKEN_PIPE) && tcount == 0)
             return sh_serror(err, SH_INVALID_NULL_COMMAND, false);
     }
     return true;
