@@ -84,7 +84,7 @@ int sh_external_pipe_close(
 
 #define SH_OUTPUT_FLAGS_BASE (O_WRONLY | O_CREAT | O_CLOEXEC)
 #define SH_OUTPUT_FLAGS(cmd) \
-    (SH_OUTPUT_FLAGS_BASE | ((cmd)->base.truncate ? O_TRUNC : 0))
+    (SH_OUTPUT_FLAGS_BASE | ((cmd)->base.truncate ? O_TRUNC : O_APPEND))
 
 /// Files created by an output redirect have the mode:
 /// u+rw, g+r, o+r

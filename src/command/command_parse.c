@@ -24,6 +24,7 @@ static int sh_command_parse_redirections(
         command->base.output = sh_token_to_str(&tokens[pos + 1]);
         if (command->base.output == NULL)
             return sh_rerror(NULL, SH_OUT_OF_MEMORY, -1);
+        command->base.truncate = tokens[pos].token_type == SH_TOKEN_GT;
     }
     return 0;
 }

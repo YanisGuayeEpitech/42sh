@@ -61,5 +61,4 @@ int sh_command_execute(
             return 0;
         default: return sh_rerror(NULL, SH_OUT_OF_MEMORY, -1);
     }
-    (void)next_command;
 }
