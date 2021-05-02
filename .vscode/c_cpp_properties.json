@@ -1,36 +1,8 @@
 {
     "configurations": [
         {
-            "name": "LibMy dependent",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "LIBMY_MODULE_ASCII",
-                "LIBMY_MODULE_COLLECTIONS",
-                "LIBMY_MODULE_CORE",
-                "LIBMY_MODULE_IO",
-                "LIBMY_MODULE_MATH",
-                "LIBMY_MODULE_MEMORY",
-                "LIBMY_MODULE_MISC",
-                "LIBMY_MODULE_PARSING",
-                "LIBMY_MODULE_PRINTF",
-                "LIBMY_ALLOW_MALLOC",
-                "LIBMY_ALLOW_OPEN",
-                "LIBMY_ALLOW_READ",
-                "LIBMY_ALLOW_CLOSE",
-                "LIBMY_ALLOW_WRITE",
-                "LIBMY_VERSION=0.2.0",
-                "LIBMY_VERSION_MAJOR=0",
-                "LIBMY_VERSION_MINOR=2",
-                "LIBMY_VERSION_PATCH=0",
-                "LIBMY_LITTLE_ENDIAN"
-            ],
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c99",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "gcc-x64",
-            "compilerArgs": [],
+            "name": "default",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
