@@ -7,8 +7,8 @@
 
 #include "token.h"
 
-size_t sh_token_find(size_t token_count, sh_token_t const tokens[token_count],
-    sh_token_type_t token_types)
+size_t sh_token_find(
+    size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
 {
     size_t pos = 0;
 

@@ -87,21 +87,71 @@ SH_INLINE bool sh_is_token_char(char c)
         || c == '>';
 }
 
+/// Checks if the type of the first token in @c tokens matches @b any of the
+/// types given in @c token_types.
+///
+/// @param token_count The number of tokens in @c tokens.
+/// @param tokens An array of tokens of minimum size @c token_size, must be a
+/// valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether the next token's type matches one in @c token_types.
+/// returns @c false of token_count == 0.
 SH_INLINE bool sh_token_match(
     size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
 {
     return token_count > 0 && (tokens[0].token_type & token_types);
 }
 
+/// Checks if the type of the first token in @c tokens matches @b none of the
+/// types given in @c token_types.
+///
+/// @param token_count The number of tokens in @c tokens.
+/// @param tokens An array of tokens of minimum size @c token_size, must be a
+/// valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether the next token's type matches none in @c token_types.
+/// returns @c false of token_count == 0.
 SH_INLINE bool sh_token_match_except(
     size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
 {
     return token_count > 0 && !(tokens[0].token_type & token_types);
 }
 
+/// Removes the next token from the @c tokens pointer if its type matches any
+/// in @c token_types.
+///
+/// Decrements the value of @c token_count and increments the value
+/// of @c tokens if the token is consumed.
+///
+/// @param token_count A pointer to the number of tokens in the value
+/// of @c tokens, must be a valid pointer.
+/// @param tokens A pointer to an array of tokens of minimum size
+/// of @c token_size, must be a valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether the token has been consumed.
 bool sh_token_consume(
     size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types);
 
+/// Removes all @b consecutive tokens from the @c tokens pointer if their types
+/// matches any in @c token_types.
+///
+/// Decrements the value of @c token_count and increments the value
+/// of @c tokens for each token consumed.
+///
+/// @param token_count A pointer to the number of tokens in the value
+/// of @c tokens, must be a valid pointer.
+/// @param tokens A pointer to an array of tokens of minimum size
+/// of @c token_size, must be a valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether there are remaining tokens in @c tokens.
 SH_INLINE bool sh_token_consume_while(
     size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
 {
@@ -110,9 +160,37 @@ SH_INLINE bool sh_token_consume_while(
     return *token_count > 0;
 }
 
+/// Removes the next token from the @c tokens pointer if its type @b doesn't
+/// match in @c token_types.
+///
+/// Decrements the value of @c token_count and increments the value
+/// of @c tokens if the token is consumed.
+///
+/// @param token_count A pointer to the number of tokens in the value
+/// of @c tokens, must be a valid pointer.
+/// @param tokens A pointer to an array of tokens of minimum size
+/// of @c token_size, must be a valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether the token has been consumed.
 bool sh_token_consume_except(
     size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types);
 
+/// Removes all @b consecutive tokens from the @c tokens pointer if their types
+/// @b doesn't match any in @c token_types.
+///
+/// Decrements the value of @c token_count and increments the value
+/// of @c tokens for each token consumed.
+///
+/// @param token_count A pointer to the number of tokens in the value
+/// of @c tokens, must be a valid pointer.
+/// @param tokens A pointer to an array of tokens of minimum size
+/// of @c token_size, must be a valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns Whether there are remaining tokens in @c tokens.
 SH_INLINE bool sh_token_consume_until(
     size_t *token_count, sh_token_t **tokens, sh_token_type_t token_types)
 {
@@ -121,8 +199,38 @@ SH_INLINE bool sh_token_consume_until(
     return *token_count > 0;
 }
 
-size_t sh_token_find(size_t token_count, sh_token_t const tokens[token_count],
+/// Fetches the offset of the next token whose type matches any
+/// in @c token_types.
+///
+/// @param token_count The number of tokens in @c tokens.
+/// @param tokens An array of tokens of minimum size @c token_size, must be a
+/// valid pointer.
+/// @param token_types The token types to match, multiple types can be
+/// bitwise-or'd.
+///
+/// @returns The offset of the next matching token, or @c token_count if not
+/// found.
+size_t sh_token_find(size_t token_count, sh_token_t const tokens[],
     sh_token_type_t token_types);
+
+/// Removes @c to_advance tokens from the value of @c tokens.
+///
+/// Decrements the value of @c token_count and increments the value
+/// of @c tokens by @c to_advance.
+///
+/// @param token_count A pointer to the number of tokens in the value
+/// of @c tokens, must be a valid pointer.
+/// @param tokens A pointer to an array of tokens of minimum size
+/// of @c token_size, must be a valid pointer.
+/// @param to_advance The number of token to consume, must be lower or equal
+/// to @c token_count
+SH_INLINE void sh_token_advance(
+    size_t *token_count, sh_token_t **tokens, size_t to_advance)
+{
+    assert(to_advance <= *token_count);
+    *token_count -= to_advance;
+    *tokens += to_advance;
+}
 
 /// @returns 0 on success, 1 on token error, or -1 on EOL.
 int sh_token_quoted_string(
