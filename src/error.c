@@ -6,7 +6,7 @@
 */
 
 #include <errno.h>
-#include <libmy/io.h>
+#include <libmy/io/iostream.h>
 #include <string.h>
 #include "shell.h"
 
@@ -44,6 +44,7 @@ sh_error_t sh_perror(char const *prefix, sh_error_t code)
     }
     my_eputs(sh_strerror(code));
     my_eputs(".\n");
+    my_flush_stderr();
     return code;
 }
 
@@ -55,5 +56,6 @@ int sh_perror_errno(char const *prefix)
     }
     my_eputs(strerror(errno));
     my_eputs(".\n");
+    my_flush_stderr();
     return errno;
 }

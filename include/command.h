@@ -30,6 +30,13 @@ typedef struct sh_command_base {
     sh_command_type_t command_type;
     my_vec_t args;
     sh_pipe_pos_t pipe_pos;
+    /// The path of the input redirection, set to @c NULL if no redirection.
+    char const *input;
+    /// The path of the output redirection, set to @c NULL if no redirection.
+    char const *output;
+    int input_fd;
+    int output_fd;
+    bool truncate;
 } sh_command_base_t;
 
 typedef struct sh_builtin_command {
@@ -56,12 +63,12 @@ void sh_command_reset(sh_command_t *command);
 void sh_command_drop(sh_command_t *command);
 
 int sh_command_parse(sh_command_t *command, size_t token_count,
-    sh_token_t tokens[token_count], sh_pipe_pos_t pipe_pos);
+    sh_token_t tokens[], sh_pipe_pos_t pipe_pos);
 
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
-int sh_command_execute(sh_ctx_t *ctx, sh_command_t const *command,
-    sh_command_t const *next_command);
+int sh_command_execute(
+    sh_ctx_t *ctx, sh_command_t *command, sh_command_t const *next_command);
 
 int sh_execute_external(sh_ctx_t *ctx, char const *path, char const *argv[],
     sh_pipe_pos_t pipe_pos);

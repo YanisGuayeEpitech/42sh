@@ -30,6 +30,10 @@ void sh_command_reset(sh_command_t *command)
     command->command_type = SH_COMMAND_UNRESOLVED;
     my_vec_clear(&command->base.args, &sh_free_entry);
     command->base.pipe_pos = SH_PIPE_INVALID;
+    my_sfree((void **)&command->base.input);
+    my_sfree((void **)&command->base.output);
+    sh_sclose(&command->base.input_fd);
+    sh_sclose(&command->base.output_fd);
 }
 
 void sh_command_drop(sh_command_t *command)

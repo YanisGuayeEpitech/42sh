@@ -16,35 +16,40 @@
 #include "command.h"
 #include "shell.h"
 
+/// Files created by an output redirect have the mode:
+/// u+rw, g+r, o+r
+static const mode_t SH_OUTPUT_MODE = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+
 static int sh_command_open_redirects(sh_ctx_t *ctx, sh_command_t *command)
 {
-    int input_fd = -1;
-    int output_fd = -1;
-
     if (command->base.input != NULL) {
-        input_fd = open(command->base.input, O_RDONLY);
-        if (input_fd < 0) {
+        command->base.input_fd =
+            open(command->base.input, O_RDONLY | O_CLOEXEC);
+        if (command->base.input_fd < 0) {
             ctx->exit_code = 1;
-            return sh_rerror_errno(command->base.input, 0);
+            return sh_rerror_errno(command->base.input, 1);
         }
     }
     if (command->base.output != NULL) {
-        output_fd = open(command->base.output, O_WRONLY | O_CREAT, 0661);
-        if (output_fd < 0) {
+        command->base.output_fd = open(command->base.output,
+            O_WRONLY | O_CREAT | O_CLOEXEC
+                | (command->base.truncate ? O_TRUNC : 0),
+            SH_OUTPUT_MODE);
+        if (command->base.output_fd < 0) {
             ctx->exit_code = 1;
-            return sh_rerror_errno(command->base.output, 0);
+            return sh_rerror_errno(command->base.output, 1);
         }
     }
+    return 0;
 }
 
 int sh_command_execute(
     sh_ctx_t *ctx, sh_command_t *command, sh_command_t const *next_command)
 {
-    assert(ctx != NULL && command != NULL);
-    // if (command->base.input != NULL && access(command->base.input, R_OK)) {
-    //    ctx->exit_code = 1;
-    //    return sh_rerror_errno(command->base.input, 0);
-    //}
+    assert(ctx != NULL);
+    assert(command != NULL);
+    if (sh_command_open_redirects(ctx, command))
+        return 0;
     switch (command->command_type) {
         case SH_COMMAND_EXTERNAL:
             return sh_execute_external(ctx, command->external.path,

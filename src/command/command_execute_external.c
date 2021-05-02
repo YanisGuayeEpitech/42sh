@@ -6,7 +6,6 @@
 */
 
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -17,7 +16,7 @@
 static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
 {
     execve(path, (char *const *)argv, ctx->env.data);
-    perror(argv[0]);
+    sh_perror_errno(argv[0]);
     exit(1);
 }
 
@@ -50,9 +49,8 @@ int sh_execute_external(sh_ctx_t *ctx, char const *path, char const *argv[],
     sh_pipe_pos_t pipe_pos)
 {
     if (access(path, X_OK) < 0) {
-        perror(path);
         ctx->exit_code = 1;
-        return 0;
+        return sh_rerror_errno(path, 0);
     }
     return sh_execute_external_impl(ctx, path, argv, pipe_pos);
 }
