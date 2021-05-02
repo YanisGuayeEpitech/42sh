@@ -8,6 +8,8 @@
 #ifndef __SHELL_ERROR_H__
 #define __SHELL_ERROR_H__
 
+#include <assert.h>
+
 #include "definition.h"
 
 typedef enum sh_error {
@@ -24,6 +26,7 @@ typedef enum sh_error {
     SH_INVALID_NULL_COMMAND,
     SH_MISSING_REDIRECT_NAME,
     SH_AMBIGUOUS_INPUT_REDIRECT,
+    SH_AMBIGUOUS_OUTPUT_REDIRECT,
     SH_ERROR_MAX,
 } sh_error_t;
 
@@ -39,7 +42,7 @@ char const *sh_strerror(sh_error_t code);
 ///
 /// Does nothing if @c code is @c SH_OK.
 ///
-/// @param prefix If not null or empty, prefix is printed followed by a color
+/// @param prefix If not null or empty, prefix is printed followed by a colon
 /// and a blank.
 /// @param code The error code.
 ///
@@ -48,7 +51,7 @@ sh_error_t sh_perror(char const *prefix, sh_error_t code);
 
 /// Calls @ref sh_perror then returns the value of @c ret.
 ///
-/// @param prefix If not null, prefix is printed followed by a color
+/// @param prefix If not null, prefix is printed followed by a colon
 /// and a blank.
 /// @param code The error code.
 ///
@@ -59,11 +62,40 @@ SH_INLINE int sh_rerror(char const *prefix, sh_error_t code, int ret)
     return ret;
 }
 
+/// Prints a message corresponding to the current value of @c errno.
+///
+/// @param prefix If not null, prefix is printed followed by a colon
+/// and a blank.
+///
+/// @returns The value of @c errno
 int sh_perror_errno(char const *prefix);
 
+/// Prints a message corresponding the the current value of @c errno then
+/// returns @c ret.
+///
+/// @param prefix If not null, prefix is printed followed by a colon
+/// and a blank.
+/// @param ret The return value.
+///
+/// @returns The @c ret parameter.
 SH_INLINE int sh_rerror_errno(char const *prefix, int ret)
 {
     sh_perror_errno(prefix);
+    return ret;
+}
+
+/// Stores the error @c code in @c dst and returns @c ret.
+///
+/// @param[out] dst The location where @c code will be written. Must be a valid
+/// pointer.
+/// @param code The error code to write.
+/// @param ret The return value.
+///
+/// @returns The @c ret parameter.
+SH_INLINE int sh_serror(sh_error_t *dst, sh_error_t code, int ret)
+{
+    assert(dst != NULL);
+    *dst = code;
     return ret;
 }
 
