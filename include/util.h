@@ -8,6 +8,8 @@
 #ifndef __SHELL_UTIL_H__
 #define __SHELL_UTIL_H__
 
+#include <stddef.h>
+
 /// Contatenates the given components, adding a '/' if necessary.
 ///
 /// @param dir_len The length in bytes of @c dir_name
