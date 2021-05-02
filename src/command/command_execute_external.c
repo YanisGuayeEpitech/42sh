@@ -12,6 +12,7 @@
 
 #include "command.h"
 #include "shell.h"
+#include "util.h"
 
 static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
 {
@@ -20,37 +21,35 @@ static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
     exit(1);
 }
 
-static int sh_execute_external_impl(sh_ctx_t *ctx, char const *path,
-    char const *argv[], sh_pipe_pos_t pipe_pos)
+int sh_execute_external_impl(sh_ctx_t *ctx, sh_external_command_t *command)
 {
-    pid_t child_pid;
+    pid_t child_pid = fork();
     int status;
-    int old_pipe_fd[2];
-    int ret = sh_external_pipe_setup(ctx, pipe_pos, old_pipe_fd);
 
-    if (ret != 0)
-        return ret;
-    child_pid = fork();
     if (child_pid < 0) {
         return 1;
     } else if (child_pid == 0) {
-        sh_external_pipe_dup(ctx, pipe_pos, old_pipe_fd);
-        sh_run_child(ctx, path, argv);
+        if (command->base.pipe_in[0] != -1)
+            dup2(command->base.pipe_in[0], STDIN_FILENO);
+        if (command->base.pipe_out[1] != -1)
+            dup2(command->base.pipe_out[1], STDOUT_FILENO);
+        sh_sclose_pipe(command->base.pipe_in);
+        sh_sclose_pipe(command->base.pipe_out);
+        sh_run_child(ctx, command->path, command->base.args.data);
     }
-    ret = sh_external_pipe_close(ctx, pipe_pos, old_pipe_fd);
-    if (pipe_pos == SH_PIPE_END)
+    sh_sclose_pipe(command->base.pipe_in);
+    if (command->base.pipe_pos == SH_PIPE_END)
         do {
             waitpid(child_pid, &status, 0);
         } while (sh_handle_status(ctx, status));
-    return ret;
+    return 0;
 }
 
-int sh_execute_external(sh_ctx_t *ctx, char const *path, char const *argv[],
-    sh_pipe_pos_t pipe_pos)
+int sh_execute_external(sh_ctx_t *ctx, sh_external_command_t *command)
 {
-    if (access(path, X_OK) < 0) {
+    if (access(command->path, X_OK) < 0) {
         ctx->exit_code = 1;
-        return sh_rerror_errno(path, 0);
+        return sh_rerror_errno(command->path, 0);
     }
-    return sh_execute_external_impl(ctx, path, argv, pipe_pos);
+    return sh_execute_external_impl(ctx, command);
 }

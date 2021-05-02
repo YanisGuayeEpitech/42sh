@@ -12,6 +12,5 @@ set(SRC
     ${SRCROOT}/command_parse.c
     ${SRCROOT}/command_resolve.c
     ${SRCROOT}/command_resolve.c
-    ${SRCROOT}/external_pipe.c
     PARENT_SCOPE
 )

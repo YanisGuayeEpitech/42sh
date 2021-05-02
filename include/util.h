@@ -37,4 +37,9 @@ void sh_free_entry(void *ptr);
 /// call.
 int sh_sclose(int *fd);
 
+/// Closes a pair of file descriptors by calling @ref sh_shclose twice
+///
+/// @param pipefd The file descriptors, can be @c NULL.
+int sh_sclose_pipe(int pipefd[2]);
+
 #endif // !defined(__SHELL_UTIL_H__)

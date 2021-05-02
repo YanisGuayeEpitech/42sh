@@ -47,8 +47,6 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
     ctx->old_pwd = NULL;
-    ctx->pipe_fd[0] = -1;
-    ctx->pipe_fd[1] = -1;
     return 0;
 }
 
@@ -59,6 +57,4 @@ void sh_ctx_drop(sh_ctx_t *ctx)
     my_vec_free(&ctx->pipeline, (void (*)(void *))(&sh_command_drop));
     free(ctx->old_pwd);
     ctx->old_pwd = NULL;
-    ctx->pipe_fd[0] = -1;
-    ctx->pipe_fd[1] = -1;
 }

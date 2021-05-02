@@ -32,8 +32,8 @@ void sh_command_reset(sh_command_t *command)
     command->base.pipe_pos = SH_PIPE_INVALID;
     my_sfree((void **)&command->base.input);
     my_sfree((void **)&command->base.output);
-    sh_sclose(&command->base.input_fd);
-    sh_sclose(&command->base.output_fd);
+    sh_sclose_pipe(command->base.pipe_in);
+    sh_sclose_pipe(command->base.pipe_out);
 }
 
 void sh_command_drop(sh_command_t *command)

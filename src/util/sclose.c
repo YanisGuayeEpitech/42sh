@@ -19,3 +19,15 @@ int sh_sclose(int *fd)
     *fd = -1;
     return ret;
 }
+
+int sh_sclose_pipe(int pipefd[2])
+{
+    int ret_0;
+    int ret_1;
+
+    if (pipefd == NULL)
+        return 0;
+    ret_0 = sh_sclose(&pipefd[0]);
+    ret_1 = sh_sclose(&pipefd[1]);
+    return ret_0 ? ret_0 : ret_1;
+}

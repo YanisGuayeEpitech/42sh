@@ -34,9 +34,9 @@ typedef struct sh_command_base {
     char const *input;
     /// The path of the output redirection, set to @c NULL if no redirection.
     char const *output;
-    int input_fd;
-    int output_fd;
     bool truncate;
+    int pipe_in[2];
+    int pipe_out[2];
 } sh_command_base_t;
 
 typedef struct sh_builtin_command {
@@ -68,12 +68,10 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
 int sh_command_execute(
-    sh_ctx_t *ctx, sh_command_t *command, sh_command_t const *next_command);
+    sh_ctx_t *ctx, sh_command_t *command, sh_command_t *next_command);
 
-int sh_execute_external(sh_ctx_t *ctx, char const *path, char const *argv[],
-    sh_pipe_pos_t pipe_pos);
-int sh_execute_builtin(sh_builtin_t const *builtin, sh_ctx_t *ctx, size_t argc,
-    char const *argv[]);
+int sh_execute_external(sh_ctx_t *ctx, sh_external_command_t *command);
+int sh_execute_builtin(sh_ctx_t *ctx, sh_builtin_command_t *command);
 
 int sh_external_pipe_setup(
     sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
@@ -81,5 +79,15 @@ int sh_external_pipe_dup(
     sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
 int sh_external_pipe_close(
     sh_ctx_t *ctx, sh_pipe_pos_t pipe_pos, int old_pipe_fd[2]);
+
+#define SH_INPUT_FLAGS (O_RDONLY | O_CLOEXEC)
+
+#define SH_OUTPUT_FLAGS_BASE (O_WRONLY | O_CREAT | O_CLOEXEC)
+#define SH_OUTPUT_FLAGS(cmd) \
+    (SH_OUTPUT_FLAGS_BASE | ((cmd)->base.truncate ? O_TRUNC : 0))
+
+/// Files created by an output redirect have the mode:
+/// u+rw, g+r, o+r
+#define SH_OUTPUT_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 #endif // !defined(__SHELL_COMMAND_H__)

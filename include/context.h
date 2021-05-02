@@ -25,8 +25,6 @@ typedef struct {
     int exit_code;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
-    /// The pipe file descriptors.
-    int pipe_fd[2];
 } sh_ctx_t;
 
 /// Initializes the shell's context

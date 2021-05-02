@@ -15,8 +15,8 @@ void sh_command_init(sh_command_t *command)
         .base =
             {
                 .command_type = SH_COMMAND_UNRESOLVED,
-                .input_fd = -1,
-                .output_fd = -1,
+                .pipe_in = {-1, -1},
+                .pipe_out = {-1, -1},
             },
     };
     my_vec_init(&command->base.args, sizeof(char *));
