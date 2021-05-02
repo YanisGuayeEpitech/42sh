@@ -47,7 +47,7 @@ int sh_execute_external_impl(sh_ctx_t *ctx, sh_external_command_t *command)
 
 int sh_execute_external(sh_ctx_t *ctx, sh_external_command_t *command)
 {
-    if (access(command->path, X_OK) < 0) {
+    if (access(command->path, X_OK | R_OK) < 0) {
         ctx->exit_code = 1;
         return sh_rerror_errno(command->path, 0);
     }

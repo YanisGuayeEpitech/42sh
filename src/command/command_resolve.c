@@ -10,8 +10,8 @@
 #include <dirent.h>
 #include <libmy/ascii/ascii.h>
 #include <libmy/printf.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "builtin.h"
@@ -52,14 +52,18 @@ static char *sh_find_executable(sh_ctx_t *ctx, char const *to_find)
 static bool sh_command_resolve_external(
     sh_ctx_t *ctx, sh_command_t *command, char const *name)
 {
-    bool is_path = my_strchr(name, '/') != NULL;
+    struct stat sb;
 
-    command->external.path =
-        is_path ? my_strdup(name) : sh_find_executable(ctx, name);
-    if (!command->external.path) {
-        command->command_type = SH_COMMAND_NOT_FOUND;
-        return false;
+    command->command_type = SH_COMMAND_NOT_FOUND;
+    if (my_strchr(name, '/') != NULL) {
+        command->external.path = my_strdup(name);
+        if (stat(name, &sb) != 0)
+            return false;
+    } else {
+        command->external.path = sh_find_executable(ctx, name);
     }
+    if (command->external.path == NULL)
+        return false;
     command->command_type = SH_COMMAND_EXTERNAL;
     return true;
 }
