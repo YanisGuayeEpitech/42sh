@@ -3,7 +3,7 @@
 *.gcno
 *.gcda
 *.a
-mysh
+42sh
 
 # Documentation
 doc/html

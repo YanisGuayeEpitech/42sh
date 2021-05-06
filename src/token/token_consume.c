@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell2
+** 42sh
 ** File description:
 ** Consumes a token from the given array
 */

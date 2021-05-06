@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell2
+** 42sh
 ** File description:
 ** Finds the next token of the given type.
 */

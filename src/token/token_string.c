@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell1
+** 42sh
 ** File description:
 ** Parses string tokens
 */

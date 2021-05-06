@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell2
+** 42sh
 ** File description:
 ** Tests the env functions
 */
@@ -21,13 +21,13 @@ Test(sh_env_get_entry, not_found)
 Test(sh_env_get_entry, found)
 {
     sh_ctx_t ctx;
-    char *envp[] = {"PATH=/usr/bin", "USER=root", "SHELL=mysh", NULL};
+    char *envp[] = {"PATH=/usr/bin", "USER=root", "SHELL=42sh", NULL};
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
     entry = sh_env_get_entry(&ctx, "SHELL", 5);
     cr_assert_neq(entry, NULL);
-    cr_assert_str_eq(*entry, "SHELL=mysh");
+    cr_assert_str_eq(*entry, "SHELL=42sh");
     sh_ctx_drop(&ctx);
 }
 
@@ -38,13 +38,13 @@ Test(sh_env_set, new_variable)
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    sh_env_set(&ctx, "SHELL", "mysh");
+    sh_env_set(&ctx, "SHELL", "42sh");
     entry = sh_env_get_entry(&ctx, "SHELL", 5);
     cr_assert_neq(entry, NULL);
-    cr_assert_str_eq(*entry, "SHELL=mysh");
+    cr_assert_str_eq(*entry, "SHELL=42sh");
     cr_assert_eq(ctx.env.length, 4);
     cr_assert_geq(ctx.env.capacity, 4);
-    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), "SHELL=mysh");
+    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 2), "SHELL=42sh");
     sh_ctx_drop(&ctx);
 }
 
@@ -55,13 +55,13 @@ Test(sh_env_set, update_variable)
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    sh_env_set(&ctx, "SHELL", "mysh");
+    sh_env_set(&ctx, "SHELL", "42sh");
     entry = sh_env_get_entry(&ctx, "SHELL", 5);
     cr_assert_neq(entry, NULL);
-    cr_assert_str_eq(*entry, "SHELL=mysh");
+    cr_assert_str_eq(*entry, "SHELL=42sh");
     cr_assert_eq(ctx.env.length, 4);
     cr_assert_geq(ctx.env.capacity, 4);
-    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 1), "SHELL=mysh");
+    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 1), "SHELL=42sh");
     sh_ctx_drop(&ctx);
 }
 

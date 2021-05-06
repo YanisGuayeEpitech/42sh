@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** minishell2
+** 42sh
 ** File description:
 ** Converts a token to an allocated string
 */

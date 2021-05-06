@@ -26,15 +26,15 @@ add_subdirectory(util)
 
 source_group("" FILES ${SRC})
 
-add_library(mysh-lib STATIC ${SRC})
-add_executable(mysh ${SRCROOT}/main.c)
+add_library(42sh-lib STATIC ${SRC})
+add_executable(42sh ${SRCROOT}/main.c)
 
-target_link_libraries(mysh-lib PUBLIC my-ascii my-collections my-hash my-io my-memory my-parsing my-printf)
-target_link_libraries(mysh PRIVATE mysh-lib)
+target_link_libraries(42sh-lib PUBLIC my-ascii my-collections my-hash my-io my-memory my-parsing my-printf)
+target_link_libraries(42sh PRIVATE 42sh-lib)
 
-target_include_directories(mysh-lib PUBLIC ${INCROOT} ${LIBMY_INCLUDE_DIR})
+target_include_directories(42sh-lib PUBLIC ${INCROOT} ${LIBMY_INCLUDE_DIR})
 
-add_custom_command(TARGET mysh
+add_custom_command(TARGET 42sh
 	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:mysh> ${PROJECT_SOURCE_DIR})
+	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:42sh> ${PROJECT_SOURCE_DIR})
 

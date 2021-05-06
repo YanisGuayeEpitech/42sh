@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(Minishell2 C)
+project(42sh C)
 
 # Specify the C standard
 set(CMAKE_C_STANDARD 11)

@@ -1,4 +1,4 @@
-TARGET := mysh
+TARGET := 42sh
 BUILD_DIR := build
 
 CONFIG_FLAGS := -G"Unix Makefiles" -B$(BUILD_DIR)
