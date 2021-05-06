@@ -35,7 +35,7 @@ debug:
 
 # Run Target
 run_tests: fclean debug
-	(cd build && ctest --verbose) || true
+	(cd $(BUILD_DIR) && ctest --verbose) || true
 run_test: run_tests
 tests_run: run_tests
 test_run: run_test
