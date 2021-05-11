@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <libmy/ascii.h>
 
 #include "builtin.h"
 #include "command.h"
