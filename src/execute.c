@@ -8,6 +8,8 @@
 #include "command.h"
 #include "shell.h"
 
+int sh_pipeline_execute(sh_ctx_t *ctx);
+
 static sh_command_t *sh_pipeline_push(sh_ctx_t *ctx)
 {
     sh_command_t *command;
@@ -17,25 +19,6 @@ static sh_command_t *sh_pipeline_push(sh_ctx_t *ctx)
     command = my_vec_get(&ctx->pipeline, ctx->pipeline.length++);
     sh_command_init(command);
     return command;
-}
-
-static int sh_pipeline_execute(sh_ctx_t *ctx)
-{
-    int ret = 0;
-    size_t len = ctx->pipeline.length;
-    sh_command_t *command;
-
-    for (size_t i = 0; i < len; ++i)
-        sh_command_resolve(ctx, my_vec_get(&ctx->pipeline, i));
-    for (size_t i = 0; i < len; ++i) {
-        command = my_vec_get(&ctx->pipeline, i);
-        ret = sh_command_execute(ctx, command,
-            i + 1 < len ? my_vec_get(&ctx->pipeline, i + 1) : NULL);
-        if (ret != 0)
-            break;
-    }
-    my_vec_clear(&ctx->pipeline, (void (*)(void *))(&sh_command_drop));
-    return ret;
 }
 
 static int sh_exec_parse_pipes(
@@ -58,6 +41,32 @@ static int sh_exec_parse_pipes(
     return sh_pipeline_execute(ctx);
 }
 
+static int sh_exec_parse_logicals(
+    sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
+{
+    int ret;
+    size_t or;
+    size_t and;
+    size_t end;
+    bool exec_next = 1;
+
+    do {
+        or = sh_token_find(token_count, tokens, SH_TOKEN_PIPE_PIPE);
+        and = sh_token_find(token_count, tokens, SH_TOKEN_AND_AND);
+        end = (or != 0 && and != 0) ? MY_MIN(or, and) : ((or == 0) ? and : or);
+        if (exec_next)
+            ret = sh_exec_parse_pipes(ctx, end, tokens);
+        if (ret != 0)
+            return ret;
+        sh_token_advance(&token_count, &tokens, end);
+        exec_next =
+            ((ctx->exit_code && end == or) || (!ctx->exit_code && end == and));
+        sh_token_consume(
+            &token_count, &tokens, SH_TOKEN_PIPE_PIPE | SH_TOKEN_AND_AND);
+    } while (end != 0);
+    return 0;
+}
+
 static int sh_exec_parse_semicolons(
     sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
 {
@@ -67,7 +76,7 @@ static int sh_exec_parse_semicolons(
     do {
         sh_token_consume_while(&token_count, &tokens, SH_TOKEN_SEMICOLON);
         end = sh_token_find(token_count, tokens, SH_TOKEN_SEMICOLON);
-        ret = sh_exec_parse_pipes(ctx, end, tokens);
+        ret = sh_exec_parse_logicals(ctx, end, tokens);
         if (ret != 0)
             return ret;
         sh_token_advance(&token_count, &tokens, end);

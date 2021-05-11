@@ -11,6 +11,7 @@ set(SRC
     ${SRCROOT}/cwd.c
     ${SRCROOT}/env.c
     ${SRCROOT}/error.c
+    ${SRCROOT}/execute_2.c
     ${SRCROOT}/execute.c
     ${SRCROOT}/lint.c
     ${SRCROOT}/print.c
