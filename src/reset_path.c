@@ -58,5 +58,5 @@ void sh_ctx_reset_path(sh_ctx_t *ctx)
     if (path)
         sh_copy_path(&ctx->path, path);
     else
-        sh_copy_path(&ctx->path, HARDCODED_PATH);
+        sh_copy_path(&ctx->path, DEFAULT_PATH);
 }

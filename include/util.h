@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-#define HARDCODED_PATH "/usr/bin:/bin"
+#define DEFAULT_PATH "/usr/bin:/bin"
 
 /// Contatenates the given components, adding a '/' if necessary.
 ///

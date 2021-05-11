@@ -24,6 +24,7 @@ int sh_builtin_setenv(
     if (code != SH_OK)
         return sh_rerror(argv[0], code, 1);
     sh_env_set(ctx, argv[1], argc == 3 ? argv[2] : "");
-    sh_ctx_reset_path(ctx);
+    if (my_strcmp(argv[1], "PATH") == 0)
+        sh_ctx_reset_path(ctx);
     return 0;
 }
