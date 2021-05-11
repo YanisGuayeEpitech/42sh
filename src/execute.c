@@ -90,8 +90,8 @@ int sh_execute(
     ret = sh_exec_parse_semicolons(ctx, token_count, tokens);
     if (ret > 0)
         ctx->exit_code = 1;
-    if (ctx->exit_builtins != -1) {
-        ctx->exit_code = ctx->exit_builtins;
+    if (ctx->had_exit_cmd != -1) {
+        ctx->exit_code = ctx->had_exit_cmd;
         return (-1);
     }
     return ret;

@@ -46,8 +46,8 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     my_vec_init(&ctx->pipeline, sizeof(sh_command_t));
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
-    ctx->exit_builtins = -1;
     ctx->old_pwd = NULL;
+    ctx->had_exit_cmd = -1;
     return 0;
 }
 
