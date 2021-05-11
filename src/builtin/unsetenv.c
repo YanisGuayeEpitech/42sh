@@ -9,6 +9,7 @@
 #include <libmy/io.h>
 #include "builtin.h"
 #include "shell.h"
+#include "context.h"
 
 int sh_builtin_unsetenv(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
@@ -18,5 +19,6 @@ int sh_builtin_unsetenv(
     for (size_t i = 1; i < argc; ++i)
         sh_env_remove(ctx, argv[i]);
     (void)should_exit;
+    sh_ctx_reset_path(ctx);
     return 0;
 }
