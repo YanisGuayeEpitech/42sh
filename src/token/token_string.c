@@ -39,17 +39,20 @@ static ssize_t sh_token_unquoted_string_copy(
     size_t buf_len = stream->line_buf.length;
     size_t len = 0;
     char c;
+    int escape = 0;
 
     --stream->line_pos;
     my_vec_init(str, sizeof(char));
     for (; stream->line_pos + len < buf_len; ++len) {
         c = *SH_STREAM_CURRENT(stream, len);
-        if (sh_is_arg_sep(c) || sh_is_token_char(c))
+        if (!escape && (sh_is_arg_sep(c) || sh_is_token_char(c)))
             break;
-        if (my_vec_push(str, &c) != MY_VEC_OK) {
+        if ((c != SH_INHIBITOR || escape)
+            && my_vec_push(str, &c) != MY_VEC_OK) {
             my_vec_free(str, NULL);
             return -1;
         }
+        escape = (c == SH_INHIBITOR) && !escape;
     }
     return len;
 }
