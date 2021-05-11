@@ -48,7 +48,7 @@ static int sh_exec_parse_logicals(
     size_t or;
     size_t and;
     size_t end;
-    int exec_next = 1;
+    bool exec_next = 1;
 
     do {
         or = sh_token_find(token_count, tokens, SH_TOKEN_PIPE_PIPE);
