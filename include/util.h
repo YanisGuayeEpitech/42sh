@@ -10,6 +10,8 @@
 
 #include <stddef.h>
 
+#define DEFAULT_PATH "/usr/bin:/bin"
+
 /// Contatenates the given components, adding a '/' if necessary.
 ///
 /// @param dir_len The length in bytes of @c dir_name
