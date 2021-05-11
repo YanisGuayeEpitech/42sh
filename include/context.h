@@ -25,6 +25,8 @@ typedef struct {
     int exit_code;
     /// The previous working directory, initialized to @c NULL.
     char *old_pwd;
+    /// Exit value of exit builtins
+    int had_exit_cmd;
 } sh_ctx_t;
 
 /// Initializes the shell's context

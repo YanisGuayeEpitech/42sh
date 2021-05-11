@@ -55,6 +55,10 @@ int sh_execute_builtin(sh_ctx_t *ctx, sh_builtin_command_t *command)
         return sh_execute_builtin_fork(ctx, command);
     ctx->exit_code = (*command->builtin->run)(ctx, &should_exit,
         command->base.args.length - 1, command->base.args.data);
+    if (should_exit && command->builtin->run == &sh_builtin_exit) {
+        ctx->had_exit_cmd = should_exit;
+        should_exit = 0;
+    }
     my_flush_stdout();
     my_flush_stderr();
     if (should_exit)

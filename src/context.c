@@ -47,6 +47,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
     ctx->old_pwd = NULL;
+    ctx->had_exit_cmd = -1;
     return 0;
 }
 
