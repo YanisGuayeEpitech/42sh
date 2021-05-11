@@ -36,12 +36,13 @@ int sh_token_parse(sh_token_stream_t *stream, sh_token_t *token)
         return -1;
     ++stream->line_pos;
     switch (*SH_STREAM_CURRENT(stream, -1)) {
-        case '|': return sh_token_simple(SH_TOKEN_PIPE, token);
+        case '|': return sh_token_double(stream, '|', SH_TOKEN_PIPE, token);
         case ';': return sh_token_simple(SH_TOKEN_SEMICOLON, token);
         case '"': return sh_token_quoted_string(stream, token, '"');
         case '\'': return sh_token_quoted_string(stream, token, '\'');
         case '<': return sh_token_double(stream, '<', SH_TOKEN_LT, token);
         case '>': return sh_token_double(stream, '>', SH_TOKEN_GT, token);
+        case '&': return sh_token_double(stream, '&', SH_TOKEN_AND, token);
         default: return sh_token_unquoted_string(stream, token);
     }
 }

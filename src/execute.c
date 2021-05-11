@@ -58,6 +58,32 @@ static int sh_exec_parse_pipes(
     return sh_pipeline_execute(ctx);
 }
 
+static int sh_exec_parse_logicals(
+    sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
+{
+    int ret;
+    size_t or;
+    size_t and;
+    size_t end;
+    int exec_next = 1;
+
+    do {
+        or = sh_token_find(token_count, tokens, SH_TOKEN_PIPE_PIPE);
+        and = sh_token_find(token_count, tokens, SH_TOKEN_AND_AND);
+        end = (or != 0 && and != 0) ? MY_MIN(or, and) : ((or == 0) ? and : or);
+        if (exec_next)
+            ret = sh_exec_parse_pipes(ctx, end, tokens);
+        if (ret != 0)
+            return ret;
+        sh_token_advance(&token_count, &tokens, end);
+        exec_next =
+            ((ctx->exit_code && end == or) || (!ctx->exit_code && end == and));
+        sh_token_consume(
+            &token_count, &tokens, SH_TOKEN_PIPE_PIPE | SH_TOKEN_AND_AND);
+    } while (end != 0);
+    return 0;
+}
+
 static int sh_exec_parse_semicolons(
     sh_ctx_t *ctx, size_t token_count, sh_token_t tokens[token_count])
 {
@@ -67,7 +93,7 @@ static int sh_exec_parse_semicolons(
     do {
         sh_token_consume_while(&token_count, &tokens, SH_TOKEN_SEMICOLON);
         end = sh_token_find(token_count, tokens, SH_TOKEN_SEMICOLON);
-        ret = sh_exec_parse_pipes(ctx, end, tokens);
+        ret = sh_exec_parse_logicals(ctx, end, tokens);
         if (ret != 0)
             return ret;
         sh_token_advance(&token_count, &tokens, end);
