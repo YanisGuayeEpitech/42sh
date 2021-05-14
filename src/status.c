@@ -15,8 +15,9 @@ static void sh_print_signal(int signum)
 {
     if (signum == SIGFPE)
         my_eputs("Floating exception");
-    else
+    else {
         my_eputs(strsignal(signum));
+    }
 }
 
 int sh_handle_status(sh_ctx_t *ctx, int status)

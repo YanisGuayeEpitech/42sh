@@ -55,6 +55,7 @@ int sh_perror_errno(char const *prefix)
         my_eputs(": ");
     }
     my_eputs(strerror(errno));
+    my_eputs(". Wrong architecture");
     my_eputs(".\n");
     my_flush_stderr();
     return errno;
