@@ -37,7 +37,6 @@ static char *sh_token_quoted_string_copy(char *src, size_t src_len)
     if (!str)
         return NULL;
     len = 0;
-    inhibitor = false;
     for (size_t i = 0; i < src_len; i++) {
         inhibitor = (src[i] == SH_INHIBITOR) && !inhibitor;
         if (inhibitor)
