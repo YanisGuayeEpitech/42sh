@@ -39,7 +39,7 @@ static ssize_t sh_token_unquoted_string_copy(
     size_t buf_len = stream->line_buf.length;
     size_t len = 0;
     char c;
-    int escape = 0;
+    bool escape = 0;
 
     --stream->line_pos;
     my_vec_init(str, sizeof(char));
