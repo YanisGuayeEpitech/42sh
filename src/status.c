@@ -15,14 +15,13 @@ static void sh_print_signal(int signum)
 {
     if (signum == SIGFPE)
         my_eputs("Floating exception");
-    else {
+    else
         my_eputs(strsignal(signum));
-    }
 }
 
 int sh_handle_status(sh_ctx_t *ctx, int status)
 {
-    if (WIFEXITED(status)) {
+    if (WIFEXITED(status) && !WSTOPSIG(status)) {
         ctx->exit_code = WEXITSTATUS(status);
         return 0;
     } else if (WIFSIGNALED(status)) {
@@ -31,6 +30,9 @@ int sh_handle_status(sh_ctx_t *ctx, int status)
             my_eputs(" (core dumped)");
         my_eputc('\n');
         my_flush_stderr();
+        return 0;
+    } else if (WSTOPSIG(status)) {
+        my_eputs("Wrong architecture.\n");
         return 0;
     }
     return 1;
