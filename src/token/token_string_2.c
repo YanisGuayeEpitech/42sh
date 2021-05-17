@@ -68,7 +68,7 @@ int sh_token_quoted_string(
     size_t len;
 
     if (end == NULL) {
-        my_fprintf(MY_STDERR, "Unmatched '%c'\n", end);
+        my_fprintf(MY_STDERR, "Unmatched '%c'\n", term);
         my_flush_stderr();
         return 1;
     }
