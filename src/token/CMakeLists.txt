@@ -10,6 +10,7 @@ set(SRC
     ${SRCROOT}/token_stream_init.c
     ${SRCROOT}/token_stream_parse.c
     ${SRCROOT}/token_stream_push.c
+    ${SRCROOT}/token_string_2.c
     ${SRCROOT}/token_string.c
     ${SRCROOT}/token_to_str.c
     PARENT_SCOPE
