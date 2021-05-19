@@ -55,7 +55,7 @@ int sh_perror_errno(char const *prefix)
         my_eputs(": ");
     }
     my_eputs(strerror(errno));
-    if (errno != 8)
+    if (errno != ENOEXEC)
         my_eputs(".\n");
     my_flush_stderr();
     return errno;

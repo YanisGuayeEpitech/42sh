@@ -31,7 +31,7 @@ int sh_handle_status(sh_ctx_t *ctx, int status)
         my_eputc('\n');
         my_flush_stderr();
         return 0;
-    } else if (WSTOPSIG(status) == 255) {
+    } else if (WSTOPSIG(status)) {
         my_eputs(". Wrong architecture.\n");
         return 0;
     }
