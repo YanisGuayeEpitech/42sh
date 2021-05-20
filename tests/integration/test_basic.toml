@@ -1,0 +1,23 @@
+suite = 'basic'
+
+[nothing]
+description = 'Empty echo command'
+setup = "export TERM=xterm; export PATH='/bin:/usr/bin'"
+tests = """
+echo ''
+"""
+
+[exec-two-commands]
+description = 'Executes two simple commands'
+setup = "export TERM=xterm; export PATH='/bin:/usr/bin'"
+tests = """
+echo 'ls /etc'
+echo 'cat /etc/resolv.conf'
+"""
+
+[path-usr-bin]
+description = 'Tests with /usr/bin as the value of PATH'
+setup = "export TERM=xterm; PATH='/usr/bin'"
+tests = """
+echo 'pwd'
+"""
