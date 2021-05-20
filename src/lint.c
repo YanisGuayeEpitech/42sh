@@ -5,7 +5,31 @@
 ** Executes a token array
 */
 
+#include <libmy/ascii.h>
+#include <libmy/printf.h>
+
 #include "shell.h"
+
+bool sh_lint_quotes(sh_ctx_t *ctx, char *str)
+{
+    char *start = sh_token_quoted_string_get_end(str, 0, my_strlen(str));
+    char *end;
+    char quote;
+
+    while (start) {
+        quote = *start;
+        end = sh_token_quoted_string_get_end(
+            start + 1, quote, my_strlen(start + 1));
+        if (!end) {
+            my_fprintf(MY_STDERR, "Unmatched '%c'.\n", quote);
+            my_flush_stderr();
+            ctx->exit_code = 1;
+            return false;
+        }
+        start = sh_token_quoted_string_get_end(end + 1, 0, my_strlen(end + 1));
+    }
+    return true;
+}
 
 static int sh_lint_redirects(size_t token_count,
     sh_token_t tokens[token_count], sh_error_t *err,

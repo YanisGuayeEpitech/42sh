@@ -47,12 +47,16 @@ static char *sh_token_quoted_string_copy(char *src, size_t src_len)
     return str;
 }
 
-static char *sh_token_quoted_string_get_end(char *str, char term, size_t len)
+char *sh_token_quoted_string_get_end(char *str, char term, size_t len)
 {
     bool inhibitor = false;
+    bool all_quotes = (term == 0);
 
+    if (str == NULL)
+        return NULL;
     for (size_t i = 0; i < len; i++) {
-        if (!inhibitor && str[i] == term)
+        if (!inhibitor && ((!all_quotes && str[i] == term) || \
+            (all_quotes && (str[i] == '\'' || str[i] == '\"'))))
             return str + i;
         inhibitor = (str[i] == SH_INHIBITOR) && !inhibitor;
     }
@@ -66,11 +70,8 @@ int sh_token_quoted_string(
         SH_STREAM_CURRENT(stream, 0), term, SH_STREAM_CURRENT_LEN(stream));
     size_t len;
 
-    if (end == NULL) {
-        my_fprintf(MY_STDERR, "Unmatched '%c'.\n", term);
-        my_flush_stderr();
-        return 1;
-    }
+    if (end == NULL)
+        return 0;
     len = (end - SH_STREAM_CURRENT(stream, 0)) + 1;
     *token = (sh_token_t){.token_type = SH_TOKEN_STRING,
         .str = sh_token_quoted_string_copy(SH_STREAM_CURRENT(stream, 0), len)};
