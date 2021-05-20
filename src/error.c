@@ -25,6 +25,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_MISSING_REDIRECT_NAME] = "Missing name for redirect",
     [SH_AMBIGUOUS_INPUT_REDIRECT] = "Ambiguous input redirect",
     [SH_AMBIGUOUS_OUTPUT_REDIRECT] = "Ambiguous output redirect",
+    [SH_NO_MATCH] = "No match",
 };
 
 char const *sh_strerror(sh_error_t code)
