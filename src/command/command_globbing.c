@@ -54,7 +54,7 @@ static void handle_globbuf(
     }
     globfree(globbuf);
     if (!globbuf->gl_pathc) {
-        for (size_t i = 1; i < nb_args - 1; i++) {
+        for (size_t i = 1; i < nb_args; i++) {
             my_vec_remove(&command->base.args, &arg, 1);
             free(arg);
         }

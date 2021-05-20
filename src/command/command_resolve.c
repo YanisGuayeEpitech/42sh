@@ -77,8 +77,6 @@ bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command)
 
     if (command->base.args.length <= 1)
         return false;
-    if (!sh_command_globbing(command))
-        return true;
     name = MY_VEC_GET(char const *, &command->base.args, 0);
     builtin = sh_get_builtin(name);
     if (builtin != NULL) {
