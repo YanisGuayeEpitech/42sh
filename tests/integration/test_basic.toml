@@ -101,10 +101,3 @@ echo '/bin/ls | cd /usr'
 echo 'ls -l'
 echo 'exit 45|cat /etc/resolv.conf'
 """
-
-[failure]
-description = 'this is a failure of a test'
-setup = "export TERM=xterm; PATH='/bin:/usr/bin'"
-tests = """
-echo "echo \$USER"
-"""

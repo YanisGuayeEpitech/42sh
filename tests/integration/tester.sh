@@ -28,29 +28,9 @@ DATE=`which date`
 BC=`which bc`
 PRINTF=`which printf`
 
-# Check if stdout is a terminal
-if test -t 1; then
-  # Check the number of colors supported
-  ncolors=`$TPUT colors`
-
-  if test -n "$ncolors" && test $ncolors -ge 8; then
-    NC="$($TPUT sgr0)"
-    BOLD="$(tput bold)"
-    RED="$($TPUT setaf 1)"
-    GREEN="$($TPUT setaf 2)"
-    BLUE="$($TPUT setaf 4)"
-  fi
-fi
-
 # Gets the value of string properties with the first argument as names
 function get_string_property {
   $SED -ne "s/^$1\s*=\s*\(.*\)\s*$/\1/p" | $SED -e "s/^\(\"\(.*\)\"\)\|\('\(.*\)'\)$/\2\4/"
-}
-
-# Displays the data of the test $id
-function display_test {
-  id=$1
-  $CAT test_basic.toml | $GREP -A1000 "\[$id\]" | $GREP -B1000 "^\[$id-END\]" | $GREP -v "^\[.*\]"
 }
 
 function run_script {
@@ -165,9 +145,58 @@ function run_test_suite {
   [ $failing -eq 0 ]
 }
 
+function print_usage {
+  echo "Usage: $0 [--color=auto|always|never]" >&2
+}
+
 if [ ! -f $MYSHELL ]; then
-  echo "$MYSHELL not found" >&2
+  echo "$0: shell $MYSHELL not found" >&2
   exit 1
+fi
+
+COLOR=auto
+
+# Argument parsing
+for i in "$@"; do
+  case $i in
+    --color)
+    echo "$0: color parameter requires a value" >&2
+    exit 1
+    ;;
+    --color=*)
+    COLOR="${i#*=}"
+    if [[ "$COLOR" != 'auto' && "$COLOR" != 'always' && "$COLOR" != 'never' ]]; then
+      echo "$0: invalid argument '$COLOR' for '--color', valid arguments are 'always', 'never', or 'auto'"
+      exit 1
+    fi
+    shift
+    ;;
+    -h | --help)
+    print_usage
+    exit 0
+    ;;
+  esac
+done
+
+if [ $COLOR == 'auto' ]; then
+  if test -t 1; then
+    COLOR='always'
+  else
+    COLOR='never'
+  fi
+fi
+
+if [ $COLOR == 'always' ]; then
+  # Check the number of colors supported
+  ncolors=`$TPUT colors`
+
+  if test -n "$ncolors" && test $ncolors -ge 8; then
+    NC="$($TPUT sgr0)"
+    BOLD="$($TPUT bold)"
+    RED="$($TPUT setaf 1)"
+    GREEN="$($TPUT setaf 2)"
+    BLUE="$($TPUT setaf 4)"
+  fi
 fi
 
 code=0
