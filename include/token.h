@@ -238,8 +238,6 @@ SH_INLINE void sh_token_advance(
     *tokens += to_advance;
 }
 
-/// @returns string on the first quote found, NULL if no quote found
-char *sh_token_quoted_string_get_end(char *str, char term, size_t len);
 /// @returns 0 on success, 1 on token error, or -1 on EOL.
 int sh_token_quoted_string(
     sh_token_stream_t *stream, sh_token_t *token, char term);
