@@ -25,7 +25,6 @@ DIFF=`which diff`
 TEST=`which test`
 TPUT=`which tput`
 DATE=`which date`
-BC=`which bc`
 PRINTF=`which printf`
 
 # Gets the value of string properties with the first argument as names
@@ -88,13 +87,13 @@ function run_test {
 
   # generate run scripts...
   prepare_test
-  local start=$($DATE +%s.%N)
+  local start=$($DATE +%s%2N)
   # then execute them
   $WRAPPER
   
   # measure time elapsed
-  local end=$($DATE +%s.%N)
-  local test_time=$(echo $end - $start | $BC | xargs $PRINTF %.2fs)
+  local end=$($DATE +%s%2N)
+  local test_time=$($PRINTF %.2fs $(($end - $start))e-2)
 
   if diff -U3 /tmp/.refer.$$ /tmp/.shell.$$ > /tmp/.diff.$$; then
     echo -e "[${GREEN}PASS${NC}] $suite::$id ($test_time)"
@@ -186,17 +185,12 @@ if [ $COLOR == 'auto' ]; then
   fi
 fi
 
-if [ $COLOR == 'always' ]; then
-  # Check the number of colors supported
-  ncolors=`$TPUT colors`
-
-  if test -n "$ncolors" && test $ncolors -ge 8; then
-    NC="$($TPUT sgr0)"
-    BOLD="$($TPUT bold)"
-    RED="$($TPUT setaf 1)"
-    GREEN="$($TPUT setaf 2)"
-    BLUE="$($TPUT setaf 4)"
-  fi
+if [[ $COLOR == 'always' && "$TERM" != 'dumb' ]]; then
+  NC="\033[0m"
+  BOLD="\033[0;1m"
+  RED="\033[0;31m"
+  GREEN="\033[0;32m"
+  BLUE="\033[0;34m"
 fi
 
 code=0
