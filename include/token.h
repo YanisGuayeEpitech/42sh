@@ -15,6 +15,8 @@
 
 #include "error.h"
 
+#define SH_INHIBITOR '\\'
+
 typedef enum sh_token_type {
     SH_TOKEN_STRING = 1 << 0,
     SH_TOKEN_PIPE = 1 << 1,
