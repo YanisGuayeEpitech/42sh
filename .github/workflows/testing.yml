@@ -29,7 +29,7 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build build --config ${{ env.BUILD_TYPE }} -j
 
-  unit-tests:
+  tests:
     runs-on: ubuntu-latest
 
     # Runs in the official Epitech test docker image
@@ -51,14 +51,16 @@ jobs:
       # Build the programs with the given configuration
       run: cmake --build build --config ${{ env.BUILD_TYPE }} -j
 
-    - name: Run Unit Tests
+    - name: Run Unit & Integration Tests
       working-directory: ${{ github.workspace }}
       run: (cd build && ctest --verbose -C ${{ env.BUILD_TYPE }})
 
     - name: Line Coverage
+      if: ${{ always() }}
       working-directory: ${{ github.workspace }}
       run: gcovr .
 
     - name: Branch Coverage
+      if: ${{ always() }}
       working-directory: ${{ github.workspace }}
       run: gcovr --branch .
