@@ -10,7 +10,6 @@
 #include <string.h>
 #include <sys/wait.h>
 #include "shell.h"
-#include "error.h"
 
 static void sh_print_signal(int signum)
 {
@@ -22,7 +21,7 @@ static void sh_print_signal(int signum)
 
 int sh_handle_status(sh_ctx_t *ctx, int status)
 {
-    if (WIFEXITED(status) && !WSTOPSIG(status)) {
+    if (WIFEXITED(status)) {
         ctx->exit_code = WEXITSTATUS(status);
         return 0;
     } else if (WIFSIGNALED(status)) {
@@ -31,9 +30,6 @@ int sh_handle_status(sh_ctx_t *ctx, int status)
             my_eputs(" (core dumped)");
         my_eputc('\n');
         my_flush_stderr();
-        return 0;
-    } else if (WSTOPSIG(status) == WRONG_ARCHITECTURE_STOPSIG) {
-        my_eputs(". Wrong architecture.\n");
         return 0;
     }
     return 1;

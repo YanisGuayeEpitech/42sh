@@ -30,9 +30,6 @@ typedef enum sh_error {
     SH_ERROR_MAX,
 } sh_error_t;
 
-///Defines a value as unvalid binary for WSTOPSIG
-#define WRONG_ARCHITECTURE_STOPSIG (1)
-
 /// Returns a string corresponding to the given error code.
 ///
 /// @param code The error code.

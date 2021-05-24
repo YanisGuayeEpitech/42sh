@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <errno.h>
+#include <libmy/io.h>
+#include <libmy/printf.h>
 
 #include "command.h"
 #include "shell.h"
@@ -17,7 +20,13 @@
 static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
 {
     execve(path, (char *const *)argv, ctx->env.data);
-    sh_perror_errno(argv[0]);
+    if (errno == ENOEXEC) {
+        my_printf("%lu\n", errno);
+        my_fprintf(MY_STDERR, "%s: Exec format error. Wrong Architechture\n", 
+            argv[0]);
+        my_flush_stderr();
+    } else
+        sh_perror_errno(argv[0]);
     exit(1);
 }
 
