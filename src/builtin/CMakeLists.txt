@@ -7,6 +7,7 @@ set(SRC
     ${SRCROOT}/env.c
     ${SRCROOT}/exit.c
     ${SRCROOT}/get_builtin.c
+    ${SRCROOT}/repeat.c
     ${SRCROOT}/setenv.c
     ${SRCROOT}/unsetenv.c
     PARENT_SCOPE
