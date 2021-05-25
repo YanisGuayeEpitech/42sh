@@ -24,7 +24,7 @@ static int fill_globbuf(
 
     globfree(globbuf);
     globbuf->gl_pathc = 0;
-    for (size_t i = 1; i < *nb_args; i++) {
+    for (size_t i = 1; i < *nb_args - 1; i++) {
         arg = MY_VEC_GET(char *, &command->base.args, i);
         return_code = glob(arg, flags, NULL, globbuf);
         if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
@@ -46,10 +46,8 @@ static void handle_globbuf(
 {
     char *arg;
 
-    for (size_t i = 1; i < nb_args; i++) {
-        my_vec_remove(&command->base.args, &arg, 1);
-        free(arg);
-    }
+    my_vec_remove(&command->base.args, &arg, nb_args - 1);
+    free(arg);
     for (size_t i = 0; i < globbuf->gl_pathc; i++) {
         arg = my_strdup(globbuf->gl_pathv[i]);
         my_vec_push(&command->base.args, &arg);
@@ -68,7 +66,7 @@ static bool has_globbing_chars(
 
     globbuf->gl_offs = 0;
     globbuf->gl_pathc = 0;
-    for (size_t i = 1; i < nb_args; i++) {
+    for (size_t i = 1; i < nb_args - 1; i++) {
         arg = MY_VEC_GET(char *, &command->base.args, i);
         return_code = glob(arg, flags, NULL, globbuf);
         if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
