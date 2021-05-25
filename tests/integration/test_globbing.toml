@@ -1,4 +1,4 @@
-suite = 'errors'
+suite = 'globbing'
 
 [globbing]
 description = 'Test some globbing usages'
