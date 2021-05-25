@@ -1,0 +1,8 @@
+suite = 'basic'
+
+[exec-unvalid-binary]
+description = 'Executes a unvalid binary and compare errors messages'
+setup = "PATH='/bin:/usr/bin'"
+tests = """
+echo './Unvalid'
+"""
