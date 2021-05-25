@@ -50,7 +50,7 @@ int sh_command_execute(
     if (sh_command_open_redirects(ctx, command, next_command))
         return 0;
     if (command->command_type != SH_COMMAND_NOT_FOUND
-        && !sh_command_globbing(command))
+        && !sh_command_globbing(ctx, command))
         return 0;
     switch (command->command_type) {
         case SH_COMMAND_EXTERNAL:

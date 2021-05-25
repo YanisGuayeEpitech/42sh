@@ -67,7 +67,7 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
 
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
-bool sh_command_globbing(sh_command_t *command);
+bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
 
 int sh_command_execute(
     sh_ctx_t *ctx, sh_command_t *command, sh_command_t *next_command);
