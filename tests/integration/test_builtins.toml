@@ -27,3 +27,35 @@ setup = ""
 tests = """
 echo 'exit 123456'
 """
+
+[repeat-zero-args]
+description = 'Executes repeat with no arguments'
+setup = "export PATH='/bin:/usr/bin'"
+tests = """
+echo 'repeat'
+"""
+
+[repeat-one-arg]
+description = 'Executes repeat with only one argument'
+setup = "export PATH='/bin:/usr/bin'"
+tests = """
+echo 'repeat 42'
+"""
+
+[repeat-invalid-count]
+description = 'Executes repeat with invalid count argument' 
+setup = "export PATH='/bin:/usr/bin'"
+tests = """
+echo 'repeat Y ls'
+"""
+
+[repeat-valid-args]
+description = 'Executes repeat with invalid count argument' 
+setup = "export PATH='/bin:/usr/bin'"
+tests = """
+echo 'repeat 0 ls'
+echo 'repeat 1 echo test'
+echo 'repeat 1 ls | grep ".toml"'
+echo 'repeat -1 pwd'
+echo 'repeat 42 cd ..'
+"""

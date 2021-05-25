@@ -36,7 +36,7 @@ int sh_builtin_repeat(
     sh_command_t command;
 
     if (!sh_repeat_parse_args(&repeat_count, argc, argv))
-        return 84;
+        return 1;
     sh_command_init(&command);
     command.base.args.data = argv + 2;
     command.base.args.length = argc - 1;
