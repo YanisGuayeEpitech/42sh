@@ -96,6 +96,16 @@ SH_INLINE bool sh_is_token_char(char c)
         || c == '>' || c == '&';
 }
 
+SH_INLINE bool sh_is_arg_quote(char c)
+{
+    return c == '"' || c == '\'';
+}
+
+SH_INLINE bool sh_is_arg_inhibitable(char c)
+{
+    return (sh_is_arg_quote(c) || sh_is_arg_sep(c));
+}
+
 /// Checks if the type of the first token in @c tokens matches @b any of the
 /// types given in @c token_types.
 ///
