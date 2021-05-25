@@ -61,7 +61,8 @@ static bool is_char_token_end(
         return sh_is_arg_sep(str[i]);
     if (str[i] == term) {
         *found_quote = true;
-        return sh_is_arg_sep(str[i + 1]);
+        return sh_is_arg_sep(str[i + 1])
+            || (sh_is_token_char(str[i + 1]) && !sh_is_arg_quote(str[i + 1]));
     }
     return false;
 }
