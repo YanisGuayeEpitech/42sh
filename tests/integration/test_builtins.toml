@@ -1,0 +1,29 @@
+suite = 'builtins'
+
+[exit-zero]
+description = 'Exits the shell with code 0'
+setup = ""
+tests = """
+echo 'exit 0'
+"""
+
+[exit-one]
+description = 'Exits the shell with code 1'
+setup = ""
+tests = """
+echo 'exit 1'
+"""
+
+[exit-fourty-two]
+description = 'Exits the shell with code 42'
+setup = ""
+tests = """
+echo 'exit 42'
+"""
+
+[exit-overflow]
+description = 'Exits the shell with code overflowing code 123456'
+setup = ""
+tests = """
+echo 'exit 123456'
+"""

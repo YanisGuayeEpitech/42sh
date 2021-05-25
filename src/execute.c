@@ -99,9 +99,7 @@ int sh_execute(
     ret = sh_exec_parse_semicolons(ctx, token_count, tokens);
     if (ret > 0)
         ctx->exit_code = 1;
-    if (ctx->had_exit_cmd != -1) {
-        ctx->exit_code = ctx->had_exit_cmd;
+    if (ctx->had_exit_cmd != -1)
         return (-1);
-    }
     return ret;
 }
