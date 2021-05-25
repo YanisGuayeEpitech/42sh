@@ -49,6 +49,9 @@ int sh_command_execute(
     assert(command != NULL);
     if (sh_command_open_redirects(ctx, command, next_command))
         return 0;
+    if (command->command_type != SH_COMMAND_NOT_FOUND
+        && !sh_command_globbing(command))
+        return 0;
     switch (command->command_type) {
         case SH_COMMAND_EXTERNAL:
             return sh_execute_external(ctx, &command->external);

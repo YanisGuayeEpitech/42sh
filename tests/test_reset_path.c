@@ -14,8 +14,10 @@ Test(sh_ctx_reset_path, no_path)
     char *envp[] = {"LS_COLORS=?", "USER=yeet", NULL};
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    cr_assert_eq(ctx.path.length, 0);
-    cr_assert_eq(ctx.path.capacity, 0);
+    cr_assert_eq(ctx.path.length, 2);
+    cr_assert_gt(ctx.path.capacity, 2);
+    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.path, 0), "/usr/bin");
+    cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.path, 1), "/bin");
 }
 
 Test(sh_ctx_reset_path, empty_path)

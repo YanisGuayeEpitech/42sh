@@ -1,0 +1,66 @@
+name: Testing
+
+on: [push, pull_request]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: RelWithDebInfo
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+
+    # Runs in the official Epitech test docker image
+    container: epitechcontent/epitest-docker
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Configure CMake
+      working-directory: ${{ github.workspace }}
+      # Configure CMake in a 'build' subdirectory
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -G"Unix Makefiles"
+
+    - name: Release Build
+      working-directory: ${{ github.workspace }}
+      # Build your program with the given configuration
+      run: cmake --build build --config ${{ env.BUILD_TYPE }} -j
+
+  tests:
+    runs-on: ubuntu-latest
+
+    # Runs in the official Epitech test docker image
+    container: epitechcontent/epitest-docker
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Configure CMake
+      working-directory: ${{ github.workspace }}
+      # Configure CMake in a 'build' subdirectory
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DBUILD_TEST_SUITE=TRUE -DUSE_GCOV=TRUE -G"Unix Makefiles"
+
+    - name: Release Build With Tests
+      working-directory: ${{ github.workspace }}
+      # Build the programs with the given configuration
+      run: cmake --build build --config ${{ env.BUILD_TYPE }} -j
+
+    - name: Run Unit & Integration Tests
+      working-directory: ${{ github.workspace }}
+      run: (cd build && ctest --verbose -C ${{ env.BUILD_TYPE }})
+
+    - name: Line Coverage
+      if: ${{ always() }}
+      working-directory: ${{ github.workspace }}
+      run: gcovr .
+
+    - name: Branch Coverage
+      if: ${{ always() }}
+      working-directory: ${{ github.workspace }}
+      run: gcovr --branch .

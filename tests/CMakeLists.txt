@@ -11,20 +11,22 @@ set(SRC
     ${SRCROOT}/test_util.c
 )
 
-add_executable(test-42sh ${SRC})
+add_executable(unit-test-42sh ${SRC})
 
 source_group("" FILES ${SRC})
-set_target_properties(test-42sh PROPERTIES FOLDER "tests")
+set_target_properties(unit-test-42sh PROPERTIES FOLDER "tests")
 
 if (CMAKE_COMPILER_IS_GNUCC)
-    target_compile_options(test-42sh PRIVATE -Wall -Wextra)
+    target_compile_options(unit-test-42sh PRIVATE -Wall -Wextra)
 endif()
 
-target_link_libraries(test-42sh PRIVATE 42sh-lib ${CRITERION_LIBRARIES})
+target_link_libraries(unit-test-42sh PRIVATE 42sh-lib ${CRITERION_LIBRARIES})
 
 # Link to gcov if build type is set to 'static'
 if (CMAKE_COMPILER_IS_GNUCC AND USE_GCOV)
-    target_link_libraries(test-42sh PRIVATE gcov)
+    target_link_libraries(unit-test-42sh PRIVATE gcov)
 endif()
 
-add_test(test-42sh test-42sh)
+add_test(NAME unit-test-42sh COMMAND unit-test-42sh)
+
+add_subdirectory(integration)

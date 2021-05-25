@@ -8,6 +8,7 @@ set(SRC
     ${SRCROOT}/command_execute_builtin.c
     ${SRCROOT}/command_execute_external.c
     ${SRCROOT}/command_execute.c
+    ${SRCROOT}/command_globbing.c
     ${SRCROOT}/command_init.c
     ${SRCROOT}/command_parse.c
     ${SRCROOT}/command_resolve.c

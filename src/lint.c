@@ -5,6 +5,9 @@
 ** Executes a token array
 */
 
+#include <libmy/ascii.h>
+#include <libmy/printf.h>
+
 #include "shell.h"
 
 static int sh_lint_redirects(size_t token_count,

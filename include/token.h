@@ -15,15 +15,20 @@
 
 #include "error.h"
 
+#define SH_INHIBITOR '\\'
+
 typedef enum sh_token_type {
     SH_TOKEN_STRING = 1 << 0,
     SH_TOKEN_PIPE = 1 << 1,
-    SH_TOKEN_SEMICOLON = 1 << 2,
-    SH_TOKEN_LT = 1 << 3,
-    SH_TOKEN_LT_LT = 1 << 4,
-    SH_TOKEN_GT = 1 << 5,
-    SH_TOKEN_GT_GT = 1 << 6,
-    SH_TOKEN_TYPE_COUNT = 1 << 7,
+    SH_TOKEN_PIPE_PIPE = 1 << 2,
+    SH_TOKEN_SEMICOLON = 1 << 3,
+    SH_TOKEN_LT = 1 << 4,
+    SH_TOKEN_LT_LT = 1 << 5,
+    SH_TOKEN_GT = 1 << 6,
+    SH_TOKEN_GT_GT = 1 << 7,
+    SH_TOKEN_AND = 1 << 8,
+    SH_TOKEN_AND_AND = 1 << 9,
+    SH_TOKEN_TYPE_COUNT = 1 << 10,
 } sh_token_type_t;
 
 /// All the types of tokens used in redirections (execpt pipe)
@@ -88,7 +93,7 @@ SH_INLINE bool sh_is_arg_sep(char c)
 SH_INLINE bool sh_is_token_char(char c)
 {
     return c == '"' || c == '\'' || c == '|' || c == ';' || c == '<'
-        || c == '>';
+        || c == '>' || c == '&';
 }
 
 /// Checks if the type of the first token in @c tokens matches @b any of the

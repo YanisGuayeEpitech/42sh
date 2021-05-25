@@ -68,6 +68,8 @@ static bool sh_command_resolve_external(
     return true;
 }
 
+bool sh_command_globbing(sh_command_t *command);
+
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command)
 {
     sh_builtin_t const *builtin;
