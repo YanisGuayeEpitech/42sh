@@ -63,14 +63,6 @@ void sh_env_set(sh_ctx_t *ctx, char const *key, char const *value);
 /// @returns 1 if the variable was found and removed, 0 otherwise.
 int sh_env_remove(sh_ctx_t *ctx, char const *key);
 
-/// Attempts to parse an int.
-///
-/// @param str The string to parse.
-/// @param[out] result Where the parsed int is stored.
-///
-/// @returns @c SH_OK if the parsing succeded, or an error code otherwise.
-sh_error_t sh_parse_int(char const *str, int *result);
-
 /// Validates a variable name.
 ///
 /// A valid variable name matches the regex [a-zA-Z_][a-zA-Z_0-9]*

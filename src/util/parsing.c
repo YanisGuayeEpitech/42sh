@@ -19,6 +19,7 @@ sh_error_t sh_parse_int(char const *str, int *result)
             return SH_BAD_NUMBER;
         negate = 1;
     }
+    *result = 0;
     while (*str) {
         if (!my_isdigit(*str))
             return SH_BAD_NUMBER;

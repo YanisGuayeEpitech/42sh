@@ -10,6 +10,8 @@
 
 #include <stddef.h>
 
+#include "error.h"
+
 #define DEFAULT_PATH "/usr/bin:/bin"
 
 /// Contatenates the given components, adding a '/' if necessary.
@@ -43,5 +45,13 @@ int sh_sclose(int *fd);
 ///
 /// @param pipefd The file descriptors, can be @c NULL.
 int sh_sclose_pipe(int pipefd[2]);
+
+/// Attempts to parse an int.
+///
+/// @param str The string to parse.
+/// @param[out] result Where the parsed int is stored.
+///
+/// @returns @c SH_OK if the parsing succeded, or an error code otherwise.
+sh_error_t sh_parse_int(char const *str, int *result);
 
 #endif // !defined(__SHELL_UTIL_H__)
