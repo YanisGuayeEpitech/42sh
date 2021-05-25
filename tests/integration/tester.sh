@@ -6,6 +6,7 @@ REFER="/bin/tcsh -f"
 # Add the test suite files below one per line
 SUITES=(
   'test_basic.toml'
+  'test_errors.toml'
 )
 
 # Undefines any previously defined bash function

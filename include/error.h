@@ -31,7 +31,7 @@ typedef enum sh_error {
     SH_ERROR_MAX,
 } sh_error_t;
 
-/// Retrurns a string corresponding to the given error code.
+/// Returns a string corresponding to the given error code.
 ///
 /// @param code The error code.
 ///
