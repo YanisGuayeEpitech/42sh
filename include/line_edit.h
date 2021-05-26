@@ -23,6 +23,7 @@ typedef struct sh_line_edit_s {
 
 int sh_line_edit_reset(sh_line_edit_t *line_edit, my_vec_t *line_buf);
 ssize_t sh_line_edit_fill(sh_line_edit_t *line_edit, my_iostream_t *stream);
+void sh_line_edit_update(sh_line_edit_t *line_edit);
 
 typedef int (*keybind_t)(
     sh_line_edit_t *, my_vec_t *, my_iostream_t *, char *);
@@ -40,6 +41,43 @@ int sh_exec_keybind(
 /// @return int
 ///
 int sh_keybind_show(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Similar to sh_keybind_show but instead of inserting a char, it
+/// remove the one at the pos line_edit->pos
+///
+/// @param line_edit The line_edit struct to keep the position of the cursor.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_delete(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Move the cursor to the left, decrement line_edit->pos
+///
+/// @param line_edit The line_edit struct to keep the position of the cursor.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_move_left(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Move the cursor to the right, increment line_edit->pos
+///
+/// @param line_edit The line_edit struct to keep the position of the cursor.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_move_right(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
@@ -61,7 +99,7 @@ int sh_keybind_eof(
 /// @param line_edit The line_edit struct. Not used here.
 /// @param line The line vector, a char * vector. Not used here.
 /// @param stream The stream from which the char was read. Not used here.
-/// @param c A pointer to the char which raised the end of the stream. Not used
+/// @param c A pointer to the char which raised this call. Not used
 /// here.
 /// @return int
 ///

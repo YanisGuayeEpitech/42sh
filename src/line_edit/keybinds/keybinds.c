@@ -18,14 +18,20 @@ static void init_keybinds(keybind_t keybinds[256])
             keybinds[i] = &sh_keybind_empty;
     }
     keybinds[4] = &sh_keybind_eof;
+    keybinds[127] = &sh_keybind_delete;
+    keybinds['L'] = &sh_keybind_move_left;
+    keybinds['R'] = &sh_keybind_move_right;
 }
 
 int sh_exec_keybind(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
     static keybind_t keybinds[256] = {NULL};
+    int code;
 
     if (!keybinds[(int)(*c)])
         init_keybinds(keybinds);
-    return (*keybinds[(int)(*c)])(line_edit, line, stream, c);
+    code = (*keybinds[(int)(*c)])(line_edit, line, stream, c);
+    sh_line_edit_update(line_edit);
+    return code;
 }

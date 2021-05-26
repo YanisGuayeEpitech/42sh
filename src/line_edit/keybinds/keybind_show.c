@@ -5,12 +5,18 @@
 ** keybind_show
 */
 
+#include <libmy/io.h>
+#include <unistd.h>
+
 #include "line_edit.h"
 
 int sh_keybind_show(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
-    (void)line_edit;
+    int code = my_vec_insert(line, c, line_edit->pos);
+
     (void)stream;
-    return my_vec_push(line, c);
+    line_edit->pos++;
+    write(STDOUT_FILENO, c, 1);
+    return code;
 }
