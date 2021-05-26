@@ -9,6 +9,7 @@ SUITES=(
   'test_builtins.toml'
   'test_errors.toml'
   'test_globbing.toml'
+  'test_inhibitors.toml'
 )
 
 # Undefines any previously defined bash function
