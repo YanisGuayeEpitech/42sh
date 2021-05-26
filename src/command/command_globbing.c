@@ -24,7 +24,7 @@ static int fill_globbuf(
 
     globfree(globbuf);
     globbuf->gl_pathc = 0;
-    for (size_t i = 1; i < *nb_args; i++) {
+    for (size_t i = 1; i < *nb_args - 1; i++) {
         arg = MY_VEC_GET(char *, &command->base.args, i);
         return_code = glob(arg, flags, NULL, globbuf);
         if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
@@ -42,21 +42,21 @@ static int fill_globbuf(
 }
 
 static void handle_globbuf(
-    sh_command_t *command, glob_t *globbuf, size_t nb_args)
+    sh_ctx_t *ctx, sh_command_t *command, glob_t *globbuf, size_t nb_args)
 {
     char *arg;
 
-    for (size_t i = 1; i < nb_args; i++) {
-        my_vec_remove(&command->base.args, &arg, 1);
-        free(arg);
-    }
+    my_vec_remove(&command->base.args, &arg, nb_args - 1);
+    free(arg);
     for (size_t i = 0; i < globbuf->gl_pathc; i++) {
         arg = my_strdup(globbuf->gl_pathv[i]);
         my_vec_push(&command->base.args, &arg);
     }
     globfree(globbuf);
-    if (!globbuf->gl_pathc)
+    if (!globbuf->gl_pathc) {
+        ctx->exit_code = 1;
         sh_perror(MY_VEC_GET(char *, &command->base.args, 0), SH_NO_MATCH);
+    }
 }
 
 static bool has_globbing_chars(
@@ -68,7 +68,7 @@ static bool has_globbing_chars(
 
     globbuf->gl_offs = 0;
     globbuf->gl_pathc = 0;
-    for (size_t i = 1; i < nb_args; i++) {
+    for (size_t i = 1; i < nb_args - 1; i++) {
         arg = MY_VEC_GET(char *, &command->base.args, i);
         return_code = glob(arg, flags, NULL, globbuf);
         if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
@@ -85,7 +85,7 @@ static bool has_globbing_chars(
     return false;
 }
 
-bool sh_command_globbing(sh_command_t *command)
+bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command)
 {
     glob_t globbuf;
     char *arg;
@@ -99,7 +99,7 @@ bool sh_command_globbing(sh_command_t *command)
         return true;
     }
     return_code = fill_globbuf(&globbuf, command, &nb_args);
-    handle_globbuf(command, &globbuf, nb_args);
+    handle_globbuf(ctx, command, &globbuf, nb_args);
     arg = NULL;
     my_vec_push(&command->base.args, &arg);
     return (return_code != GLOB_NOSPACE && return_code != GLOB_ABORTED

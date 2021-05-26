@@ -8,6 +8,7 @@ SUITES=(
   'test_basic.toml'
   'test_builtins.toml'
   'test_errors.toml'
+  'test_globbing.toml'
   'test_inhibitors.toml'
 )
 
