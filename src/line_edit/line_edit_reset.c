@@ -23,16 +23,12 @@ int sh_line_edit_reset(sh_line_edit_t *line_edit, my_vec_t *line_buf)
 void sh_line_edit_update(sh_line_edit_t *line_edit, my_vec_t *line_buf)
 {
     size_t back_steps_write = line_buf->length - line_edit->pos;
-    size_t back_steps_clear = line_edit->pos + 3;
-    char back_buff_aft_clear[back_steps_clear];
     char back_buff_aft_write[back_steps_write];
-    char tmp[] = "\x1b[2K";
+    char tmp[] = "\x1b[2K\r";
 
-    write(STDOUT_FILENO, tmp, 4);
-    for (size_t i = 0; i < back_steps_clear; i++)
-        back_buff_aft_clear[i] = '\b';
-    write(STDOUT_FILENO, back_buff_aft_clear, back_steps_clear);
-    my_puts("$> ");
+    write(STDOUT_FILENO, tmp, 5);
+    if (isatty(STDIN_FILENO))
+        my_puts("$> ");
     my_flush_stdout();
     write(STDOUT_FILENO, line_buf->data, line_buf->length);
     for (size_t i = 0; i < back_steps_write; i++)
