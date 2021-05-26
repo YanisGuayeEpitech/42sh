@@ -10,15 +10,18 @@
 
 #include <libmy/collections.h>
 
+#include "line_edit.h"
 #include "definition.h"
 
-typedef struct {
+typedef struct sh_ctx_s {
     /// A vector of the environment entries.
     my_vec_t env;
     /// A vector of the entries from the PATH environment variable.
     my_vec_t path;
     /// A vector of sh_command_t
     my_vec_t pipeline;
+    /// The line edition structure
+    sh_line_edit_t line_edit;
     /// Is stdin a tty?
     int is_tty;
     /// The exit code of the previous program.

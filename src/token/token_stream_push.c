@@ -8,11 +8,13 @@
 #include <libmy/io/iostream.h>
 
 #include "token.h"
+#include "line_edit.h"
+#include "shell.h"
 
-static int sh_token_stream_fill_line(sh_token_stream_t *stream)
+static int sh_token_stream_fill_line(
+    struct sh_ctx_s *ctx, sh_token_stream_t *stream)
 {
-    ssize_t bytes_read = my_getline(
-        (char **)&stream->line_buf.data, &stream->line_buf.capacity, MY_STDIN);
+    ssize_t bytes_read = sh_line_edit_fill(&ctx->line_edit, MY_STDIN);
 
     if (bytes_read <= 0) {
         stream->line_buf.length = 0;
@@ -25,13 +27,15 @@ static int sh_token_stream_fill_line(sh_token_stream_t *stream)
     return bytes_read <= 0;
 }
 
-ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count)
+ssize_t sh_token_stream_push(
+    struct sh_ctx_s *ctx, sh_token_stream_t *stream, size_t token_count)
 {
     size_t c = 1;
     int ret;
 
     assert(stream != NULL);
-    if (token_count == 0 || sh_token_stream_fill_line(stream))
+    sh_line_edit_reset(&ctx->line_edit, &stream->line_buf);
+    if (token_count == 0 || sh_token_stream_fill_line(ctx, stream))
         return 0;
     for (; c < token_count; ++c) {
         if (my_vec_reserve(&stream->tokens, 1) != MY_VEC_OK)
