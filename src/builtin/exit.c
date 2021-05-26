@@ -6,8 +6,10 @@
 */
 
 #include <libmy/ascii.h>
+
 #include "builtin.h"
 #include "shell.h"
+#include "util.h"
 
 int sh_builtin_exit(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])

@@ -99,7 +99,7 @@ function run_test {
   local end=$($DATE +%s%2N)
   local test_time=$($PRINTF %.2fs $(($end - $start))e-2)
 
-  if diff -U3 /tmp/.refer.$$ /tmp/.shell.$$ > /tmp/.diff.$$; then
+  if $DIFF -U3 /tmp/.refer.$$ /tmp/.shell.$$ > /tmp/.diff.$$; then
     echo -e "[${GREEN}PASS${NC}] $suite::$id ($test_time)"
     return 0
   else
@@ -108,9 +108,12 @@ function run_test {
     echo -e "[${RED}FAIL${NC}] $suite::$id ($test_time)" 
     [ ! -z "$description" ] && echo -e "[${BLUE}----${NC}] Description: $description"
     echo -e "[${BLUE}----${NC}] Outputs differ:"
+    $CP /tmp/.refer.$$ /tmp/.refer.$$.$id
+    $CP /tmp/.shell.$$ /tmp/.shell.$$.$id
+    $DIFF -U3 /tmp/.refer.$$.$id /tmp/.shell.$$.$id > /tmp/.diff.$$.$id
     while IFS= read -r line; do
       echo -e "[${BLUE}----${NC}] $line"
-    done < /tmp/.diff.$$
+    done < /tmp/.diff.$$.$id
     return 1
   fi
 }
