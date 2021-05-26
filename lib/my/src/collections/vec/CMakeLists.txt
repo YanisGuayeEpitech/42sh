@@ -10,6 +10,7 @@ set(VECTOR_SRC
     ${SRCROOT}/my_vec_extend_to_length.c
     ${SRCROOT}/my_vec_free.c
     ${SRCROOT}/my_vec_init_capacity.c
+    ${SRCROOT}/my_vec_insert.c
     ${SRCROOT}/my_vec_pop.c
     ${SRCROOT}/my_vec_push.c
     ${SRCROOT}/my_vec_remove.c
