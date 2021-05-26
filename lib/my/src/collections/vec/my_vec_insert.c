@@ -28,7 +28,7 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_insert_multiple(
     if (ret)
         return ret;
     my_memmove(my_vec_get(vec, index + count), my_vec_get(vec, index),
-        count * vec->elem_size);
+        (vec->length - index) * vec->elem_size);
     my_memcpy(((char *)vec->data) + vec->elem_size * index, elems,
         vec->elem_size * count);
     vec->length += count;

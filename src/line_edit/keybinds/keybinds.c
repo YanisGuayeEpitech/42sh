@@ -19,6 +19,7 @@ static void init_keybinds(keybind_t keybinds[256])
     }
     keybinds[4] = &sh_keybind_eof;
     keybinds[127] = &sh_keybind_delete;
+    keybinds['\n'] = &sh_keybind_send_cmd;
     keybinds['L'] = &sh_keybind_move_left;
     keybinds['R'] = &sh_keybind_move_right;
 }
@@ -32,6 +33,5 @@ int sh_exec_keybind(
     if (!keybinds[(int)(*c)])
         init_keybinds(keybinds);
     code = (*keybinds[(int)(*c)])(line_edit, line, stream, c);
-    sh_line_edit_update(line_edit);
     return code;
 }

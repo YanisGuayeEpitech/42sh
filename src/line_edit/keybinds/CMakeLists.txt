@@ -8,6 +8,7 @@ set(SRC
     ${SRCROOT}/keybind_empty.c
     ${SRCROOT}/keybind_eof.c
     ${SRCROOT}/keybind_move_cursor.c
+    ${SRCROOT}/keybind_send_cmd.c
     ${SRCROOT}/keybind_show.c
     ${SRCROOT}/keybinds.c
     PARENT_SCOPE

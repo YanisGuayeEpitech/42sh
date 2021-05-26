@@ -32,7 +32,6 @@ int sh_keybind_move_right(
 
     if (c_replace == 0)
         return 0;
-    (void)line_edit;
     (void)stream;
     (void)c;
     line_edit->pos++;

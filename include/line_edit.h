@@ -17,13 +17,14 @@
 
 typedef struct sh_line_edit_s {
     my_vec_t *line_buf;
+    char *prompt;
     size_t pos;
     bool is_eof;
 } sh_line_edit_t;
 
 int sh_line_edit_reset(sh_line_edit_t *line_edit, my_vec_t *line_buf);
 ssize_t sh_line_edit_fill(sh_line_edit_t *line_edit, my_iostream_t *stream);
-void sh_line_edit_update(sh_line_edit_t *line_edit);
+void sh_line_edit_update(sh_line_edit_t *line_edit, my_vec_t *line_buf);
 
 typedef int (*keybind_t)(
     sh_line_edit_t *, my_vec_t *, my_iostream_t *, char *);
@@ -91,6 +92,19 @@ int sh_keybind_move_right(
 /// @return int
 ///
 int sh_keybind_eof(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Raise the end of the command
+///
+/// @param line_edit The line_edit struct. Not used here
+/// @param line The line vector, a char * vector. A newline is pushed to this vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised the end of the stream. Not used
+/// here.
+/// @return int
+///
+int sh_keybind_send_cmd(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///

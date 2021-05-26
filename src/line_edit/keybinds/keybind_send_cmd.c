@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2021
 ** 42sh
 ** File description:
-** keybind_show
+** keybind_send_cmd
 */
 
 #include <libmy/io.h>
@@ -10,13 +10,13 @@
 
 #include "line_edit.h"
 
-int sh_keybind_show(
+int sh_keybind_send_cmd(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
-    int code = my_vec_insert(line, c, line_edit->pos);
+    char end_char = '\n';
 
     (void)stream;
-    line_edit->pos++;
-    sh_line_edit_update(line_edit, line);
-    return code;
+    (void)line_edit;
+    write(STDOUT_FILENO, &end_char, 1);
+    return my_vec_push(line, &end_char);
 }

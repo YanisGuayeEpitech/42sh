@@ -46,6 +46,5 @@ ssize_t sh_line_edit_fill(sh_line_edit_t *line_edit, my_iostream_t *stream)
     }
     line_edit->line_buf->capacity = linevec.capacity;
     line_edit->line_buf->data = linevec.data;
-    my_printf("Final line: %#s\n", line_edit->line_buf->data);
     return ret;
 }
