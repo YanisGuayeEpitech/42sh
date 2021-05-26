@@ -31,7 +31,7 @@ source_group("" FILES ${SRC})
 add_library(42sh-lib STATIC ${SRC})
 add_executable(42sh ${SRCROOT}/main.c)
 
-target_link_libraries(42sh-lib PUBLIC my-ascii my-collections my-hash my-io my-memory my-parsing my-printf -lncurses)
+target_link_libraries(42sh-lib PUBLIC my-ascii my-collections my-hash my-io my-memory my-parsing my-printf)
 target_link_libraries(42sh PRIVATE 42sh-lib)
 
 target_include_directories(42sh-lib PUBLIC ${INCROOT} ${LIBMY_INCLUDE_DIR})

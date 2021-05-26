@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
-#include <term.h>
 
 #include "shell.h"
 
@@ -56,7 +55,6 @@ int main(int argc, char *argv[], char *envp[])
         free_stdio();
         return 84;
     }
-    setupterm(NULL, STDOUT_FILENO, NULL);
     sh_start(&ctx);
     code = ctx.exit_code;
     sh_ctx_drop(&ctx);
