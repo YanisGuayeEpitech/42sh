@@ -54,9 +54,8 @@ macro(libmy_add_module target)
     # Enable Warnings
     if (CMAKE_COMPILER_IS_GNUCC)
         if (LIBMY_USE_GCOV)
-            set(GCOV_LINK_FLAGS "-lgcov --coverage")
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCOV_LINK_FLAGS}")
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
+            target_link_options(${target} PRIVATE "-lgcov" "--coverage")
+            target_compile_options(${target} PRIVATE "--coverage" "-fprofile-arcs" "-ftest-coverage")
         endif()
         # Compile Options
         target_compile_options(${target} PRIVATE

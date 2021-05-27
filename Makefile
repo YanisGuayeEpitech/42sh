@@ -43,6 +43,7 @@ test_run: run_test
 # Display Code Coverage
 coverage:
 	gcovr .
+	gcovr --branch .
 
 .PHONY: \
 	all $(TARGET) \

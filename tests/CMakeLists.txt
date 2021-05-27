@@ -23,11 +23,6 @@ endif()
 
 target_link_libraries(unit-test-42sh PRIVATE 42sh-lib ${CRITERION_LIBRARIES})
 
-# Link to gcov if build type is set to 'static'
-if (CMAKE_COMPILER_IS_GNUCC AND USE_GCOV)
-    target_link_libraries(unit-test-42sh PRIVATE gcov)
-endif()
-
 add_test(NAME unit-test-42sh COMMAND unit-test-42sh)
 
 add_subdirectory(integration)
