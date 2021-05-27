@@ -17,6 +17,8 @@
 
 #define SH_INHIBITOR '\\'
 
+struct sh_ctx;
+
 typedef enum sh_token_type {
     SH_TOKEN_STRING = 1 << 0,
     SH_TOKEN_PIPE = 1 << 1,
@@ -61,13 +63,13 @@ void sh_token_stream_drop(sh_token_stream_t *stream);
 /// @returns 0 on success, 1 on token error, or -1 on EOL.
 int sh_token_parse(sh_token_stream_t *stream, sh_token_t *token);
 
-ssize_t sh_token_stream_push(sh_token_stream_t *stream, size_t token_count);
+ssize_t sh_token_stream_push(struct sh_ctx *ctx, sh_token_stream_t *stream, size_t token_count);
 
 SH_INLINE ssize_t sh_token_stream_next(
-    sh_token_stream_t *stream, size_t token_count)
+    struct sh_ctx *ctx, sh_token_stream_t *stream, size_t token_count)
 {
     sh_token_stream_reset(stream);
-    return sh_token_stream_push(stream, token_count);
+    return sh_token_stream_push(ctx, stream, token_count);
 }
 
 SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)

@@ -23,6 +23,7 @@ set(SRC
 
 add_subdirectory(builtin)
 add_subdirectory(command)
+add_subdirectory(line_edit)
 add_subdirectory(token)
 add_subdirectory(util)
 

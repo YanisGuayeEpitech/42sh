@@ -12,6 +12,7 @@
 #include <stdbool.h>
 
 #include "definition.h"
+#include "line_edit.h"
 #include "util.h"
 
 typedef struct sh_var_value {
@@ -19,7 +20,7 @@ typedef struct sh_var_value {
     bool read_only;
 } sh_var_value_t;
 
-typedef struct {
+typedef struct sh_ctx {
     /// A vector of the environment entries.
     my_vec_t env;
     /// A map of local variables, includes shell variables as well.
@@ -30,6 +31,8 @@ typedef struct {
     my_vec_t path;
     /// A vector of sh_command_t
     my_vec_t pipeline;
+    /// The line edition structure
+    sh_line_edit_t line_edit;
     /// Is stdin a tty?
     int is_tty;
     /// The exit code of the previous program.
