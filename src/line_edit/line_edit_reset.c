@@ -13,7 +13,7 @@
 #include "shell.h"
 
 int sh_line_edit_reset(
-    struct sh_ctx_s *ctx, sh_line_edit_t *line_edit, my_vec_t *line_buf)
+    struct sh_ctx *ctx, sh_line_edit_t *line_edit, my_vec_t *line_buf)
 {
     line_edit->line_buf = line_buf;
     line_edit->pos = 0;

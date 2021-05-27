@@ -13,20 +13,18 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
-#include "definition.h"
+struct sh_ctx;
 
-struct sh_ctx_s;
-
-typedef struct sh_line_edit_s {
+typedef struct sh_line_edit {
     my_vec_t *line_buf;
     char *prompt;
     size_t pos;
     bool is_eof;
-    struct sh_ctx_s *ctx;
+    struct sh_ctx *ctx;
 } sh_line_edit_t;
 
 int sh_line_edit_reset(
-    struct sh_ctx_s *ctx, sh_line_edit_t *line_edit, my_vec_t *line_buf);
+    struct sh_ctx *ctx, sh_line_edit_t *line_edit, my_vec_t *line_buf);
 ssize_t sh_line_edit_fill(sh_line_edit_t *line_edit, my_iostream_t *stream);
 void sh_line_edit_update(sh_line_edit_t *line_edit, my_vec_t *line_buf);
 

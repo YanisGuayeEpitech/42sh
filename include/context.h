@@ -10,10 +10,10 @@
 
 #include <libmy/collections.h>
 
-#include "line_edit.h"
 #include "definition.h"
+#include "line_edit.h"
 
-typedef struct sh_ctx_s {
+typedef struct sh_ctx {
     /// A vector of the environment entries.
     my_vec_t env;
     /// A vector of the entries from the PATH environment variable.

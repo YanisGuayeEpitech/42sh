@@ -30,7 +30,7 @@ int sh_keybind_move_right(
 {
     char c_replace = MY_VEC_GET_ELEM(char, line, line_edit->pos);
 
-    if (c_replace == 0)
+    if (line_edit->pos >= line->length  || c_replace == 0)
         return 0;
     (void)stream;
     (void)c;

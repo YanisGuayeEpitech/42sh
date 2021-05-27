@@ -12,7 +12,7 @@
 #include "shell.h"
 
 static int sh_token_stream_fill_line(
-    struct sh_ctx_s *ctx, sh_token_stream_t *stream)
+    struct sh_ctx *ctx, sh_token_stream_t *stream)
 {
     ssize_t bytes_read = sh_line_edit_fill(&ctx->line_edit, MY_STDIN);
 
@@ -28,7 +28,7 @@ static int sh_token_stream_fill_line(
 }
 
 ssize_t sh_token_stream_push(
-    struct sh_ctx_s *ctx, sh_token_stream_t *stream, size_t token_count)
+    struct sh_ctx *ctx, sh_token_stream_t *stream, size_t token_count)
 {
     size_t c = 1;
     int ret;

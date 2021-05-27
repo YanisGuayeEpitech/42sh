@@ -7,26 +7,24 @@
 
 #include "line_edit.h"
 
-MY_LOCAL void my_getdelim_alloc_vec(
+void my_getdelim_alloc_vec(
     my_vec_t *linevec, char *line, size_t alloc_size);
 
-MY_LOCAL ssize_t my_getdelim_add_null_byte(my_vec_t *line, ssize_t ret);
+ssize_t my_getdelim_add_null_byte(my_vec_t *line, ssize_t ret);
 
 ssize_t sh_getdelim_read(sh_line_edit_t *line_edit, my_vec_t *line, char delim,
     my_iostream_t *stream)
 {
     char c;
-    ssize_t count = 0;
 
     while (my_fread(&c, sizeof(char), 1, stream) == 1 && !line_edit->is_eof) {
-        ++count;
         if (sh_exec_keybind(line_edit, line, stream, &c) != 0)
             return -1;
         if (line_edit->is_eof || c == delim)
-            return count;
+            return line->length;
     }
     if (my_feof(stream))
-        return count;
+        return line->length;
     return -1;
 }
 
