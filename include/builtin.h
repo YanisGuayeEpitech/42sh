@@ -45,6 +45,8 @@ int sh_builtin_exit(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_repeat(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
+int sh_builtin_set(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_setenv(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_unsetenv(

@@ -18,6 +18,7 @@ set(SRC
     ${SRCROOT}/reset_path.c
     ${SRCROOT}/start.c
     ${SRCROOT}/status.c
+    ${SRCROOT}/vars.c
 )
 
 add_subdirectory(builtin)

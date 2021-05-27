@@ -8,6 +8,8 @@
 #ifndef __SHELL_UTIL_H__
 #define __SHELL_UTIL_H__
 
+#include <libmy/hash.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "error.h"
@@ -53,5 +55,20 @@ int sh_sclose_pipe(int pipefd[2]);
 ///
 /// @returns @c SH_OK if the parsing succeded, or an error code otherwise.
 sh_error_t sh_parse_int(char const *str, int *result);
+
+/// String with length information.
+typedef struct sh_lstr {
+    /// The string, may contain embedded null-bytes.
+    char *value;
+    /// The length of the string, optional terminator excluded.
+    size_t length;
+} sh_lstr_t;
+
+#define SH_LSTR(value, length) ((sh_lstr_t){(char *)(value), (length)})
+#define SH_TO_LSTR(value)      SH_LSTR((value), my_strlen((char *)(value)))
+
+bool sh_lstr_dup(sh_lstr_t src, sh_lstr_t *dst);
+int sh_lstr_cmp(sh_lstr_t const *a, sh_lstr_t const *b);
+void sh_lstr_hash(my_hasher_t *hasher, sh_lstr_t *str);
 
 #endif // !defined(__SHELL_UTIL_H__)
