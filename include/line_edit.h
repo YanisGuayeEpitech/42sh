@@ -214,6 +214,18 @@ int sh_keybind_delete_next_word(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
+/// @brief Delete the first word found before the cursor.
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_delete_backward_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
 /// @brief Move the cursor to the beginning of the last word.
 ///
 /// @param line_edit The line_edit struct.
@@ -248,6 +260,32 @@ int sh_keybind_forward_word(
 /// @return int
 ///
 int sh_keybind_capitalize_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Set the first word seen after the cursor in upcases(start at the cursor
+/// position) and move the cursor at the end of this word
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_upcase_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Set the first word seen after the cursor in downcases(start at the cursor
+/// position) and move the cursor at the end of this word
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_downcase_word(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///

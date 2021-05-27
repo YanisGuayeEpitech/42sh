@@ -32,7 +32,16 @@ static void init_escape_keybinds(keybind_t keybinds[256])
     keybinds[67] = &sh_keybind_capitalize_word;
     keybinds[68] = &sh_keybind_delete_next_word;
     keybinds[70] = &sh_keybind_forward_word;
+    keybinds[76] = &sh_keybind_downcase_word;
+    keybinds[85] = &sh_keybind_upcase_word;
     keybinds[91] = &sh_keybind_arrow;
+    keybinds[98] = &sh_keybind_backward_word;
+    keybinds[99] = &sh_keybind_capitalize_word;
+    keybinds[100] = &sh_keybind_delete_next_word;
+    keybinds[102] = &sh_keybind_forward_word;
+    keybinds[108] = &sh_keybind_downcase_word;
+    keybinds[117] = &sh_keybind_upcase_word;
+    keybinds[127] = &sh_keybind_delete_backward_word;
 }
 
 int sh_keybind_escape(
