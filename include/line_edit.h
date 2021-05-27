@@ -13,14 +13,13 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
-#include "keybinds.h"
 #include "completion.h"
+#include "keybinds.h"
 
 struct sh_ctx;
 
 typedef struct sh_line_edit {
     my_vec_t *line_buf;
-    char *prompt;
     size_t pos;
     bool is_eof;
     struct sh_ctx *ctx;

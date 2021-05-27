@@ -6,44 +6,18 @@
 */
 
 #include <libmy/ascii.h>
+#include <unistd.h>
 #include <glob.h>
 
 #include "line_edit.h"
 
-static char *sh_get_completion_end_file(char *str)
-{
-    size_t i = 0;
-    char *end = str;
-    size_t len = my_strlen(str);
-
-    while (str[i] && i != len - 1) {
-        if (str[i] == '/')
-            end = str + i + 1;
-        i++;
-    }
-    return end;
-}
-
 int sh_keybind_complete(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
-    glob_t buf;
-    char *str = my_strndup(line->data, line->length);
-    int ret;
-
-    (void)line_edit;
-    (void)stream;
-    (void)c;
-    ret = sh_get_completion_list(&buf, "/", str, true);
-    ret = sh_get_completion_list(&buf, "/usr/bin", str, true);
-    if (ret == GLOB_NOMATCH)
-        return 0;
-    my_putc('\n');
-    my_flush_stdout();
-    for (size_t i = 0; i < buf.gl_pathc; i++)
-        my_printf("%s\n", sh_get_completion_end_file(buf.gl_pathv[i]));
-    sh_line_edit_update(line_edit, line);
-    globfree(&buf);
+    if (isatty(STDIN_FILENO))
+        sh_print_completion_list(line_edit, line);
+    else
+        sh_keybind_show(line_edit, line, stream, c);
     return 0;
 }
 
