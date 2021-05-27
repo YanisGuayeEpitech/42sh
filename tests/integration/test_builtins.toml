@@ -59,3 +59,55 @@ echo 'repeat 1 ls | grep ".toml"'
 echo 'repeat -1 pwd'
 echo 'repeat 42 cd ..'
 """
+
+[setenv-invalid-var-start]
+setup = ""
+tests = """
+echo 'setenv 1TEST'
+"""
+
+[setenv-too-many-args]
+setup = ""
+tests = """
+echo 'setenv TEST1 this is a test'
+"""
+
+[setenv-valid-args]
+description = 'Exits the shell with code 0'
+setup = "unset `/usr/bin/env | /usr/bin/cut -d= -f1`"
+# We unset all tcsh-defined default envirnoment variables (yes, there are a LOT)
+tests = """
+echo 'unsetenv AFSUSER'
+echo 'unsetenv COLUMNS'
+echo 'unsetenv DISPLAY'
+echo 'unsetenv EDITOR'
+echo 'unsetenv GROUP'
+echo 'unsetenv HOME'
+echo 'unsetenv HOST'
+echo 'unsetenv HOSTTYPE'
+echo 'unsetenv HPATH'
+echo 'unsetenv LANG'
+echo 'unsetenv LC_CTYPE'
+echo 'unsetenv LINES'
+echo 'unsetenv LOGNAME'
+echo 'unsetenv LS_COLORS'
+echo 'unsetenv MACHTYPE'
+echo 'unsetenv NOREBIND'
+echo 'unsetenv OSTYPE'
+echo 'unsetenv PATH'
+echo 'unsetenv PWD'
+echo 'unsetenv REMOTEHOST'
+echo 'unsetenv SHLVL'
+echo 'unsetenv SYSTYPE'
+echo 'unsetenv TERM'
+echo 'unsetenv TERMCAP'
+echo 'unsetenv USER'
+echo 'unsetenv VENDOR'
+echo 'unsetenv VISUAL'
+echo 'unsetenv _'
+echo 'setenv'
+echo 'setenv TEST1'
+echo 'setenv TEST2 value'
+echo 'setenv TEST3 "This is a test"'
+echo 'setenv'
+"""

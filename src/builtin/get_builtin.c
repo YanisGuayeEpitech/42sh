@@ -16,6 +16,7 @@ static const sh_builtin_t BUILTINS_DATA[] = {
     {"env", &sh_builtin_env},
     {"exit", &sh_builtin_exit},
     {"repeat", &sh_builtin_repeat},
+    {"set", &sh_builtin_set},
     {"setenv", &sh_builtin_setenv},
     {"unsetenv", &sh_builtin_unsetenv},
 };

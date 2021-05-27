@@ -14,7 +14,7 @@ Test(sh_env_get_entry, not_found)
     char *envp[] = {"PATH=/usr/bin", "USER=root", NULL};
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    cr_assert_eq(sh_env_get_entry(&ctx, "SHELL", 5), NULL);
+    cr_assert_eq(sh_env_get_entry(&ctx, SH_LSTR("SHELL", 5)), NULL);
     sh_ctx_drop(&ctx);
 }
 
@@ -25,7 +25,7 @@ Test(sh_env_get_entry, found)
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    entry = sh_env_get_entry(&ctx, "SHELL", 5);
+    entry = sh_env_get_entry(&ctx, SH_LSTR("SHELL", 5));
     cr_assert_neq(entry, NULL);
     cr_assert_str_eq(*entry, "SHELL=42sh");
     sh_ctx_drop(&ctx);
@@ -38,8 +38,8 @@ Test(sh_env_set, new_variable)
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    sh_env_set(&ctx, "SHELL", "42sh");
-    entry = sh_env_get_entry(&ctx, "SHELL", 5);
+    sh_env_set(&ctx, SH_LSTR("SHELL", 5), SH_LSTR("42sh", 4));
+    entry = sh_env_get_entry(&ctx, SH_LSTR("SHELL", 5));
     cr_assert_neq(entry, NULL);
     cr_assert_str_eq(*entry, "SHELL=42sh");
     cr_assert_eq(ctx.env.length, 4);
@@ -55,8 +55,8 @@ Test(sh_env_set, update_variable)
     char **entry;
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    sh_env_set(&ctx, "SHELL", "42sh");
-    entry = sh_env_get_entry(&ctx, "SHELL", 5);
+    sh_env_set(&ctx, SH_LSTR("SHELL", 5), SH_LSTR("42sh", 4));
+    entry = sh_env_get_entry(&ctx, SH_LSTR("SHELL", 5));
     cr_assert_neq(entry, NULL);
     cr_assert_str_eq(*entry, "SHELL=42sh");
     cr_assert_eq(ctx.env.length, 4);
@@ -71,7 +71,7 @@ Test(sh_env_remove, not_found)
     char *envp[] = {"PATH=/usr/bin", "USER=root", NULL};
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    cr_assert_eq(sh_env_remove(&ctx, "SHELL"), 0);
+    cr_assert_eq(sh_env_remove(&ctx, SH_LSTR("SHELL", 5)), 0);
     sh_ctx_drop(&ctx);
 }
 
@@ -81,8 +81,8 @@ Test(sh_env_remove, found)
     char *envp[] = {"PATH=/bin", "USER=root", "SHELL=bash", NULL};
 
     cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
-    cr_assert_eq(sh_env_remove(&ctx, "SHELL"), 1);
-    cr_assert_eq(sh_env_get_entry(&ctx, "SHELL", 5), NULL);
+    cr_assert_eq(sh_env_remove(&ctx, SH_LSTR("SHELL", 5)), 1);
+    cr_assert_eq(sh_env_get_entry(&ctx, SH_LSTR("SHELL", 5)), NULL);
     cr_assert_eq(ctx.env.length, 3);
     cr_assert_eq(ctx.env.capacity, 3);
     cr_assert_str_eq(MY_VEC_GET_ELEM(char *, &ctx.env, 0), "PATH=/bin");
