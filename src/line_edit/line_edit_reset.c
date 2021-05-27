@@ -26,9 +26,10 @@ void sh_line_edit_update(sh_line_edit_t *line_edit, my_vec_t *line_buf)
     char back_buff_aft_write[back_steps_write];
     char tmp[] = "\x1b[2K\r";
 
+    if (!isatty(STDIN_FILENO))
+        return;
     write(STDOUT_FILENO, tmp, 5);
-    if (isatty(STDIN_FILENO))
-        my_puts("$> ");
+    my_puts("$> ");
     my_flush_stdout();
     write(STDOUT_FILENO, line_buf->data, line_buf->length);
     for (size_t i = 0; i < back_steps_write; i++)

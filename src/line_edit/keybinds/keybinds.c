@@ -12,7 +12,7 @@
 static void init_keybinds(keybind_t keybinds[256])
 {
     for (int i = 0; i < 256; i++) {
-        if (my_isprint(i) || i > 127)
+        if (my_isprint(i) || i > 127 || i == '\t')
             keybinds[i] = &sh_keybind_show;
         else
             keybinds[i] = &sh_keybind_empty;
@@ -20,8 +20,8 @@ static void init_keybinds(keybind_t keybinds[256])
     keybinds[4] = &sh_keybind_eof;
     keybinds[127] = &sh_keybind_delete;
     keybinds['\n'] = &sh_keybind_send_cmd;
-    keybinds['L'] = &sh_keybind_move_left;
-    keybinds['R'] = &sh_keybind_move_right;
+    //keybinds['L'] = &sh_keybind_move_left;
+    //keybinds['R'] = &sh_keybind_move_right;
 }
 
 int sh_exec_keybind(
@@ -30,8 +30,8 @@ int sh_exec_keybind(
     static keybind_t keybinds[256] = {NULL};
     int code;
 
-    if (!keybinds[(int)(*c)])
+    if (!keybinds[(unsigned char)(*c)])
         init_keybinds(keybinds);
-    code = (*keybinds[(int)(*c)])(line_edit, line, stream, c);
+    code = (*keybinds[(unsigned char)(*c)])(line_edit, line, stream, c);
     return code;
 }
