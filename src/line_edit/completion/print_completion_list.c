@@ -57,14 +57,17 @@ static char *sh_get_next_completion_entry(glob_t *globbuf, size_t *index)
     return (is_duplicate) ? NULL : entry;
 }
 
-void sh_print_completion_list(sh_line_edit_t *line_edit, my_vec_t *line)
+void sh_print_completion_list(
+    sh_line_edit_t *line_edit, my_vec_t *line, bool apply)
 {
     glob_t buf;
     char *entry;
 
-    sh_line_edit_fill_completion_list(line_edit, line, &buf, true);
-    if (buf.gl_pathc <= 1)
+    sh_line_edit_fill_completion_list(line_edit, line, &buf, apply);
+    if (buf.gl_pathc <= 1) {
+        globfree(&buf);
         return;
+    }
     my_putc('\n');
     my_flush_stdout();
     for (size_t i = 0; i < buf.gl_pathc; i++) {

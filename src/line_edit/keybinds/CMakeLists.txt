@@ -7,6 +7,7 @@ set(SRC
     ${SRCROOT}/keybind_backward_word.c
     ${SRCROOT}/keybind_capitalize_word.c
     ${SRCROOT}/keybind_clear_screen.c
+    ${SRCROOT}/keybind_completion.c
     ${SRCROOT}/keybind_delete_word.c
     ${SRCROOT}/keybind_delete.c
     ${SRCROOT}/keybind_downcase_word.c

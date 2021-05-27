@@ -5,30 +5,17 @@
 ** keybinds
 */
 
+#include <glob.h>
 #include <libmy/ascii.h>
 #include <unistd.h>
-#include <glob.h>
 
 #include "line_edit.h"
 
-int sh_keybind_complete(
-    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
-{
-    if (isatty(STDIN_FILENO))
-        sh_print_completion_list(line_edit, line);
-    else
-        sh_keybind_show(line_edit, line, stream, c);
-    return 0;
-}
-
 static void init_keybinds(keybind_t keybinds[256])
 {
-    for (int i = 0; i < 256; i++) {
-        if (my_isprint(i) || i > 127 || i == '\t')
-            keybinds[i] = &sh_keybind_show;
-        else
-            keybinds[i] = &sh_keybind_empty;
-    }
+    for (int i = 0; i < 256; i++)
+        keybinds[i] =
+            (my_isprint(i) || i > 127) ? &sh_keybind_show : &sh_keybind_empty;
     keybinds[9] = &sh_keybind_complete;
     keybinds[1] = &sh_keybind_line_start;
     keybinds[2] = &sh_keybind_move_left;
@@ -36,6 +23,7 @@ static void init_keybinds(keybind_t keybinds[256])
     keybinds[5] = &sh_keybind_line_end;
     keybinds[6] = &sh_keybind_move_right;
     keybinds[8] = &sh_keybind_delete;
+    keybinds[9] = &sh_keybind_tty_complete;
     keybinds[11] = &sh_keybind_line_kill_after_cursor;
     keybinds[12] = &sh_keybind_clear_screen;
     keybinds[21] = &sh_keybind_line_kill;

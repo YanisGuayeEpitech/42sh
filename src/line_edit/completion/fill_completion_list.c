@@ -68,7 +68,8 @@ void sh_line_edit_fill_completion_list(sh_line_edit_t *line_edit,
     while (word_start > 0 && !sh_is_arg_sep(line_str[word_start]))
         word_start--;
     word_start += sh_is_arg_sep(line_str[word_start]);
-    str = my_strndup(line_str + word_start, line_edit->pos - word_start);
+    str = my_calloc(sizeof(char), line_edit->pos - word_start + 1);
+    my_memcpy(str, line_str + word_start, line_edit->pos - word_start);
     sh_fill_completion_list(line_edit->ctx, globbuf, str);
     if (apply_completion)
         sh_line_edit_apply_completion(line_edit, line, globbuf, str);
