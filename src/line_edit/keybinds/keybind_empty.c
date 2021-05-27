@@ -14,6 +14,5 @@ int sh_keybind_empty(
     (void)line;
     (void)stream;
     (void)c;
-    my_printf("(%hhu) ", *c);
     return 0;
 }
