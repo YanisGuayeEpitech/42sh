@@ -26,6 +26,7 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_AMBIGUOUS_INPUT_REDIRECT] = "Ambiguous input redirect",
     [SH_AMBIGUOUS_OUTPUT_REDIRECT] = "Ambiguous output redirect",
     [SH_NO_MATCH] = "No match",
+    [SH_READ_ONLY_VAR] = "Cannot write to read-only variable",
 };
 
 char const *sh_strerror(sh_error_t code)
