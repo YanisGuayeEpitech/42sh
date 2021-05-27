@@ -28,6 +28,10 @@ static void init_escape_keybinds(keybind_t keybinds[256])
 {
     for (int i = 0; i < 256; i++)
         keybinds[i] = &sh_keybind_empty;
+    keybinds[66] = &sh_keybind_backward_word;
+    keybinds[67] = &sh_keybind_capitalize_word;
+    keybinds[68] = &sh_keybind_delete_next_word;
+    keybinds[70] = &sh_keybind_forward_word;
     keybinds[91] = &sh_keybind_arrow;
 }
 

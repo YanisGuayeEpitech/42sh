@@ -4,11 +4,15 @@ set(INCROOT ${PROJECT_SOURCE_DIR}/include)
 set(SRC
     ${SRC}
     ${INCROOT}/line_edit.h
+    ${SRCROOT}/keybind_backward_word.c
+    ${SRCROOT}/keybind_capitalize_word.c
     ${SRCROOT}/keybind_clear_screen.c
+    ${SRCROOT}/keybind_delete_word.c
     ${SRCROOT}/keybind_delete.c
     ${SRCROOT}/keybind_empty.c
     ${SRCROOT}/keybind_eof.c
     ${SRCROOT}/keybind_escape.c
+    ${SRCROOT}/keybind_forward_word.c
     ${SRCROOT}/keybind_line_end.c
     ${SRCROOT}/keybind_line_kill.c
     ${SRCROOT}/keybind_line_start.c

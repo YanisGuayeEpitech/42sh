@@ -152,51 +152,102 @@ int sh_keybind_line_end(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
-/// @brief Clear the characters before the cursor and set the cursor position at the beginning of the line.
-/// 
+/// @brief Clear the characters before the cursor and set the cursor position
+/// at the beginning of the line.
+///
 /// @param line_edit The line_edit struct, to keep track of the cursor.
 /// @param line The line vector, a char * vector. Will be part cleared.
 /// @param stream The stream from which the char was read. Not used here.
 /// @param c A pointer to the char which raised this call. Not used here.
-/// @return int 
+/// @return int
 ///
 int sh_keybind_line_kill_before_cursor(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
 /// @brief Clear the characters after the cursor.
-/// 
+///
 /// @param line_edit The line_edit struct, to keep track of the cursor.
 /// @param line The line vector, a char * vector. Will be part cleared.
 /// @param stream The stream from which the char was read. Not used here.
 /// @param c A pointer to the char which raised this call. Not used here.
-/// @return int 
+/// @return int
 ///
 int sh_keybind_line_kill_after_cursor(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
-/// @brief Clear the line and set the cursor position at the beginning of the line
-/// 
+/// @brief Clear the line and set the cursor position at the beginning of the
+/// line
+///
 /// @param line_edit The line_edit struct, to keep track of the cursor.
 /// @param line The line vector, a char * vector. Will be cleared.
 /// @param stream The stream from which the char was read. Not used here.
 /// @param c A pointer to the char which raised this call. Not used here.
-/// @return int 
+/// @return int
 ///
 int sh_keybind_line_kill(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
 /// @brief Clear all the screen except the current line
-/// 
-/// @param line_edit The line_edit struct. 
+///
+/// @param line_edit The line_edit struct.
 /// @param line The line vector, a char * vector.
 /// @param stream The stream from which the char was read. Not used here.
 /// @param c A pointer to the char which raised this call. Not used here.
-/// @return int 
+/// @return int
 ///
 int sh_keybind_clear_screen(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Delete the first word found after the cursor.
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_delete_next_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Move the cursor to the beginning of the last word.
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_backward_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Move the cursor to the end of the next word.
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_forward_word(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
+
+///
+/// @brief Capitalize the first word seen after the cursor (start at the cursor
+/// position) and move the cursor at the end of this word
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read. Not used here.
+/// @param c A pointer to the char which raised this call. Not used here.
+/// @return int
+///
+int sh_keybind_capitalize_word(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c);
 
 ///
