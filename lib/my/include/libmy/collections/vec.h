@@ -283,7 +283,6 @@ MY_COLLECTIONS_API void my_vec_pop(my_vec_t *vec, void *dst);
 MY_COLLECTIONS_API void my_vec_pop_multiple(
     my_vec_t *vec, void *dst, size_t count);
 
-/// @todo NOT YET IMPLEMENTED!
 /// Inserts an element at position @c index within the vector,
 /// shifting all elements after it to the right.
 ///
@@ -293,9 +292,11 @@ MY_COLLECTIONS_API void my_vec_pop_multiple(
 /// @param index The position of the inserted element.
 ///
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
+///          @ref MY_VEC_OUT_OF_BOUNDS if the index exceeds the length,
 ///          @ref MY_VEC_CAPACITY_OVERFLOW if the new capacity exceeds
 ///          the vec's maximum, @ref MY_VEC_OK otherwise.
-/// @since 0.1.0
+/// @author Andréas Leroux
+/// @since 0.3.11
 MY_COLLECTIONS_API my_vec_err_t my_vec_insert(
     my_vec_t *vec, void *elem, size_t index);
 
@@ -309,9 +310,11 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_insert(
 /// @param count The number of elements to insert.
 ///
 /// @returns @ref MY_VEC_ALLOC if an allocator error has occured,
+///          @ref MY_VEC_OUT_OF_BOUNDS if the index exceeds the length,
 ///          @ref MY_VEC_CAPACITY_OVERFLOW if the new capacity exceeds
 ///          the vec's maximum, @ref MY_VEC_OK otherwise.
-/// @since 0.1.0
+/// @author Andréas Leroux
+/// @since 0.3.11
 MY_COLLECTIONS_API my_vec_err_t my_vec_insert_multiple(
     my_vec_t *vec, void *elem, size_t index, size_t count);
 

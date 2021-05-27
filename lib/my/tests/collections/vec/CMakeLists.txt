@@ -8,6 +8,7 @@ set(VECTOR_SRC
     ${SRCROOT}/test_my_vec_extend_to_length.c
     ${SRCROOT}/test_my_vec_free.c
     ${SRCROOT}/test_my_vec_init_capacity.c
+    ${SRCROOT}/test_my_vec_insert.c
     ${SRCROOT}/test_my_vec_pop.c
     ${SRCROOT}/test_my_vec_push.c
     ${SRCROOT}/test_my_vec_remove.c
