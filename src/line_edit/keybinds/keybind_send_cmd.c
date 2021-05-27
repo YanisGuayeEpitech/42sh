@@ -17,6 +17,7 @@ int sh_keybind_send_cmd(
 
     (void)stream;
     (void)line_edit;
+    (void)c;
     if (isatty(STDIN_FILENO))
         write(STDOUT_FILENO, &end_char, 1);
     return my_vec_push(line, &end_char);
