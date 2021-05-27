@@ -3,7 +3,7 @@ set(INCROOT ${PROJECT_SOURCE_DIR}/include)
 
 set(SRC
     ${SRC}
-    ${INCROOT}/line_edit.h
+    ${INCROOT}/keybinds.h
     ${SRCROOT}/keybind_backward_word.c
     ${SRCROOT}/keybind_capitalize_word.c
     ${SRCROOT}/keybind_clear_screen.c

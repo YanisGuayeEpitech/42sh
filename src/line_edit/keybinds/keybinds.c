@@ -6,8 +6,46 @@
 */
 
 #include <libmy/ascii.h>
+#include <glob.h>
 
 #include "line_edit.h"
+
+static char *sh_get_completion_end_file(char *str)
+{
+    size_t i = 0;
+    char *end = str;
+    size_t len = my_strlen(str);
+
+    while (str[i] && i != len - 1) {
+        if (str[i] == '/')
+            end = str + i + 1;
+        i++;
+    }
+    return end;
+}
+
+int sh_keybind_complete(
+    sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
+{
+    glob_t buf;
+    char *str = my_strndup(line->data, line->length);
+    int ret;
+
+    (void)line_edit;
+    (void)stream;
+    (void)c;
+    ret = sh_get_completion_list(&buf, "/", str, true);
+    ret = sh_get_completion_list(&buf, "/usr/bin", str, true);
+    if (ret == GLOB_NOMATCH)
+        return 0;
+    my_putc('\n');
+    my_flush_stdout();
+    for (size_t i = 0; i < buf.gl_pathc; i++)
+        my_printf("%s\n", sh_get_completion_end_file(buf.gl_pathv[i]));
+    sh_line_edit_update(line_edit, line);
+    globfree(&buf);
+    return 0;
+}
 
 static void init_keybinds(keybind_t keybinds[256])
 {
@@ -17,6 +55,7 @@ static void init_keybinds(keybind_t keybinds[256])
         else
             keybinds[i] = &sh_keybind_empty;
     }
+    keybinds[9] = &sh_keybind_complete;
     keybinds[1] = &sh_keybind_line_start;
     keybinds[2] = &sh_keybind_move_left;
     keybinds[4] = &sh_keybind_eof;
