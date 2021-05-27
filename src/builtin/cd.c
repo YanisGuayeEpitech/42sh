@@ -5,10 +5,12 @@
 ** The cd builtin
 */
 
+#include <libmy/ascii/ascii.h>
 #include <libmy/printf.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #include "builtin.h"
 #include "shell.h"
 
@@ -51,7 +53,7 @@ static int sh_cd_parse_params(
 
 static int sh_cd_home(sh_ctx_t *ctx, char const *name)
 {
-    char **home = sh_env_get_entry(ctx, "HOME", 4);
+    char **home = sh_env_get_entry(ctx, SH_LSTR("HOME", 4));
 
     if (!home)
         return sh_rerror(name, SH_CD_NO_HOME_DIR, 1);
@@ -74,7 +76,7 @@ static int sh_cd_dir(sh_ctx_t *ctx, char const *path)
         free(cwd);
         return sh_rerror_errno(path, 1);
     }
-    sh_env_set(ctx, "OLDPWD", cwd);
+    sh_env_set(ctx, SH_LSTR("OLDPWD", 6), SH_TO_LSTR(cwd));
     if (ctx->old_pwd != NULL)
         free(ctx->old_pwd);
     ctx->old_pwd = cwd;

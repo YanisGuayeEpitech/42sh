@@ -46,22 +46,29 @@ void sh_print_prompt(sh_ctx_t *ctx);
 /// @param key_len The number of characters in @c key.
 ///
 /// @returns A pointer to the full entry string, @c NULL if no entry was found.
-char **sh_env_get_entry(sh_ctx_t *ctx, char const *key, size_t key_len);
+char **sh_env_get_entry(sh_ctx_t *ctx, sh_lstr_t key);
 
 /// Adds or updates and environment variable with the given key and value.
 ///
 /// @param ctx The shell context.
 /// @param key The name of the variable.
 /// @param value The value of the variable.
-void sh_env_set(sh_ctx_t *ctx, char const *key, char const *value);
+void sh_env_set(sh_ctx_t *ctx, sh_lstr_t key, sh_lstr_t value);
 
 /// Removes an environment variable named @c key.
 ///
 /// @param ctx The shell context.
 /// @param key The name of the variable.
 ///
-/// @returns 1 if the variable was found and removed, 0 otherwise.
-int sh_env_remove(sh_ctx_t *ctx, char const *key);
+/// @returns @c true if the variable was found and removed, @c false otherwise.
+bool sh_env_remove(sh_ctx_t *ctx, sh_lstr_t key);
+
+sh_lstr_t sh_var_get(sh_ctx_t *ctx, sh_lstr_t key);
+
+sh_error_t sh_var_set(
+    sh_ctx_t *ctx, sh_lstr_t key, sh_lstr_t value, bool read_only);
+
+sh_error_t sh_var_remove(sh_ctx_t *ctx, sh_lstr_t value);
 
 /// Validates a variable name.
 ///

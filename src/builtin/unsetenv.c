@@ -17,7 +17,8 @@ int sh_builtin_unsetenv(
     if (argc == 1)
         return sh_rerror(argv[0], SH_TOO_FEW_ARGS, 1);
     for (size_t i = 1; i < argc; ++i)
-        if (sh_env_remove(ctx, argv[i]) && my_strcmp(argv[i], "PATH") == 0)
+        if (sh_env_remove(ctx, SH_LSTR(argv[i], my_strlen(argv[i])))
+            && my_strcmp(argv[i], "PATH") == 0)
             sh_ctx_reset_path(ctx);
     (void)should_exit;
     return 0;

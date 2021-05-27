@@ -9,6 +9,7 @@ set(SRC
     ${SRCROOT}/test_parsing.c
     ${SRCROOT}/test_reset_path.c
     ${SRCROOT}/test_util.c
+    ${SRCROOT}/test_vars.c
 )
 
 add_executable(unit-test-42sh ${SRC})
