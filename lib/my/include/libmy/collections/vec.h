@@ -200,7 +200,7 @@ MY_INLINE my_vec_err_t my_vec_try_get(
 MY_COLLECTIONS_API my_vec_err_t my_vec_set_capacity(
     my_vec_t *vec, size_t new_capacity, void (*elem_free)(void *));
 
-/// Frees all the elements contained inside this vector while conversing the
+/// Frees all the elements contained inside this vector while conserving the
 /// current capacity.
 ///
 /// @param vec The vector, must be initialized.
@@ -208,6 +208,18 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_set_capacity(
 /// called @ref my_vec_t::length times. Can be @c NULL.
 /// @since 0.3.7
 MY_COLLECTIONS_API void my_vec_clear(my_vec_t *vec, void (*elem_free)(void *));
+
+/// Frees all the elements contained inside this vector after @c start_index
+/// (included) while conserving the current capacity.
+///
+/// @param vec The vector, must be initialized.
+/// @param start_index The index from which the clear must start,
+/// @param elem_free A function that frees elements of this vector,
+/// called @ref my_vec_t::length times. Can be @c NULL.
+/// @author Andréas Leroux
+/// @since 0.3.11
+MY_COLLECTIONS_API void my_vec_clear_from(
+    my_vec_t *vec, size_t start_index, void (*elem_free)(void *));
 
 /// Reserves capacity for at least @c additional more elements.
 /// The collection may reserve more space to avoid frequent reallocations.

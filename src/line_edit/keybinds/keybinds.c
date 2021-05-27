@@ -17,11 +17,19 @@ static void init_keybinds(keybind_t keybinds[256])
         else
             keybinds[i] = &sh_keybind_empty;
     }
+    keybinds[1] = &sh_keybind_line_start;
+    keybinds[2] = &sh_keybind_move_left;
     keybinds[4] = &sh_keybind_eof;
+    keybinds[5] = &sh_keybind_line_end;
+    keybinds[6] = &sh_keybind_move_right;
+    keybinds[8] = &sh_keybind_delete;
+    keybinds[11] = &sh_keybind_line_kill_after_cursor;
+    keybinds[12] = &sh_keybind_clear_screen;
+    keybinds[21] = &sh_keybind_line_kill;
+    keybinds[23] = &sh_keybind_line_kill_before_cursor;
     keybinds[127] = &sh_keybind_delete;
     keybinds['\n'] = &sh_keybind_send_cmd;
-    //keybinds['L'] = &sh_keybind_move_left;
-    //keybinds['R'] = &sh_keybind_move_right;
+    keybinds[27] = &sh_keybind_escape;
 }
 
 int sh_exec_keybind(
@@ -30,7 +38,7 @@ int sh_exec_keybind(
     static keybind_t keybinds[256] = {NULL};
     int code;
 
-    if (!keybinds[(unsigned char)(*c)])
+    if (!keybinds[0])
         init_keybinds(keybinds);
     code = (*keybinds[(unsigned char)(*c)])(line_edit, line, stream, c);
     return code;
