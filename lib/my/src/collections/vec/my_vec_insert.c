@@ -20,7 +20,7 @@ MY_COLLECTIONS_API my_vec_err_t my_vec_insert_multiple(
 {
     my_vec_err_t ret;
 
-    if (index < 0 || index > vec->length)
+    if (index > vec->length)
         return MY_VEC_OUT_OF_BOUNDS;
     if (index == vec->length)
         return my_vec_push_multiple(vec, elems, count);
