@@ -48,14 +48,13 @@ static void init_escape_keybinds(
 int sh_keybind_escape(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
-    static sh_keybind_value_t *escape_sequence[256] = {NULL};
     char next_c;
 
     (void)c;
-    if (my_fread(&next_c, sizeof(char), 1, stream) != 1)
+    if (line_edit->escape_keybinds[0] == NULL)
+        init_escape_keybinds(line_edit, line_edit->escape_keybinds);
+    if (!stream || my_fread(&next_c, sizeof(char), 1, stream) != 1)
         return -1;
-    if (escape_sequence[0] == NULL)
-        init_escape_keybinds(line_edit, escape_sequence);
-    return (*escape_sequence[(unsigned char)(next_c)]->fct)(
+    return (*line_edit->escape_keybinds[(unsigned char)(next_c)]->fct)(
         line_edit, line, stream, &next_c);
 }

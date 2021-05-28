@@ -39,11 +39,13 @@ static void init_keybinds(
 int sh_exec_keybind(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
-    static sh_keybind_value_t *keybinds[256] = {NULL};
     int code;
 
-    if (!keybinds[0])
-        init_keybinds(line_edit, keybinds);
-    code = (*keybinds[(unsigned char)(*c)]->fct)(line_edit, line, stream, c);
+    if (!line_edit->keybinds[0])
+        init_keybinds(line_edit, line_edit->keybinds);
+    if (!c)
+        return 0;
+    code = (*line_edit->keybinds[(unsigned char)(*c)]->fct)(
+        line_edit, line, stream, c);
     return code;
 }

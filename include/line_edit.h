@@ -33,6 +33,8 @@ typedef struct sh_line_edit {
     /// Key type: string
     /// Value type: sh_keybind_value_t
     my_hash_map_t keybinds_fcts;
+    sh_keybind_value_t *keybinds[256];
+    sh_keybind_value_t *escape_keybinds[256];
 } sh_line_edit_t;
 
 void sh_line_edit_init(sh_line_edit_t *line_edit, struct sh_ctx *ctx);

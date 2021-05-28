@@ -25,7 +25,11 @@ static const my_map_kvtypes_t SH_KEYBINDS_MAP_KVTYPES = {
 void sh_line_edit_init(sh_line_edit_t *line_edit, struct sh_ctx *ctx)
 {
     line_edit->ctx = ctx;
+    line_edit->keybinds[0] = NULL;
+    line_edit->escape_keybinds[0] = NULL;
     my_hash_map_init(&line_edit->keybinds_fcts, &SH_KEYBINDS_MAP_KVTYPES);
+    sh_exec_keybind(line_edit, NULL, NULL, NULL);
+    sh_keybind_escape(line_edit, NULL, NULL, NULL);
 }
 
 int sh_line_edit_reset(sh_line_edit_t *line_edit, my_vec_t *line_buf)

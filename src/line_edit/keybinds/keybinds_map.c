@@ -30,6 +30,8 @@ static void sh_fill_keybinds_hashmap_3(sh_line_edit_t *line_edit)
         &line_edit->keybinds_fcts, &sh_keybind_upcase_word, "upcase-word");
     sh_keybind_add(
         &line_edit->keybinds_fcts, &sh_keybind_arrow, "arrows-sequence");
+    sh_keybind_add(&line_edit->keybinds_fcts, &sh_keybind_delete_backward_word,
+        "backward-delete-word");
 }
 
 static void sh_fill_keybinds_hashmap_2(sh_line_edit_t *line_edit)
