@@ -8,8 +8,11 @@ set(SRC
     ${SRCROOT}/command_execute_builtin.c
     ${SRCROOT}/command_execute_external.c
     ${SRCROOT}/command_execute.c
+    ${SRCROOT}/command_expand_redirect.c
+    ${SRCROOT}/command_expand_vars.c
     ${SRCROOT}/command_globbing.c
     ${SRCROOT}/command_init.c
+    ${SRCROOT}/command_open_redirects.c
     ${SRCROOT}/command_parse.c
     ${SRCROOT}/command_resolve.c
     ${SRCROOT}/command_resolve.c

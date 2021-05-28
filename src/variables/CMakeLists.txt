@@ -5,5 +5,7 @@ set(SRC
     ${SRC}
     ${INCROOT}/variables.h
     ${SRCROOT}/check_var_name.c
+    ${SRCROOT}/expand_var.c
+    ${SRCROOT}/expand_vars.c
     PARENT_SCOPE
 )
