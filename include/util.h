@@ -71,4 +71,23 @@ bool sh_lstr_dup(sh_lstr_t src, sh_lstr_t *dst);
 int sh_lstr_cmp(sh_lstr_t const *a, sh_lstr_t const *b);
 void sh_lstr_hash(my_hasher_t *hasher, sh_lstr_t *str);
 
+/// Returns the number of words in @c str.
+///
+/// A 'word' is defined as a sequence of non-whitespace characters
+/// (see isspace(3)).
+///
+/// @returns The number of words in str, or zero is @c str is @c NULL or empty
+/// (containing only whitespace).
+size_t sh_count_words(char const *str);
+
+/// Returns the next word in <tt>*str</tt> and advances the string to the next
+/// character after the end of the word.
+///
+/// A 'word' is defined as a sequence of non-whitespace characters
+/// (see isspace(3)).
+///
+/// @returns A pointer to the word start plus the size of the word, or @c NULL
+/// and @c 0 when there are no more words in <tt>*str</tt>.
+sh_lstr_t sh_next_word(char const **str);
+
 #endif // !defined(__SHELL_UTIL_H__)
