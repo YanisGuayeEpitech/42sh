@@ -40,4 +40,5 @@ void sh_command_drop(sh_command_t *command)
 {
     sh_command_reset(command);
     my_vec_free(&command->base.args, &sh_command_free_arg);
+    my_vec_free(&command->base.arg_types, NULL);
 }

@@ -22,7 +22,7 @@ static int sh_lint_redirects(size_t token_count,
             sh_token_consume_until(&token_count, &tokens, token_types);
 
         if (sh_token_consume(&token_count, &tokens, token_types)
-            && !sh_token_consume(&token_count, &tokens, SH_TOKEN_STRING))
+            && !sh_token_consume(&token_count, &tokens, SH_STRING_TOKENS))
             return sh_serror(err, SH_MISSING_REDIRECT_NAME, -1);
         if (has_redirect && new_redirect)
             return 2;
