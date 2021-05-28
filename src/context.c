@@ -13,7 +13,7 @@
 
 #include "command.h"
 #include "shell.h"
-#include "util.h"
+#include "variables.h"
 
 static const my_map_kvtypes_t SH_VARS_MAP_KVTYPES = {
     .key_size = sizeof(sh_lstr_t),

@@ -13,12 +13,6 @@
 
 #include "definition.h"
 #include "line_edit.h"
-#include "util.h"
-
-typedef struct sh_var_value {
-    sh_lstr_t inner;
-    bool read_only;
-} sh_var_value_t;
 
 typedef struct sh_ctx {
     /// A vector of the environment entries.

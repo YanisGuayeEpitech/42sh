@@ -11,6 +11,7 @@
 
 #include "builtin.h"
 #include "shell.h"
+#include "variables.h"
 
 static int sh_set_print_vars(sh_ctx_t *ctx, bool filter_ro)
 {
