@@ -48,7 +48,7 @@ char const *host)
             my_puts("~");
         else
             my_puts(pwd+cut);
-        my_puts("]# ");
+        my_puts("]$ ");
         my_flush_stdout();
     }
 }
