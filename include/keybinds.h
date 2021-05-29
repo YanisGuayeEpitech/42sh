@@ -35,7 +35,7 @@ int sh_keybind_self_insert(struct sh_line_edit *line_edit, my_vec_t *line,
 
 ///
 /// @brief Similar to sh_keybind_self_insert but instead of inserting a char,
-/// it remove the one at the pos line_edit->pos
+/// it removes the one at the pos line_edit->pos
 ///
 /// @param line_edit The line_edit struct to keep the position of the cursor.
 /// @param line The line vector, a char * vector.

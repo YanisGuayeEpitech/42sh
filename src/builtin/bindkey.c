@@ -100,7 +100,6 @@ int sh_builtin_bindkey(
     sh_keybind_value_t *value = NULL;
 
     (void)should_exit;
-    (void)argv;
     if (argc == 1)
         return print_keybinds(&ctx->line_edit);
     if (argc != 3)
@@ -108,9 +107,9 @@ int sh_builtin_bindkey(
             argv[0], (argc < 3) ? SH_TOO_FEW_ARGS : SH_TOO_MANY_ARGS, 1);
     if (!get_key(key, argv[1]))
         return sh_rerror(argv[0], SH_UNKNOWN_KEY, 1);
-    if (!my_hash_map_contains(&ctx->line_edit.keybinds_fcts, argv + 2))
-        return sh_rerror(argv[0], SH_UNKNOWN_KEYBIND_FUNCTION, 1);
     value = my_hash_map_get(&ctx->line_edit.keybinds_fcts, argv + 2);
+    if (!value)
+        return sh_rerror(argv[0], SH_UNKNOWN_KEYBIND_FUNCTION, 1);
     if (key[0] == -1)
         ctx->line_edit.escape_keybinds[key[1]] = value;
     else

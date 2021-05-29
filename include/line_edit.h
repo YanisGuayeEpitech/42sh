@@ -30,7 +30,7 @@ typedef struct sh_line_edit {
     bool is_eof;
     struct sh_ctx *ctx;
     /// A map of keybinds functions.
-    /// Key type: string
+    /// Key type: string (char *, not allocated)
     /// Value type: sh_keybind_value_t
     my_hash_map_t keybinds_fcts;
     sh_keybind_value_t *keybinds[256];
