@@ -7,5 +7,6 @@ set(SRC
     ${SRCROOT}/check_var_name.c
     ${SRCROOT}/expand_var.c
     ${SRCROOT}/expand_vars.c
+    ${SRCROOT}/print_var_error.c
     PARENT_SCOPE
 )

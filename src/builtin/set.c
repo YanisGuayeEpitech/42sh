@@ -56,7 +56,7 @@ static bool sh_set_parse_kv(
 {
     char const *sep = my_strechr(arg, '=');
     sh_lstr_t key = SH_LSTR(arg, sep - arg);
-    sh_lstr_t value = SH_LSTR(*sep ? sep + 1 : sep, my_strlen(sep));
+    sh_lstr_t value = SH_LSTR(*sep ? sep + 1 : sep, my_strlen(sep + 1));
     sh_error_t ret = sh_check_var_name(key.value, key.length);
 
     if (ret != SH_OK)

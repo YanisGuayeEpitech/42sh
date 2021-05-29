@@ -32,7 +32,7 @@ static bool sh_command_open_output_redirect(
         ctx->exit_code = 1;
         return false;
     }
-    cmd->pipe_out[1] = open(cmd->output, SH_OUTPUT_FLAGS(cmd));
+    cmd->pipe_out[1] = open(cmd->output, SH_OUTPUT_FLAGS(cmd), SH_OUTPUT_MODE);
     if (cmd->pipe_out[1] < 0) {
         ctx->exit_code = 1;
         return (bool)sh_rerror_errno(cmd->output, false);

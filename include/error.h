@@ -29,6 +29,8 @@ typedef enum sh_error {
     SH_AMBIGUOUS_OUTPUT_REDIRECT,
     SH_NO_MATCH,
     SH_READ_ONLY_VAR,
+    SH_UNDEFINED_VAR,
+    SH_ILLEGAL_VAR,
     SH_ERROR_MAX,
 } sh_error_t;
 

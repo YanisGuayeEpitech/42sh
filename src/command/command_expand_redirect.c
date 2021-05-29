@@ -16,20 +16,21 @@ bool sh_command_expand_redirect(
     sh_ctx_t *ctx, char **name, sh_token_type_t *type)
 {
     sh_error_t ret;
-    char *old_name = *type == SH_TOKEN_UNQUOTED_STR ? my_strdup(*name) : NULL;
+    sh_lstr_t var_name;
 
     if (!(*type & (SH_TOKEN_DOUBLE_STR | SH_TOKEN_UNQUOTED_STR))) {
         *type = SH_TOKEN_SINGLE_STR;
         return true;
     }
-    ret = sh_expand_vars(ctx, name);
-    if (*type == SH_TOKEN_DOUBLE_STR || ret != SH_OK)
-        return (bool)sh_rerror(NULL, ret, *type == SH_TOKEN_DOUBLE_STR);
+    ret = sh_expand_vars(ctx, name, &var_name);
+    if (!sh_print_var_error(ret, var_name))
+        return false;
+    if (*type == SH_TOKEN_DOUBLE_STR)
+        return true;
     if (sh_count_words(*name) != 1) {
-        my_fprintf(MY_STDERR, "%s: Ambiguous.\n", old_name);
-        free(old_name);
+        my_fprintf(
+            MY_STDERR, "%.*s: Ambiguous.\n", var_name.length, var_name.value);
         return false;
     }
-    free(old_name);
     return true;
 }
