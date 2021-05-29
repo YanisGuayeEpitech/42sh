@@ -10,7 +10,7 @@
 
 #include "line_edit.h"
 
-int sh_keybind_show(
+int sh_keybind_self_insert(
     sh_line_edit_t *line_edit, my_vec_t *line, my_iostream_t *stream, char *c)
 {
     int code = my_vec_insert(line, c, line_edit->pos);

@@ -11,6 +11,7 @@
 #include <libmy/collections/vec.h>
 #include <libmy/io.h>
 #include <sys/types.h>
+#include <libmy/collections/hash_map.h>
 
 struct sh_line_edit;
 
@@ -29,12 +30,12 @@ int sh_exec_keybind(struct sh_line_edit *line_edit, my_vec_t *line,
 /// @param c A pointer to the char that must be inserted.
 /// @return int
 ///
-int sh_keybind_show(struct sh_line_edit *line_edit, my_vec_t *line,
+int sh_keybind_self_insert(struct sh_line_edit *line_edit, my_vec_t *line,
     my_iostream_t *stream, char *c);
 
 ///
-/// @brief Similar to sh_keybind_show but instead of inserting a char, it
-/// remove the one at the pos line_edit->pos
+/// @brief Similar to sh_keybind_self_insert but instead of inserting a char,
+/// it removes the one at the pos line_edit->pos
 ///
 /// @param line_edit The line_edit struct to keep the position of the cursor.
 /// @param line The line vector, a char * vector.
@@ -308,6 +309,19 @@ int sh_keybind_tty_complete(struct sh_line_edit *line_edit, my_vec_t *line,
 /// @return int
 ///
 int sh_keybind_empty(struct sh_line_edit *line_edit, my_vec_t *line,
+    my_iostream_t *stream, char *c);
+
+///
+/// @brief Keybinds for arrows
+///
+/// @param line_edit The line_edit struct.
+/// @param line The line vector, a char * vector.
+/// @param stream The stream from which the char was read.
+/// @param c A pointer to the char which raised this call. A = up, B = down, D
+/// = Left, C = Right
+/// @return int
+///
+int sh_keybind_arrow(struct sh_line_edit *line_edit, my_vec_t *line,
     my_iostream_t *stream, char *c);
 
 #endif /* !KEYBINDS_H_ */

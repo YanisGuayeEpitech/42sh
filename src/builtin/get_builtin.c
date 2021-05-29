@@ -12,6 +12,7 @@
 #include "builtin.h"
 
 static const sh_builtin_t BUILTINS_DATA[] = {
+    {"bindkey", &sh_builtin_bindkey},
     {"cd", &sh_builtin_cd},
     {"env", &sh_builtin_env},
     {"exit", &sh_builtin_exit},
