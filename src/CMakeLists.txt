@@ -19,6 +19,9 @@ set(SRC
     ${SRCROOT}/start.c
     ${SRCROOT}/status.c
     ${SRCROOT}/vars.c
+    ${SRCROOT}/print_prompts.c
+    ${SRCROOT}/print_utils.c
+    ${SRCROOT}/prompt_utils.c
 )
 
 add_subdirectory(builtin)
