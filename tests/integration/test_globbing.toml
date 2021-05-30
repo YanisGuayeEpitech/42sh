@@ -7,5 +7,4 @@ tests = """
 echo 'ls [a-z]*'
 echo 'ls -l test_*'
 echo 'ls -l jjzlzĵoeigyfk*'
-echo 'echo test_*.toml'
 """
