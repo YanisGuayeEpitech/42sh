@@ -145,6 +145,13 @@ echo 'setenv TEST3 "This is a test"'
 echo 'setenv'
 """
 
+[unset-no-args]
+description = 'Tests the unset builtin without paramters'
+setup = ""
+tests = """
+echo 'unalias'
+"""
+
 [unalias-no-args]
 description = 'Tests the alias builtin without paramters'
 setup = ""
