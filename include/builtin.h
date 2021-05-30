@@ -12,6 +12,7 @@
 
 typedef struct {
     char const *name;
+    bool need_glob;
     int (*run)(sh_ctx_t *, int *, size_t, char const *[]);
 } sh_builtin_t;
 

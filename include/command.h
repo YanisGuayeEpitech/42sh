@@ -96,6 +96,7 @@ bool sh_command_expand_redirect(
 
 bool sh_command_expand_aliases(sh_ctx_t *ctx, sh_command_t *command);
 
+bool sh_command_need_globbing(sh_command_t *command, glob_t *globbuf);
 bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
 
 /// Opens both input and output redirect files of the first command @c c1

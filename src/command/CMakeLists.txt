@@ -13,6 +13,7 @@ set(SRC
     ${SRCROOT}/command_expand_vars.c
     ${SRCROOT}/command_globbing.c
     ${SRCROOT}/command_init.c
+    ${SRCROOT}/command_need_globbing.c
     ${SRCROOT}/command_open_redirects.c
     ${SRCROOT}/command_parse.c
     ${SRCROOT}/command_resolve.c

@@ -15,26 +15,32 @@
 #include "command.h"
 #include "util.h"
 
-static int fill_globbuf(
-    glob_t *globbuf, sh_command_t *command, size_t *nb_args)
+static void fill_vec_from_glob(my_vec_t *new_args, glob_t *globbuf)
+{
+    for (size_t i = 0; i < globbuf->gl_pathc; i++)
+        my_vec_push(new_args, globbuf->gl_pathv + i);
+}
+
+static int fill_globbuf(glob_t *globbuf, sh_command_t *command,
+    size_t *nb_args, my_vec_t *new_args)
 {
     char *arg;
     int flags = GLOB_TILDE;
+    int type_id = 1;
     int return_code = 0;
 
-    globfree(globbuf);
-    globbuf->gl_pathc = 0;
     for (size_t i = 1; i < *nb_args - 1; i++) {
         arg = MY_VEC_GET(char *, &command->base.args, i);
+        if (MY_VEC_GET(sh_token_type_t, &command->base.arg_types, type_id++)
+            != SH_TOKEN_UNQUOTED_STR)
+            continue;
         return_code = glob(arg, flags, NULL, globbuf);
         if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
             break;
-        if (i == 1)
-            flags |= GLOB_APPEND;
         if (return_code == 0) {
-            my_vec_remove(&command->base.args, NULL, i);
+            fill_vec_from_glob(new_args, globbuf);
+            my_vec_remove(&command->base.args, NULL, i--);
             free(arg);
-            i--;
             (*nb_args)--;
         }
     }
@@ -42,70 +48,44 @@ static int fill_globbuf(
 }
 
 static void handle_globbuf(
-    sh_ctx_t *ctx, sh_command_t *command, glob_t *globbuf, size_t nb_args)
+    sh_ctx_t *ctx, sh_command_t *command, my_vec_t *new_args, size_t nb_args)
 {
+    size_t count_globbed = new_args->length;
     char *arg;
-    const sh_token_type_t arg_type = SH_TOKEN_SINGLE_STR;
+    sh_token_type_t token_type = SH_TOKEN_UNQUOTED_STR;
 
-    my_vec_remove(&command->base.args, &arg, nb_args - 1);
-    free(arg);
-    for (size_t i = 0; i < globbuf->gl_pathc; i++) {
-        arg = my_strdup(globbuf->gl_pathv[i]);
-        my_vec_push(&command->base.args, &arg);
-        my_vec_push(&command->base.arg_types, (void *)&arg_type);
-    }
-    globfree(globbuf);
-    if (!globbuf->gl_pathc) {
+    if (count_globbed == 0) {
         ctx->exit_code = 1;
         sh_perror(MY_VEC_GET(char *, &command->base.args, 0), SH_NO_MATCH);
     }
-}
-
-static bool has_globbing_chars(
-    glob_t *globbuf, sh_command_t *command, size_t nb_args)
-{
-    char *arg;
-    int flags = GLOB_TILDE | GLOB_NOMAGIC;
-    int return_code = 0;
-
-    globbuf->gl_offs = 0;
-    globbuf->gl_pathc = 0;
-    for (size_t i = 1; i < nb_args - 1; i++) {
-        arg = MY_VEC_GET(char *, &command->base.args, i);
-        return_code = glob(arg, flags, NULL, globbuf);
-        if (return_code == GLOB_NOSPACE || return_code == GLOB_ABORTED)
-            break;
-        if (i == 1)
-            flags |= GLOB_APPEND;
+    my_vec_remove(&command->base.args, &arg, nb_args - 1);
+    free(arg);
+    for (size_t i = 0; i < new_args->length; i++) {
+        arg = MY_VEC_GET(char *, new_args, i);
+        my_vec_push(&command->base.args, &arg);
+        my_vec_push(&command->base.arg_types, &token_type);
     }
-    if (nb_args - 2 != globbuf->gl_pathc)
-        return true;
-    for (size_t i = 1; i < nb_args - 1; i++)
-        if (my_strcmp(MY_VEC_GET(char *, &command->base.args, i),
-                globbuf->gl_pathv[i - 1]))
-            return true;
-    return false;
 }
 
 bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command)
 {
     glob_t globbuf;
-    char *arg;
+    char *arg = NULL;
     int return_code = 0;
     size_t nb_args = command->base.args.length;
     const sh_token_type_t arg_type = SH_TOKEN_SINGLE_STR;
+    my_vec_t new_args;
 
-    if (nb_args <= 2)
+    if (!sh_command_need_globbing(command, &globbuf))
         return true;
-    if (!has_globbing_chars(&globbuf, command, nb_args)) {
-        globfree(&globbuf);
-        return true;
-    }
-    return_code = fill_globbuf(&globbuf, command, &nb_args);
-    handle_globbuf(ctx, command, &globbuf, nb_args);
-    arg = NULL;
+    globfree(&globbuf);
+    globbuf.gl_pathc = 0;
+    my_vec_init(&new_args, sizeof(char *));
+    return_code = fill_globbuf(&globbuf, command, &nb_args, &new_args);
+    handle_globbuf(ctx, command, &new_args, nb_args);
     my_vec_push(&command->base.args, &arg);
     my_vec_push(&command->base.arg_types, (void *)&arg_type);
+    my_vec_free(&new_args, NULL);
     return (return_code != GLOB_NOSPACE && return_code != GLOB_ABORTED
-        && globbuf.gl_pathc);
+        && ctx->exit_code != 1);
 }
