@@ -35,6 +35,8 @@ typedef enum {
 
 void sh_dirs_run(sh_ctx_t *ctx, sh_dirs_options_t options);
 
+int sh_builtin_alias(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_bindkey(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_cd(

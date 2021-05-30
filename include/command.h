@@ -92,4 +92,17 @@ int sh_external_pipe_close(
 /// u+rw, g+r, o+r
 #define SH_OUTPUT_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
+/// The value of an alias
+typedef struct sh_alias {
+    char *value;
+    size_t length;
+    int multi_word;
+} sh_alias_t;
+
+/// A full alias entry
+typedef struct sh_alias_entry {
+    sh_lstr_t key;
+    sh_alias_t value;
+} sh_alias_entry_t;
+
 #endif // !defined(__SHELL_COMMAND_H__)

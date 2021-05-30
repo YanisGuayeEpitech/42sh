@@ -2,6 +2,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src/builtin)
 
 set(SRC
     ${SRC}
+    ${SRCROOT}/alias.c
     ${SRCROOT}/bindkey.c
     ${SRCROOT}/cd.c
     ${SRCROOT}/dirs.c

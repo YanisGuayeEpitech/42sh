@@ -1,5 +1,19 @@
 suite = 'builtins'
 
+[alias]
+description = 'Tests the alias builtin'
+setup = ""
+tests = """
+echo 'alias'
+echo 'alias X'
+echo 'alias X Y'
+echo 'alias X'
+echo 'alias'
+echo 'alias ls ls --color=auto'
+echo 'alias'
+echo 'alias ls'
+"""
+
 [exit-zero]
 description = 'Exits the shell with code 0'
 setup = ""

@@ -26,6 +26,17 @@ static const my_map_kvtypes_t SH_VARS_MAP_KVTYPES = {
     .value_drop = MY_HASH_MAP_CSTR_DROP,
 };
 
+static const my_map_kvtypes_t SH_ALIASES_MAP_KVTYPES = {
+    .key_size = sizeof(sh_lstr_t),
+    .key_align = alignof(sh_lstr_t),
+    .value_size = sizeof(sh_alias_t),
+    .value_align = alignof(sh_alias_t),
+    .compare = (my_map_compare_keys_t)&sh_lstr_cmp,
+    .hash = (my_map_hash_key_t)&sh_lstr_hash,
+    .key_drop = MY_HASH_MAP_CSTR_DROP,
+    .value_drop = MY_HASH_MAP_CSTR_DROP,
+};
+
 static int sh_copy_env(sh_ctx_t *ctx, char **envp)
 {
     size_t env_size = 0;
@@ -56,6 +67,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     my_vec_init(&ctx->path, sizeof(char *));
     sh_ctx_reset_path(ctx);
     my_hash_map_init(&ctx->vars, &SH_VARS_MAP_KVTYPES);
+    my_hash_map_init(&ctx->aliases, &SH_ALIASES_MAP_KVTYPES);
     my_vec_init(&ctx->pipeline, sizeof(sh_command_t));
     ctx->is_tty = isatty(MY_STDIN->unix_stream.fd);
     ctx->exit_code = 0;
@@ -70,6 +82,7 @@ void sh_ctx_drop(sh_ctx_t *ctx)
     my_hash_map_drop(&ctx->line_edit.keybinds_fcts);
     my_vec_free(&ctx->env, &sh_free_entry);
     my_hash_map_drop(&ctx->vars);
+    my_hash_map_drop(&ctx->aliases);
     my_vec_free(&ctx->path, &sh_free_entry);
     my_vec_free(&ctx->pipeline, (void (*)(void *))(&sh_command_drop));
     free(ctx->old_pwd);
