@@ -45,12 +45,14 @@ static void handle_globbuf(
     sh_ctx_t *ctx, sh_command_t *command, glob_t *globbuf, size_t nb_args)
 {
     char *arg;
+    const sh_token_type_t arg_type = SH_TOKEN_SINGLE_STR;
 
     my_vec_remove(&command->base.args, &arg, nb_args - 1);
     free(arg);
     for (size_t i = 0; i < globbuf->gl_pathc; i++) {
         arg = my_strdup(globbuf->gl_pathv[i]);
         my_vec_push(&command->base.args, &arg);
+        my_vec_push(&command->base.arg_types, (void *)&arg_type);
     }
     globfree(globbuf);
     if (!globbuf->gl_pathc) {
@@ -91,6 +93,7 @@ bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command)
     char *arg;
     int return_code = 0;
     size_t nb_args = command->base.args.length;
+    const sh_token_type_t arg_type = SH_TOKEN_SINGLE_STR;
 
     if (nb_args <= 2)
         return true;
@@ -102,6 +105,7 @@ bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command)
     handle_globbuf(ctx, command, &globbuf, nb_args);
     arg = NULL;
     my_vec_push(&command->base.args, &arg);
+    my_vec_push(&command->base.arg_types, (void *)&arg_type);
     return (return_code != GLOB_NOSPACE && return_code != GLOB_ABORTED
         && globbuf.gl_pathc);
 }

@@ -10,6 +10,7 @@ SUITES=(
   'test_errors.toml'
   'test_globbing.toml'
   'test_inhibitors.toml'
+  'test_var_expansion.toml'
 )
 
 # Undefines any previously defined bash function

@@ -10,5 +10,7 @@ set(SRC
     ${SRCROOT}/lstr.c
     ${SRCROOT}/parsing.c
     ${SRCROOT}/sclose.c
+    ${SRCROOT}/split_at.c
+    ${SRCROOT}/words.c
     PARENT_SCOPE
 )
