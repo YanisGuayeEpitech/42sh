@@ -16,6 +16,12 @@
 
 #define IO_BUF_SIZE (1024)
 
+typedef struct {
+    char const flag;
+    void (*run)(sh_ctx_t *);
+} sh_prompt_t;
+
+
 /// Starts the shell.
 ///
 /// @param ctx The shell context.
