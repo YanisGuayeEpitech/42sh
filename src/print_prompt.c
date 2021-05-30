@@ -15,7 +15,7 @@
 #include "token.h"
 #include "util.h"
 
-void print_w(sh_ctx_t *ctx)
+void sh_print_w(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -28,7 +28,7 @@ void print_w(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_ww(sh_ctx_t *ctx)
+void sh_print_ww(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -39,7 +39,7 @@ void print_ww(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_y(sh_ctx_t *ctx)
+void sh_print_y(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -52,7 +52,7 @@ void print_y(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_yy(sh_ctx_t *ctx)
+void sh_print_yy(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;

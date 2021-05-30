@@ -15,7 +15,7 @@
 #include "token.h"
 #include "util.h"
 
-void print_name(sh_ctx_t *ctx)
+void sh_print_name(sh_ctx_t *ctx)
 {
     char *username;
 
@@ -24,7 +24,7 @@ void print_name(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_hostname(sh_ctx_t *ctx)
+void sh_print_hostname(sh_ctx_t *ctx)
 {
     char **host = sh_env_get_entry(ctx, SH_LSTR("HOSTNAME", 8));
 
@@ -33,7 +33,7 @@ void print_hostname(sh_ctx_t *ctx)
     }
 }
 
-void print_d(sh_ctx_t *ctx)
+void sh_print_d(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -45,7 +45,7 @@ void print_d(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_dd(sh_ctx_t *ctx)
+void sh_print_dd(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;

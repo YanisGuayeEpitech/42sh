@@ -15,16 +15,16 @@
 #include "token.h"
 #include "util.h"
 
-void print_wd(sh_ctx_t *ctx)
+void sh_print_wd(sh_ctx_t *ctx)
 {
-    char pwd[100];
+    char *pwd;
 
-    getwd(pwd);
+    pwd = sh_get_cwd();
     my_puts(pwd);
     (void)ctx;
 }
 
-void print_t(sh_ctx_t *ctx)
+void sh_print_t(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -38,7 +38,7 @@ void print_t(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_tt(sh_ctx_t *ctx)
+void sh_print_tt(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -49,7 +49,7 @@ void print_tt(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_p(sh_ctx_t *ctx)
+void sh_print_p(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
@@ -65,7 +65,7 @@ void print_p(sh_ctx_t *ctx)
     (void)ctx;
 }
 
-void print_pp(sh_ctx_t *ctx)
+void sh_print_pp(sh_ctx_t *ctx)
 {
     time_t now;
     struct tm *local;
