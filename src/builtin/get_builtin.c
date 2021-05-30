@@ -13,19 +13,19 @@
 #include "builtin.h"
 
 const sh_builtin_t BUILTINS[] = {
-    {"alias", &sh_builtin_alias},
-    {"bindkey", &sh_builtin_bindkey},
-    {"builtins", &sh_builtin_builtins},
-    {"cd", &sh_builtin_cd},
-    {"env", &sh_builtin_env},
-    {"exit", &sh_builtin_exit},
-    {"repeat", &sh_builtin_repeat},
-    {"set", &sh_builtin_set},
-    {"setenv", &sh_builtin_setenv},
-    {"source", &sh_builtin_source},
-    {"unalias", &sh_builtin_unalias},
-    {"unset", &sh_builtin_unset},
-    {"unsetenv", &sh_builtin_unsetenv},
+    {"alias", false, &sh_builtin_alias},
+    {"bindkey", false, &sh_builtin_bindkey},
+    {"builtins", false, &sh_builtin_builtins},
+    {"cd", false, &sh_builtin_cd},
+    {"env", false, &sh_builtin_env},
+    {"exit", false, &sh_builtin_exit},
+    {"repeat", false, &sh_builtin_repeat},
+    {"set", false, &sh_builtin_set},
+    {"setenv", false, &sh_builtin_setenv},
+    {"source", false, &sh_builtin_source},
+    {"unalias", false, &sh_builtin_unalias},
+    {"unset", false, &sh_builtin_unset},
+    {"unsetenv", false, &sh_builtin_unsetenv},
 };
 const size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(sh_builtin_t);
 

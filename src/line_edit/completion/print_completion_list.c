@@ -9,6 +9,8 @@
 #include <libmy/ascii.h>
 #include <libmy/printf.h>
 
+#include "context.h"
+#include "util.h"
 #include "line_edit.h"
 
 char *sh_get_path_end(char *path)
@@ -61,7 +63,7 @@ void sh_print_completion_list(
     sh_line_edit_t *line_edit, my_vec_t *line, bool apply)
 {
     glob_t buf;
-    char *entry;
+    my_vec_t entries;
 
     sh_line_edit_fill_completion_list(line_edit, line, &buf, apply);
     if (buf.gl_pathc <= 1) {
@@ -69,12 +71,15 @@ void sh_print_completion_list(
         return;
     }
     my_putc('\n');
+    my_vec_init(&entries, sizeof(char *));
     my_flush_stdout();
     for (size_t i = 0; i < buf.gl_pathc; i++) {
-        entry = sh_get_next_completion_entry(&buf, &i);
-        if (entry)
-            my_printf("%s\n", entry);
+        if (sh_get_next_completion_entry(&buf, &i))
+            my_vec_push(&entries, sh_get_completion_entry(&buf, i));
     }
+    sh_column_print(
+        line_edit->ctx->is_tty, entries.length, entries.data, MY_STDOUT);
+    my_vec_free(&entries, NULL);
     sh_line_edit_update(line_edit, line);
     globfree(&buf);
 }
