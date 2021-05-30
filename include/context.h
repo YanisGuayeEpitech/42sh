@@ -9,11 +9,12 @@
 #define __SHELL_CONTEXT_H__
 
 #include <libmy/collections.h>
+#include <libmy/io/iostream.h>
 #include <stdbool.h>
 
 #include "definition.h"
-#include "line_edit.h"
 #include "util.h"
+#include "line_edit.h"
 
 typedef struct sh_var_value {
     sh_lstr_t inner;
@@ -41,6 +42,8 @@ typedef struct sh_ctx {
     char *old_pwd;
     /// Exit value of exit builtins
     int had_exit_cmd;
+    /// The current shell input
+    my_iostream_t *input;
 } sh_ctx_t;
 
 /// Initializes the shell's context

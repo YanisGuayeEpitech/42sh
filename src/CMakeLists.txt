@@ -14,6 +14,7 @@ set(SRC
     ${SRCROOT}/execute_2.c
     ${SRCROOT}/execute.c
     ${SRCROOT}/lint.c
+    ${SRCROOT}/parse_args.c
     ${SRCROOT}/print.c
     ${SRCROOT}/reset_path.c
     ${SRCROOT}/start.c

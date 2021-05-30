@@ -61,6 +61,7 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->exit_code = 0;
     ctx->old_pwd = NULL;
     ctx->had_exit_cmd = -1;
+    ctx->input = MY_STDIN;
     sh_line_edit_init(&ctx->line_edit, ctx);
     return 0;
 }
@@ -74,4 +75,8 @@ void sh_ctx_drop(sh_ctx_t *ctx)
     my_vec_free(&ctx->pipeline, (void (*)(void *))(&sh_command_drop));
     free(ctx->old_pwd);
     ctx->old_pwd = NULL;
+    if (ctx->input != MY_STDIN) {
+        my_fclose(ctx->input);
+        free(ctx->input);
+    }
 }

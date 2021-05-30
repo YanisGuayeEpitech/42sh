@@ -16,6 +16,11 @@
 
 #define IO_BUF_SIZE (1024)
 
+/// Parses the arguments.
+///
+/// @returns Whether the shell should start.
+bool sh_parse_args(sh_ctx_t *ctx, int ac, char *av[]);
+
 /// Starts the shell.
 ///
 /// @param ctx The shell context.

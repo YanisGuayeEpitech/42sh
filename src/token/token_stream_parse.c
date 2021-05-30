@@ -5,7 +5,13 @@
 ** Parses the next token
 */
 
+#include "context.h"
 #include "token.h"
+
+static bool sh_is_comment(sh_token_stream_t *stream, sh_ctx_t *ctx)
+{
+    return !ctx->is_tty && *SH_STREAM_CURRENT(stream, 0) == '#';
+}
 
 static int sh_token_simple(sh_token_type_t token_type, sh_token_t *token)
 {
@@ -25,14 +31,14 @@ static int sh_token_double(sh_token_stream_t *stream, char lexeme,
     return 0;
 }
 
-int sh_token_parse(sh_token_stream_t *stream, sh_token_t *token)
+int sh_token_parse(sh_token_stream_t *stream, sh_ctx_t *ctx, sh_token_t *token)
 {
     assert(stream != NULL);
     assert(token != NULL);
     while (stream->line_pos < stream->line_buf.length
         && sh_is_arg_sep(*SH_STREAM_CURRENT(stream, 0)))
         ++stream->line_pos;
-    if (sh_token_stream_is_eol(stream))
+    if (sh_token_stream_is_eol(stream) || sh_is_comment(stream, ctx))
         return -1;
     ++stream->line_pos;
     switch (*SH_STREAM_CURRENT(stream, -1)) {
