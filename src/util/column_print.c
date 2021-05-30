@@ -12,7 +12,7 @@
 #include "util.h"
 
 static void sh_column_print_formatted(
-    unsigned width, size_t entry_count, char **entries, my_iostream_t *out)
+    unsigned width, size_t entry_count, char const **entries, my_iostream_t *out)
 {
     size_t len;
     size_t max_size = 0;
@@ -38,7 +38,7 @@ static void sh_column_print_formatted(
 }
 
 void sh_column_print(
-    bool is_tty, size_t entry_count, char **entries, my_iostream_t *out)
+    bool is_tty, size_t entry_count, char const **entries, my_iostream_t *out)
 {
     struct winsize size;
 
