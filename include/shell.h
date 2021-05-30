@@ -66,6 +66,8 @@ bool sh_env_remove(sh_ctx_t *ctx, sh_lstr_t key);
 
 sh_lstr_t sh_var_get(sh_ctx_t *ctx, sh_lstr_t key);
 
+sh_lstr_t sh_var_get_any(sh_ctx_t *ctx, sh_lstr_t key);
+
 sh_error_t sh_var_set(
     sh_ctx_t *ctx, sh_lstr_t key, sh_lstr_t value, bool read_only);
 

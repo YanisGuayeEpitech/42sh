@@ -21,6 +21,21 @@ sh_lstr_t sh_var_get(sh_ctx_t *ctx, sh_lstr_t key)
     return *value;
 }
 
+sh_lstr_t sh_var_get_any(sh_ctx_t *ctx, sh_lstr_t key)
+{
+    sh_lstr_t value = sh_var_get(ctx, key);
+    char **entry;
+
+    if (value.value != NULL)
+        return value;
+    entry = sh_env_get_entry(ctx, key);
+    if (entry == NULL)
+        return value;
+    value.value = my_strechr(*entry, '=') + 1;
+    value.length = my_strlen(value.value);
+    return value;
+}
+
 sh_error_t sh_var_set(
     sh_ctx_t *ctx, sh_lstr_t key, sh_lstr_t value, bool read_only)
 {
