@@ -28,19 +28,19 @@ size_t sh_count_words(char const *str)
     return word_count;
 }
 
-sh_lstr_t sh_next_word(char const **str)
+sh_lstr_t sh_next_word(char const *str)
 {
     sh_lstr_t word;
 
-    if (*str == NULL)
+    if (str == NULL)
         return SH_LSTR(NULL, 0);
-    while (my_isspace(**str))
-        ++(*str);
-    if (**str == '\0')
+    while (my_isspace(*str))
+        ++str;
+    if (*str == '\0')
         return SH_LSTR(NULL, 0);
-    word = SH_LSTR(*str, 0);
-    while (**str != '\0' && !my_isspace(**str))
-        ++(*str);
-    word.length = *str - word.value;
+    word = SH_LSTR(str, 0);
+    while (*str != '\0' && !my_isspace(*str))
+        ++str;
+    word.length = str - word.value;
     return word;
 }

@@ -11,100 +11,112 @@
 #include "command.h"
 #include "variables.h"
 
-static ssize_t sh_split_arg_at(
-    my_vec_t *args, size_t arg_pos, size_t split_pos)
+static void sh_split_at(
+    sh_lstr_t src, sh_lstr_t *first, sh_lstr_t *second, size_t pos)
 {
-    char *arg = MY_VEC_GET(char *, args, arg_pos);
-    size_t first_end = split_pos;
-    size_t second_start = split_pos;
-    char *second;
+    *first = SH_LSTR(src.value, pos);
+    *second = SH_LSTR(src.value + pos, src.length - pos);
+    if ((pos == 0 || !my_isspace(src.value[pos - 1]))
+        && !my_isspace(src.value[pos]))
+        return;
+    while (first->length > 0 && my_isspace(src.value[first->length - 1]))
+        --first->length;
+    while ((size_t)(second->value - src.value) < src.length
+        && my_isspace(*second->value)) {
+        ++second->value;
+        --second->length;
+    }
+}
 
-    if ((split_pos == 0 || !my_isspace(arg[split_pos - 1]))
-        && !my_isspace(arg[arg_pos]))
+/// Modifies its arg_pos and arg_len argument.
+///
+/// @returns whether the string need splitting again, or -1 on error.
+static int sh_split_arg_at(
+    my_vec_t *args, size_t *arg_pos, size_t *arg_len, size_t split_pos)
+{
+    sh_lstr_t first;
+    sh_lstr_t second;
+    sh_lstr_t arg = SH_LSTR(MY_VEC_GET(char *, args, *arg_pos), *arg_len);
+
+    sh_split_at(arg, &first, &second, split_pos);
+    if (arg.value + first.length == second.value)
         return 1;
-    while (my_isspace(arg[first_end]))
-        ++first_end;
-    while (my_isspace(arg[second_start]))
-        ++second_start;
-    if (arg[second_start] == '\0') {
-        if (first_end == 0) {
-            free(arg);
-            my_vec_remove(args, NULL, arg_pos);
-            return 0;
-        }
+    arg.value[first.length] = '\0';
+    if (second.length == 0) {
+        *arg_len = first.length;
+        return 0;
+    }
+    *arg_len = second.length;
+    if (first.length == 0) {
+        my_memmove(arg.value, second.value, second.length);
+        arg.value[second.length] = '\0';
         return 1;
     }
-    if (first_end == 0) {
-        *((char **)my_vec_get(args, arg_pos)) = arg + second_start;
-        return 1;
-    }
-    second = my_strdup(arg + second_start);
-    if (second == NULL || my_vec_insert(args, &second, split_pos + 1)) {
-        free(second);
+    second.value = my_strndup(second.value, second.length);
+    if (!second.value || my_vec_insert(args, &second.value, *arg_pos + 1)) {
+        free(second.value);
         return (ssize_t)sh_rerror(NULL, SH_OUT_OF_MEMORY, -1);
     }
-    arg[first_end + 1] = '\0';
-    return 2;
+    ++(*arg_pos);
+    return 1;
 }
 
+/// @returns the position of the next argument to split, or -1 on error.
 static ssize_t sh_split_arg_expansion(
-    sh_expansion_t const *exp, my_vec_t *args, size_t arg_pos)
+    sh_expansion_t exp, my_vec_t *args, size_t arg_pos)
 {
-    ssize_t arg_count = sh_split_arg_at(args, arg_pos, exp->value_begin);
-    sh_lstr_t word;
-    char *arg;
+    int need_split =
+        sh_split_arg_at(args, &arg_pos, &exp.value_end, exp.value_begin);
+    char *arg = MY_VEC_GET(char *, args, arg_pos);
+    sh_lstr_t word = sh_next_word(arg);
 
-    if (arg_count <= 0)
-        return arg_count;
-    arg = MY_VEC_GET(char *, args, arg_pos + arg_count - 1);
-    word = sh_next_word((char const **)&arg);
+    if (need_split <= 0)
+        return need_split == 0 ? (ssize_t)arg_pos : -1;
+    word = sh_next_word(word.value ? word.value + word.length : NULL);
     while (word.value != NULL) {
-        ssize_t ret =
-            sh_split_arg_at(args, arg_pos + arg_count - 1, word.value - arg);
-
-        if (ret < 0)
-            return -1;
-        arg_count += ret;
-        arg = MY_VEC_GET(char *, args, arg_count - 1);
-        word = sh_next_word((char const **)&arg);
+        need_split =
+            sh_split_arg_at(args, &arg_pos, &exp.value_end, word.value - arg);
+        if (need_split <= 0)
+            return need_split == 0 ? (ssize_t)arg_pos : -1;
+        arg = MY_VEC_GET(char *, args, arg_pos);
+        word = sh_next_word(arg);
+        word = sh_next_word(word.value ? word.value + word.length : NULL);
     }
-    return arg_count;
+    return (ssize_t)arg_pos;
 }
 
-/// @returns the number of arguments modified/created, or -1 on error.
+/// @returns the position of the next argument to split, or -1 on error.
 static ssize_t sh_command_expand_unquoted_str(
     sh_ctx_t *ctx, my_vec_t *args, size_t pos)
 {
     sh_expansion_t exp = {.str = MY_VEC_GET(char *, args, pos)};
     sh_lstr_t name;
-    size_t arg_count = sh_count_words(exp.str) > 0;
+    ssize_t curr_pos = pos;
+    sh_error_t ret;
 
-    if (arg_count == 0)
-        return 1;
-
-    sh_error_t ret = sh_expand_var(ctx, &exp, &name);
-
-    while (ret == SH_OK && exp.str[exp.value_end] != '\0') {
-        ssize_t count =
-            sh_split_arg_expansion(&exp, args, pos + arg_count - 1);
-
-        if (count < 0)
+    ret = sh_expand_var(ctx, &exp, &name, false);
+    *((char **)my_vec_get(args, pos)) = exp.str;
+    while (ret == SH_OK && exp.value_begin != exp.value_end) {
+        curr_pos = sh_split_arg_expansion(exp, args, curr_pos);
+        if (curr_pos < 0)
             return -1;
-        arg_count += count;
-        ret = sh_expand_var(ctx, &exp, &name);
+        ret = sh_expand_var(ctx, &exp, &name, false);
+        *((char **)my_vec_get(args, pos)) = exp.str;
     }
     if (!sh_print_var_error(ret, name))
         return -1;
-    if (arg_count == 0)
-        my_vec_remove(args, NULL, pos);
-    return arg_count;
+    if (sh_count_words(exp.str) == 0) {
+        my_vec_remove(args, NULL, curr_pos);
+        return curr_pos;
+    }
+    return curr_pos + 1;
 }
 
 static bool sh_command_expand_double_str(
     sh_ctx_t *ctx, my_vec_t *args, size_t pos)
 {
     sh_lstr_t name;
-    sh_error_t ret = sh_expand_vars(ctx, my_vec_get(args, pos), &name);
+    sh_error_t ret = sh_expand_vars(ctx, my_vec_get(args, pos), &name, false);
 
     return sh_print_var_error(ret, name);
 }
@@ -117,7 +129,7 @@ bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *cmd)
 
     ctx->exit_code = 1;
     while (i < arg_count - 1) {
-        ssize_t next_arg = 1;
+        ssize_t next_pos = i + 1;
         sh_token_type_t type =
             MY_VEC_GET(sh_token_type_t, &cmd->base.arg_types, i);
 
@@ -125,10 +137,10 @@ bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *cmd)
             && !sh_command_expand_double_str(ctx, &cmd->base.args, i))
             return false;
         if (type == SH_TOKEN_UNQUOTED_STR)
-            next_arg = sh_command_expand_unquoted_str(ctx, &cmd->base.args, i);
-        if (next_arg < 0)
+            next_pos = sh_command_expand_unquoted_str(ctx, &cmd->base.args, i);
+        if (next_pos < 0)
             return false;
-        i += (size_t)next_arg;
+        i = next_pos;
     }
     ctx->exit_code = exit_code;
     return true;

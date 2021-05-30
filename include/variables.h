@@ -47,18 +47,23 @@ typedef struct sh_expansion {
 /// @param ctx The shell context.
 /// @param exp The variable expansion context.
 /// @param[out] name The name of the variable,
-//// set when the return value is @c SH_UNDEFINED_VAR.
+/// set when the return value is @c SH_UNDEFINED_VAR.
+/// @param copy_name Whether @c name should be allocated in its own buffer, if
+/// @c true, @c name's value is valid or @c NULL regardless of the function's
+/// return value and will need to be free'd.
 ///
 /// @returns @c SH_OK if expansion succeded, @c SH_OUT_OF_MEMORY,
 /// @c SH_UNDEFINED_VAR.
-sh_error_t sh_expand_var(sh_ctx_t *ctx, sh_expansion_t *exp, sh_lstr_t *name);
+sh_error_t sh_expand_var(
+    sh_ctx_t *ctx, sh_expansion_t *exp, sh_lstr_t *name, bool copy_name);
 
 /// Expands all variables in <tt>*str</tt>, losing all variable value
 /// position information in the process.
 ///
 /// Do use this function if you require knowledge of where the variable are
 /// expanded for argument inserting purposes.
-sh_error_t sh_expand_vars(sh_ctx_t *ctx, char **str, sh_lstr_t *name);
+sh_error_t sh_expand_vars(
+    sh_ctx_t *ctx, char **str, sh_lstr_t *name, bool copy_name);
 
 /// Prints the error code to stderr, unless it is @c SH_OK.
 ///
