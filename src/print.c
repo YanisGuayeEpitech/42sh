@@ -6,7 +6,13 @@
 */
 
 #include <libmy/io.h>
+#include <libmy/ascii.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <time.h>
+
 #include "shell.h"
+#include "util.h"
 
 void sh_print(sh_ctx_t *ctx, char const *msg)
 {
@@ -14,9 +20,4 @@ void sh_print(sh_ctx_t *ctx, char const *msg)
         my_puts(msg);
         my_flush_stdout();
     }
-}
-
-void sh_print_prompt(sh_ctx_t *ctx)
-{
-    sh_print(ctx, "$> ");
 }
