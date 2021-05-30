@@ -13,10 +13,11 @@
 Test(sh_var_set, read_write_var)
 {
     sh_ctx_t ctx;
+    char const *argv[] = {"42sh", NULL};
     char *envp[] = {"PATH=/usr/bin", NULL};
     sh_lstr_t value;
 
-    cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(sh_ctx_init(&ctx, 1, argv, envp), 0);
     cr_assert_eq(
         sh_var_set(&ctx, SH_LSTR("shell", 5), SH_LSTR("42sh", 4), false),
         SH_OK);
@@ -29,10 +30,11 @@ Test(sh_var_set, read_write_var)
 Test(sh_var_set, read_only_var)
 {
     sh_ctx_t ctx;
+    char const *argv[] = {"42sh", NULL};
     char *envp[] = {"PATH=/usr/bin", NULL};
     sh_lstr_t value;
 
-    cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(sh_ctx_init(&ctx, 1, argv, envp), 0);
     cr_assert_eq(
         sh_var_set(&ctx, SH_LSTR("shell", 5), SH_LSTR("42sh", 4), true),
         SH_OK);
@@ -48,10 +50,11 @@ Test(sh_var_set, read_only_var)
 Test(sh_var_remove, not_found)
 {
     sh_ctx_t ctx;
+    char const *argv[] = {"42sh", NULL};
     char *envp[] = {"PATH=/usr/bin", NULL};
     sh_lstr_t value;
 
-    cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(sh_ctx_init(&ctx, 1, argv, envp), 0);
     cr_assert_eq(sh_var_remove(&ctx, SH_LSTR("shell", 5)), SH_OK);
     value = sh_var_get(&ctx, SH_LSTR("shell", 5));
     cr_assert_eq(value.length, 0);
@@ -62,10 +65,11 @@ Test(sh_var_remove, not_found)
 Test(sh_var_remove, read_write_var)
 {
     sh_ctx_t ctx;
+    char const *argv[] = {"42sh", NULL};
     char *envp[] = {"PATH=/usr/bin", NULL};
     sh_lstr_t value;
 
-    cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(sh_ctx_init(&ctx, 1, argv, envp), 0);
     cr_assert_eq(
         sh_var_set(&ctx, SH_LSTR("shell", 5), SH_LSTR("42sh", 4), false),
         SH_OK);
@@ -79,10 +83,11 @@ Test(sh_var_remove, read_write_var)
 Test(sh_var_remove, read_only_var)
 {
     sh_ctx_t ctx;
+    char const *argv[] = {"42sh", NULL};
     char *envp[] = {"PATH=/usr/bin", NULL};
     sh_lstr_t value;
 
-    cr_assert_eq(sh_ctx_init(&ctx, envp), 0);
+    cr_assert_eq(sh_ctx_init(&ctx, 1, argv, envp), 0);
     cr_assert_eq(
         sh_var_set(&ctx, SH_LSTR("shell", 5), SH_LSTR("42sh", 4), true),
         SH_OK);

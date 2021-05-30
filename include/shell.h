@@ -17,6 +17,11 @@
 
 #define IO_BUF_SIZE (1024)
 
+/// Parses the arguments.
+///
+/// @returns Whether the shell should start.
+bool sh_parse_args(sh_ctx_t *ctx, int argc, char const *argv[]);
+
 /// Starts the shell.
 ///
 /// @param ctx The shell context.
@@ -75,5 +80,15 @@ sh_error_t sh_var_remove(sh_ctx_t *ctx, sh_lstr_t value);
 ///
 /// @returns The current working directory.
 char *sh_get_cwd(void);
+
+/// Opens the scripts at the first position of @c argv.
+///
+/// On success, the members @c is_tty, @c input, @c argc and @c argv are
+/// overwritten.
+///
+/// @param ctx The shell context.
+/// @param argc Must be greater than zero.
+/// @param argv Must not be @c NULL or have @c NULL as its first element.
+bool sh_open_script(sh_ctx_t *ctx, size_t argc, char const *argv[]);
 
 #endif // !defined(__SHELL_H__)

@@ -5,14 +5,13 @@
 ** The entry point of the program
 */
 
-#include <libmy/io.h>
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
 
 #include "shell.h"
 
-static int init_stdio(struct termios *oldt)
+static int sh_init_stdio(struct termios *oldt)
 {
     struct termios newt;
 
@@ -34,7 +33,7 @@ static int init_stdio(struct termios *oldt)
     return 0;
 }
 
-static void free_stdio(void)
+static void sh_free_stdio(void)
 {
     my_free_stdout();
     my_free_stderr();
@@ -44,21 +43,18 @@ static void free_stdio(void)
 int main(int argc, char *argv[], char *envp[])
 {
     sh_ctx_t ctx;
-    int code;
     struct termios oldt;
 
-    (void)argc;
-    (void)argv;
-    if (init_stdio(&oldt))
+    if (sh_init_stdio(&oldt))
         return 84;
-    if (sh_ctx_init(&ctx, envp)) {
-        free_stdio();
+    if (sh_ctx_init(&ctx, argc, (char const **)argv, envp)) {
+        sh_free_stdio();
         return 84;
     }
-    sh_start(&ctx);
-    code = ctx.exit_code;
+    if (sh_parse_args(&ctx, argc, (char const **)argv))
+        sh_start(&ctx);
     sh_ctx_drop(&ctx);
-    free_stdio();
+    sh_free_stdio();
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return code;
+    return ctx.exit_code;
 }

@@ -74,7 +74,7 @@ void sh_lstr_hash(my_hasher_t *hasher, sh_lstr_t *str);
 
 /// Prints the given array of strings in a column format.
 void sh_column_print(
-    bool is_tty, size_t entry_count, char **entries, my_iostream_t *out);
+    bool is_tty, size_t entry_count, char const **entries, my_iostream_t *out);
 
 /// Returns the number of words in @c str.
 ///

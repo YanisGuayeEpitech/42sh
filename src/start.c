@@ -16,9 +16,10 @@ void sh_start(sh_ctx_t *ctx)
     sh_token_stream_init(&stream);
     while (1) {
         sh_print_prompt(ctx);
-        if (sh_token_stream_next(ctx, &stream, SIZE_MAX) < 0)
+        if (sh_token_stream_next(&stream, ctx, SIZE_MAX) < 0)
             continue;
-        if (my_feof(MY_STDIN) || ctx->line_edit.is_eof
+        if ((stream.line_buf.length == 0
+                && (my_feof(MY_STDIN) || ctx->line_edit.is_eof))
             || sh_execute(ctx, stream.tokens.length, stream.tokens.data) < 0)
             break;
         my_fflush(MY_STDERR);

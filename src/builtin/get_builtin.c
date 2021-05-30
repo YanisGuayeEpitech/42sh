@@ -21,6 +21,7 @@ const sh_builtin_t BUILTINS[] = {
     {"repeat", &sh_builtin_repeat},
     {"set", &sh_builtin_set},
     {"setenv", &sh_builtin_setenv},
+    {"source", &sh_builtin_source},
     {"unsetenv", &sh_builtin_unsetenv},
 };
 const size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(sh_builtin_t);
