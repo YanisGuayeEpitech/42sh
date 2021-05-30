@@ -22,6 +22,7 @@ const sh_builtin_t BUILTINS[] = {
     {"repeat", &sh_builtin_repeat},
     {"set", &sh_builtin_set},
     {"setenv", &sh_builtin_setenv},
+    {"source", &sh_builtin_source},
     {"unalias", &sh_builtin_unalias},
     {"unsetenv", &sh_builtin_unsetenv},
 };

@@ -13,11 +13,10 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
+#include "context.h"
 #include "error.h"
 
 #define SH_INHIBITOR '\\'
-
-struct sh_ctx;
 
 typedef enum sh_token_type {
     SH_TOKEN_SINGLE_STR = 1 << 0,
@@ -64,15 +63,17 @@ void sh_token_stream_reset(sh_token_stream_t *stream);
 void sh_token_stream_drop(sh_token_stream_t *stream);
 
 /// @returns 0 on success, 1 on token error, or -1 on EOL.
-int sh_token_parse(sh_token_stream_t *stream, sh_token_t *token);
+int sh_token_parse(
+    sh_token_stream_t *stream, sh_ctx_t *ctx, sh_token_t *token);
 
-ssize_t sh_token_stream_push(struct sh_ctx *ctx, sh_token_stream_t *stream, size_t token_count);
+ssize_t sh_token_stream_push(
+    sh_token_stream_t *stream, sh_ctx_t *ctx, size_t token_count);
 
 SH_INLINE ssize_t sh_token_stream_next(
-    struct sh_ctx *ctx, sh_token_stream_t *stream, size_t token_count)
+    sh_token_stream_t *stream, sh_ctx_t *ctx, size_t token_count)
 {
     sh_token_stream_reset(stream);
-    return sh_token_stream_push(ctx, stream, token_count);
+    return sh_token_stream_push(stream, ctx, token_count);
 }
 
 SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)

@@ -13,6 +13,7 @@ set(SRC
     ${SRCROOT}/repeat.c
     ${SRCROOT}/set.c
     ${SRCROOT}/setenv.c
+    ${SRCROOT}/source.c
     ${SRCROOT}/unalias.c
     ${SRCROOT}/unsetenv.c
     PARENT_SCOPE
