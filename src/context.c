@@ -49,7 +49,7 @@ static int sh_copy_env(sh_ctx_t *ctx, char **envp)
     return 0;
 }
 
-int sh_ctx_init(sh_ctx_t *ctx, char **envp)
+int sh_ctx_init(sh_ctx_t *ctx, int argc, char const *argv[], char **envp)
 {
     if (sh_copy_env(ctx, envp))
         return 84;
@@ -63,6 +63,8 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->had_exit_cmd = -1;
     ctx->input = MY_STDIN;
     sh_line_edit_init(&ctx->line_edit, ctx);
+    ctx->argc = argc;
+    ctx->argv = argv;
     return 0;
 }
 

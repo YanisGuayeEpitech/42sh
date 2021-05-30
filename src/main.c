@@ -47,11 +47,11 @@ int main(int argc, char *argv[], char *envp[])
 
     if (sh_init_stdio(&oldt))
         return 84;
-    if (sh_ctx_init(&ctx, envp)) {
+    if (sh_ctx_init(&ctx, argc, (char const **)argv, envp)) {
         sh_free_stdio();
         return 84;
     }
-    if (sh_parse_args(&ctx, argc, argv))
+    if (sh_parse_args(&ctx, argc, (char const **)argv))
         sh_start(&ctx);
     sh_ctx_drop(&ctx);
     sh_free_stdio();

@@ -19,7 +19,7 @@
 /// Parses the arguments.
 ///
 /// @returns Whether the shell should start.
-bool sh_parse_args(sh_ctx_t *ctx, int ac, char *av[]);
+bool sh_parse_args(sh_ctx_t *ctx, int argc, char const *argv[]);
 
 /// Starts the shell.
 ///
@@ -91,6 +91,14 @@ sh_error_t sh_check_var_name(char const *name, size_t name_len);
 /// @returns The current working directory.
 char *sh_get_cwd(void);
 
-bool sh_open_script(sh_ctx_t *ctx, char const *path);
+/// Opens the scripts at the first position of @c argv.
+///
+/// On success, the members @c is_tty, @c input, @c argc and @c argv are
+/// overwritten.
+///
+/// @param ctx The shell context.
+/// @param argc Must be greater than zero.
+/// @param argv Must not be @c NULL or have @c NULL as its first element.
+bool sh_open_script(sh_ctx_t *ctx, size_t argc, char const *argv[]);
 
 #endif // !defined(__SHELL_H__)

@@ -22,7 +22,7 @@ int sh_builtin_source(
     if (argc < 2)
         return sh_rerror(argv[0], SH_TOO_FEW_ARGS, 1);
     my_vec_init(&ctx->pipeline, sizeof(sh_command_t));
-    if (sh_open_script(ctx, argv[1]))
+    if (sh_open_script(ctx, argc - 1, argv + 1))
         sh_start(ctx);
     if (ctx->input != NULL) {
         my_fclose(ctx->input);

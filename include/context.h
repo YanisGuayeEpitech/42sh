@@ -44,6 +44,10 @@ typedef struct sh_ctx {
     int had_exit_cmd;
     /// The current shell input
     my_iostream_t *input;
+    /// The number of argument of the current shell.
+    size_t argc;
+    /// The arguments of the current shell.
+    char const **argv;
 } sh_ctx_t;
 
 /// Initializes the shell's context
@@ -51,7 +55,7 @@ typedef struct sh_ctx {
 /// @param envp A NULL-terminared array of strings.
 ///
 /// @returns 0 if successful.
-int sh_ctx_init(sh_ctx_t *ctx, char **envp);
+int sh_ctx_init(sh_ctx_t *ctx, int argc, char const *argv[], char **envp);
 
 /// Frees the contents of the shell context.
 ///
