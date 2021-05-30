@@ -91,4 +91,6 @@ sh_error_t sh_check_var_name(char const *name, size_t name_len);
 /// @returns The current working directory.
 char *sh_get_cwd(void);
 
+bool sh_open_script(sh_ctx_t *ctx, char const *path);
+
 #endif // !defined(__SHELL_H__)
