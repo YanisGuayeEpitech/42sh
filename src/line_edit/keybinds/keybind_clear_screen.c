@@ -16,7 +16,7 @@ int sh_keybind_clear_screen(
 
     (void)stream;
     (void)c;
-    write(STDOUT_FILENO, clear_screen_ansi, 12);
+    write(STDOUT_FILENO, clear_screen_ansi, 11);
     sh_line_edit_update(line_edit, line);
     return 0;
 }

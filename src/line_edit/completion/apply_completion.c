@@ -40,8 +40,8 @@ void sh_line_edit_apply_completion(
     start = my_strlen(word);
     while (can_get_next_common_char(globbuf, start, &next_char)) {
         if (sh_is_arg_sep(next_char))
-            sh_keybind_show(line_edit, line, NULL, "\\");
-        sh_keybind_show(line_edit, line, NULL, &next_char);
+            sh_keybind_self_insert(line_edit, line, NULL, "\\");
+        sh_keybind_self_insert(line_edit, line, NULL, &next_char);
         start++;
     }
 }

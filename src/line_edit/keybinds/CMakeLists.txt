@@ -22,6 +22,7 @@ set(SRC
     ${SRCROOT}/keybind_send_cmd.c
     ${SRCROOT}/keybind_show.c
     ${SRCROOT}/keybind_upcase_word.c
+    ${SRCROOT}/keybinds_map.c
     ${SRCROOT}/keybinds.c
     PARENT_SCOPE
 )

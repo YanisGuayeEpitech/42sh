@@ -34,7 +34,7 @@ ssize_t sh_token_stream_push(
     int ret;
 
     assert(stream != NULL);
-    sh_line_edit_reset(ctx, &ctx->line_edit, &stream->line_buf);
+    sh_line_edit_reset(&ctx->line_edit, &stream->line_buf);
     if (token_count == 0 || sh_token_stream_fill_line(ctx, stream))
         return 0;
     for (; c < token_count; ++c) {

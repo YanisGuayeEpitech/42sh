@@ -61,11 +61,13 @@ int sh_ctx_init(sh_ctx_t *ctx, char **envp)
     ctx->exit_code = 0;
     ctx->old_pwd = NULL;
     ctx->had_exit_cmd = -1;
+    sh_line_edit_init(&ctx->line_edit, ctx);
     return 0;
 }
 
 void sh_ctx_drop(sh_ctx_t *ctx)
 {
+    my_hash_map_drop(&ctx->line_edit.keybinds_fcts);
     my_vec_free(&ctx->env, &sh_free_entry);
     my_hash_map_drop(&ctx->vars);
     my_vec_free(&ctx->path, &sh_free_entry);
