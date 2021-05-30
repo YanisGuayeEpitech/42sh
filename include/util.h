@@ -89,4 +89,14 @@ size_t sh_count_words(char const *str);
 /// and @c 0 when there are no more words in @c str
 sh_lstr_t sh_next_word(char const *str);
 
+/// Splits a string, without performing allocation.
+///
+/// @param src The source string, the string is not modified.
+/// @param first The first part of @c src, doesn't include trailing whitespace.
+/// @param second The fsecond part of @c src, doesn't include leading
+/// whitespace.
+/// @param pos Where to split @c src.
+void sh_split_at(
+    sh_lstr_t src, sh_lstr_t *first, sh_lstr_t *second, size_t pos);
+
 #endif // !defined(__SHELL_UTIL_H__)

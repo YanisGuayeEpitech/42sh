@@ -6,27 +6,10 @@
 */
 
 #include <libmy/ascii.h>
-#include <stdlib.h>
+#include <libmy/memory/alloc.h>
 
 #include "command.h"
 #include "variables.h"
-
-static void sh_split_at(
-    sh_lstr_t src, sh_lstr_t *first, sh_lstr_t *second, size_t pos)
-{
-    *first = SH_LSTR(src.value, pos);
-    *second = SH_LSTR(src.value + pos, src.length - pos);
-    if ((pos == 0 || !my_isspace(src.value[pos - 1]))
-        && !my_isspace(src.value[pos]))
-        return;
-    while (first->length > 0 && my_isspace(src.value[first->length - 1]))
-        --first->length;
-    while ((size_t)(second->value - src.value) < src.length
-        && my_isspace(*second->value)) {
-        ++second->value;
-        --second->length;
-    }
-}
 
 /// Modifies its arg_pos and arg_len argument.
 ///
@@ -34,30 +17,26 @@ static void sh_split_at(
 static int sh_split_arg_at(
     my_vec_t *args, size_t *arg_pos, size_t *arg_len, size_t split_pos)
 {
-    sh_lstr_t first;
-    sh_lstr_t second;
+    sh_lstr_t parts[2];
     sh_lstr_t arg = SH_LSTR(MY_VEC_GET(char *, args, *arg_pos), *arg_len);
 
-    sh_split_at(arg, &first, &second, split_pos);
-    if (arg.value + first.length == second.value)
+    sh_split_at(arg, &parts[0], &parts[1], split_pos);
+    if (arg.value + parts[0].length == parts[1].value)
         return 1;
-    arg.value[first.length] = '\0';
-    if (second.length == 0) {
-        *arg_len = first.length;
+    arg.value[parts[0].length] = '\0';
+    *arg_len = parts[0].length;
+    if (parts[1].length == 0)
         return 0;
-    }
-    *arg_len = second.length;
-    if (first.length == 0) {
-        my_memmove(arg.value, second.value, second.length);
-        arg.value[second.length] = '\0';
+    *arg_len = parts[1].length;
+    if (parts[0].length == 0) {
+        my_memmove(arg.value, parts[1].value, parts[1].length);
+        arg.value[parts[1].length] = '\0';
         return 1;
     }
-    second.value = my_strndup(second.value, second.length);
-    if (!second.value || my_vec_insert(args, &second.value, *arg_pos + 1)) {
-        free(second.value);
-        return (ssize_t)sh_rerror(NULL, SH_OUT_OF_MEMORY, -1);
-    }
-    ++(*arg_pos);
+    parts[1].value = my_strndup(parts[1].value, parts[1].length);
+    if (!parts[1].value || my_vec_insert(args, &parts[1].value, ++(*arg_pos)))
+        return sh_rerror(NULL, SH_OUT_OF_MEMORY,
+            ((intptr_t)my_sfree((void **)&parts[1].value)) * 0 - 1);
     return 1;
 }
 
