@@ -33,18 +33,22 @@ int sh_builtin_repeat(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
 {
     int repeat_count = 0;
-    sh_command_t command;
+    sh_command_t cmd;
+    const sh_token_type_t type = SH_TOKEN_SINGLE_STR;
 
     if (!sh_repeat_parse_args(&repeat_count, argc, argv))
         return 1;
-    sh_command_init(&command);
-    command.base.args.data = argv + 2;
-    command.base.args.length = argc - 1;
-    command.base.pipe_pos = SH_PIPE_END;
-    sh_command_resolve(ctx, &command);
+    sh_command_init(&cmd);
+    cmd.base.args.data = argv + 2;
+    cmd.base.args.length = argc - 1;
+    my_vec_init(&cmd.base.arg_types, sizeof(type));
+    if (my_vec_extend_to_length(&cmd.base.arg_types, (void *)&type, argc - 1))
+        return sh_rerror(argv[0], SH_OUT_OF_MEMORY, 1);
+    cmd.base.pipe_pos = SH_PIPE_END;
+    sh_command_resolve(ctx, &cmd);
     for (int i = 0; i < repeat_count; ++i) {
-        sh_command_execute(ctx, &command, NULL);
-        if (command.base.command_type == SH_COMMAND_NOT_FOUND)
+        sh_command_execute(ctx, &cmd, NULL);
+        if (cmd.base.command_type == SH_COMMAND_NOT_FOUND)
             return 1;
     }
     (void)should_exit;

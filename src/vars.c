@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "shell.h"
+#include "variables.h"
 
 sh_lstr_t sh_var_get(sh_ctx_t *ctx, sh_lstr_t key)
 {

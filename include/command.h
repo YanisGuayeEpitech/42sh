@@ -29,11 +29,22 @@ typedef enum sh_command_type {
 typedef struct sh_command_base {
     sh_command_type_t command_type;
     my_vec_t args;
+    /// A vector of element type sh_token_type_t.
+    /// Elements have either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
+    /// @c SH_TOKEN_UNQUOTED_STR as values.
+    /// Each entry in this vector corresponds corresponds to one in @c args.
+    my_vec_t arg_types;
     sh_pipe_pos_t pipe_pos;
     /// The path of the input redirection, set to @c NULL if no redirection.
-    char const *input;
+    char *input;
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
+    /// @c SH_TOKEN_UNQUOTED_STR.
+    sh_token_type_t input_type;
     /// The path of the output redirection, set to @c NULL if no redirection.
-    char const *output;
+    char *output;
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
+    /// @c SH_TOKEN_UNQUOTED_STR.
+    sh_token_type_t output_type;
     bool truncate;
     int pipe_in[2];
     int pipe_out[2];
@@ -69,6 +80,40 @@ bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
 bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
 
+/// Expands variable expressions (such as $VAR) into their values.
+///
+/// Errors are printed to the standard output.
+///
+/// @returns @c true on success, or @c false on error.
+bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *command);
+
+/// Expands the variables in a redirect name.
+///
+/// Errors are printed to the standard output.
+///
+/// @returns @c true if expansion successed (or no expansion was needed), or @c
+/// false on error.
+bool sh_command_expand_redirect(
+    sh_ctx_t *ctx, char **name, sh_token_type_t *type);
+
+/// Opens both input and output redirect files of the first command @c c1
+///
+/// The names are both expanded by @ref sh_command_expand_redirect before
+/// opening.
+///
+/// @param ctx The shell context.
+/// @param c1 The current command in which to open the redirects.
+/// @param c2 The next command, used for pipe setup, can be @c NULL.
+///
+/// @returns @c true on success, or @c false on expansion or open failure.
+bool sh_command_open_redirects(
+    sh_ctx_t *ctx, sh_command_t *c1, sh_command_t *c2);
+
+/// Executes a single command.
+///
+/// @param ctx The shell context.
+/// @param command The command to execute.
+/// @param next_command The next command, used for pipe setup, can be @c NULL.
 int sh_command_execute(
     sh_ctx_t *ctx, sh_command_t *command, sh_command_t *next_command);
 
@@ -86,7 +131,7 @@ int sh_external_pipe_close(
 
 #define SH_OUTPUT_FLAGS_BASE (O_WRONLY | O_CREAT | O_CLOEXEC)
 #define SH_OUTPUT_FLAGS(cmd) \
-    (SH_OUTPUT_FLAGS_BASE | ((cmd)->base.truncate ? O_TRUNC : O_APPEND))
+    (SH_OUTPUT_FLAGS_BASE | ((cmd)->truncate ? O_TRUNC : O_APPEND))
 
 /// Files created by an output redirect have the mode:
 /// u+rw, g+r, o+r

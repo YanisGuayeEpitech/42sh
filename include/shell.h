@@ -13,6 +13,7 @@
 #include "context.h"
 #include "error.h"
 #include "token.h"
+#include "util.h"
 
 #define IO_BUF_SIZE (1024)
 
@@ -74,17 +75,6 @@ sh_error_t sh_var_set(
     sh_ctx_t *ctx, sh_lstr_t key, sh_lstr_t value, bool read_only);
 
 sh_error_t sh_var_remove(sh_ctx_t *ctx, sh_lstr_t value);
-
-/// Validates a variable name.
-///
-/// A valid variable name matches the regex [a-zA-Z_][a-zA-Z_0-9]*
-///
-/// @param name The variable name.
-/// @param name_len The number of characters in @c name.
-///
-/// @returns @c SH_OK if @c name is a valid variable name, or an error code
-/// otherwise.
-sh_error_t sh_check_var_name(char const *name, size_t name_len);
 
 /// Fetches the current working directory's absolute path.
 ///

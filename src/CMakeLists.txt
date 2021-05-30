@@ -28,6 +28,7 @@ add_subdirectory(command)
 add_subdirectory(line_edit)
 add_subdirectory(token)
 add_subdirectory(util)
+add_subdirectory(variables)
 
 source_group("" FILES ${SRC})
 

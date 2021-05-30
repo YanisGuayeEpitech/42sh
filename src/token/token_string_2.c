@@ -90,6 +90,8 @@ int sh_token_quoted_string(
     char *end = sh_token_quoted_string_get_end(
         SH_STREAM_CURRENT(stream, 0), term, SH_STREAM_CURRENT_LEN(stream));
     size_t len;
+    sh_token_type_t type =
+        term == '"' ? SH_TOKEN_DOUBLE_STR : SH_TOKEN_SINGLE_STR;
 
     if (end == NULL) {
         my_fprintf(MY_STDERR, "Unmatched '%c'.\n", term);
@@ -97,7 +99,7 @@ int sh_token_quoted_string(
         return 1;
     }
     len = (end - SH_STREAM_CURRENT(stream, 0)) + 1;
-    *token = (sh_token_t){.token_type = SH_TOKEN_STRING,
+    *token = (sh_token_t){.type = type,
         .str = sh_token_quoted_string_copy(
             SH_STREAM_CURRENT(stream, 0), len, end)};
     if (token->str == NULL)

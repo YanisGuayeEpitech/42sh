@@ -15,7 +15,7 @@ static bool sh_is_comment(sh_token_stream_t *stream, sh_ctx_t *ctx)
 
 static int sh_token_simple(sh_token_type_t token_type, sh_token_t *token)
 {
-    *token = (sh_token_t){.token_type = token_type};
+    *token = (sh_token_t){.type = token_type};
     return 0;
 }
 
@@ -23,10 +23,10 @@ static int sh_token_double(sh_token_stream_t *stream, char lexeme,
     sh_token_type_t token_type, sh_token_t *token)
 {
     if (*SH_STREAM_CURRENT(stream, 0) == lexeme) {
-        *token = (sh_token_t){.token_type = token_type << 1};
+        *token = (sh_token_t){.type = token_type << 1};
         ++stream->line_pos;
     } else {
-        *token = (sh_token_t){.token_type = token_type};
+        *token = (sh_token_t){.type = token_type};
     }
     return 0;
 }

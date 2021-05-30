@@ -19,30 +19,33 @@
 #define SH_INHIBITOR '\\'
 
 typedef enum sh_token_type {
-    SH_TOKEN_STRING = 1 << 0,
-    SH_TOKEN_PIPE = 1 << 1,
-    SH_TOKEN_PIPE_PIPE = 1 << 2,
-    SH_TOKEN_SEMICOLON = 1 << 3,
-    SH_TOKEN_LT = 1 << 4,
-    SH_TOKEN_LT_LT = 1 << 5,
-    SH_TOKEN_GT = 1 << 6,
-    SH_TOKEN_GT_GT = 1 << 7,
-    SH_TOKEN_AND = 1 << 8,
-    SH_TOKEN_AND_AND = 1 << 9,
-    SH_TOKEN_TYPE_COUNT = 1 << 10,
+    SH_TOKEN_SINGLE_STR = 1 << 0,
+    SH_TOKEN_DOUBLE_STR = 1 << 1,
+    SH_TOKEN_UNQUOTED_STR = 1 << 2,
+    SH_TOKEN_PIPE = 1 << 3,
+    SH_TOKEN_PIPE_PIPE = 1 << 4,
+    SH_TOKEN_SEMICOLON = 1 << 5,
+    SH_TOKEN_LT = 1 << 6,
+    SH_TOKEN_LT_LT = 1 << 7,
+    SH_TOKEN_GT = 1 << 8,
+    SH_TOKEN_GT_GT = 1 << 9,
+    SH_TOKEN_AND = 1 << 10,
+    SH_TOKEN_AND_AND = 1 << 11,
+    SH_TOKEN_TYPE_COUNT = 1 << 12,
 } sh_token_type_t;
 
 /// All the types of tokens used in redirections (execpt pipe)
 #define SH_REDIRECT_TOKENS \
     (SH_TOKEN_LT | SH_TOKEN_LT_LT | SH_TOKEN_GT | SH_TOKEN_GT_GT)
 
+#define SH_STRING_TOKENS \
+    (SH_TOKEN_SINGLE_STR | SH_TOKEN_DOUBLE_STR | SH_TOKEN_UNQUOTED_STR)
+
 typedef struct sh_token {
-    sh_token_type_t token_type;
-    union {
-        /// Allocated string representation of this token, only present when
-        /// @c token_type is @c SH_TOKEN_STRING.
-        char *str;
-    };
+    sh_token_type_t type;
+    /// Allocated string representation of this token, only present when
+    /// @c type is any in @c SH_STRING_TOKENS.
+    char *str;
 } sh_token_t;
 
 typedef struct sh_token_stream {
@@ -81,7 +84,20 @@ SH_INLINE bool sh_token_stream_is_eol(sh_token_stream_t const *stream)
 
 void sh_drop_token(void *token);
 
+/// Returns the string representation of a token.
+///
+/// If the token is a string its value is set to @c NULL.
+///
+/// @returns An allocated string, or @c NULL if allocation failed.
 char *sh_token_to_str(sh_token_t *token);
+
+/// @returns The corresponding string token type for the given token type.
+SH_INLINE sh_token_type_t sh_token_type_to_str(sh_token_type_t type)
+{
+    if (type & SH_STRING_TOKENS)
+        return type;
+    return SH_TOKEN_SINGLE_STR;
+}
 
 /// Is @c c an argument separator character?
 ///
@@ -123,7 +139,7 @@ SH_INLINE bool sh_is_arg_inhibitable(char c)
 SH_INLINE bool sh_token_match(
     size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
 {
-    return token_count > 0 && (tokens[0].token_type & token_types);
+    return token_count > 0 && (tokens[0].type & token_types);
 }
 
 /// Checks if the type of the first token in @c tokens matches @b none of the
@@ -140,7 +156,7 @@ SH_INLINE bool sh_token_match(
 SH_INLINE bool sh_token_match_except(
     size_t token_count, sh_token_t const tokens[], sh_token_type_t token_types)
 {
-    return token_count > 0 && !(tokens[0].token_type & token_types);
+    return token_count > 0 && !(tokens[0].type & token_types);
 }
 
 /// Removes the next token from the @c tokens pointer if its type matches any
