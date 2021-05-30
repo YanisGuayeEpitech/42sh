@@ -18,6 +18,19 @@ echo 'ls'
 echo 'll | grep t'
 """
 
+[alias-loop]
+description = 'Tests the alias builtin'
+setup = ""
+tests = """
+echo 'alias a b'
+echo 'alias b c'
+echo 'alias c d'
+echo 'alias d e'
+echo 'alias e f'
+echo 'alias f a'
+echo 'c'
+"""
+
 [exit-zero]
 description = 'Exits the shell with code 0'
 setup = ""

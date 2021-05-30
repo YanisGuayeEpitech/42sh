@@ -33,6 +33,7 @@ typedef enum sh_error {
     SH_ILLEGAL_VAR,
     SH_UNKNOWN_KEY,
     SH_UNKNOWN_KEYBIND_FUNCTION,
+    SH_ALIAS_LOOP,
     SH_ERROR_MAX,
 } sh_error_t;
 

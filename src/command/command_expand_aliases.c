@@ -11,16 +11,27 @@
 #include "command.h"
 
 static bool sh_command_get_alias(
-    sh_ctx_t *ctx, my_vec_t *args, sh_alias_t *alias, char *excluded)
+    sh_ctx_t *ctx, my_vec_t *args, sh_alias_t *alias, my_vec_t *excl)
 {
     sh_lstr_t arg = SH_TO_LSTR(MY_VEC_GET(char *, args, 0));
     sh_alias_t *value;
 
-    if (excluded != NULL && my_strcmp(arg.value, excluded) == 0)
-        return false;
+    for (size_t i = 0; i + 1 < excl->length; ++i) {
+        if (my_strcmp(arg.value, MY_VEC_GET(char *, excl, i)) != 0)
+            continue;
+        my_vec_free(excl, &sh_free_entry);
+        excl->length = SIZE_MAX;
+        ctx->exit_code = ctx->exit_code ? ctx->exit_code : 1;
+        return (bool)sh_rerror(NULL, SH_ALIAS_LOOP, false);
+    }
     value = my_hash_map_get(&ctx->aliases, &arg);
-    if (value == NULL)
+    if ((excl->length > 0
+            && !my_strcmp(
+                arg.value, MY_VEC_GET(char *, excl, excl->length - 1)))
+        || value == NULL) {
+        my_vec_free(excl, &sh_free_entry);
         return false;
+    }
     *alias = *value;
     return true;
 }
@@ -62,18 +73,20 @@ static bool sh_command_alias_insert_alias(
 bool sh_command_expand_aliases(sh_ctx_t *ctx, sh_command_t *command)
 {
     sh_alias_t alias;
-    char *previous = NULL;
+    my_vec_t prev;
 
-    if (!sh_command_get_alias(ctx, &command->base.args, &alias, NULL))
+    my_vec_init(&prev, sizeof(char *));
+    if (!sh_command_get_alias(ctx, &command->base.args, &alias, &prev))
         return true;
     do {
-        free(previous);
-        my_vec_remove(&command->base.args, &previous, 0);
+        if (my_vec_reserve(&prev, 1) != MY_VEC_OK)
+            return false;
+        my_vec_remove(&command->base.args, my_vec_get(&prev, prev.length), 0);
+        ++prev.length;
         my_vec_remove(&command->base.arg_types, NULL, 0);
         if (!sh_command_alias_insert_alias(ctx, &command->base, &alias))
             return (bool)sh_rerror(NULL, SH_OUT_OF_MEMORY, false);
-    } while (sh_command_get_alias(ctx, &command->base.args, &alias, previous));
-    free(previous);
+    } while (sh_command_get_alias(ctx, &command->base.args, &alias, &prev));
     sh_command_resolve(ctx, command);
-    return true;
+    return prev.length != SIZE_MAX;
 }
