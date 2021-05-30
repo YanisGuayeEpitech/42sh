@@ -21,7 +21,7 @@ static void sh_run_child(sh_ctx_t *ctx, char const *path, char const *argv[])
 {
     execve(path, (char *const *)argv, ctx->env.data);
     if (errno == ENOEXEC) {
-        my_fprintf(MY_STDERR, "%s: Exec format error. Wrong Architecture.\n", 
+        my_fprintf(MY_STDERR, "%s: Exec format error. Wrong Architecture.\n",
             argv[0]);
         my_flush_stderr();
     } else

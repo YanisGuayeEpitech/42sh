@@ -11,8 +11,8 @@
 
 #include "util.h"
 
-static void sh_column_print_formatted(
-    unsigned width, size_t entry_count, char const **entries, my_iostream_t *out)
+static void sh_column_print_formatted(unsigned width, size_t entry_count,
+    char const **entries, my_iostream_t *out)
 {
     size_t len;
     size_t max_size = 0;
