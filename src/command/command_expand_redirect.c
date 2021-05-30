@@ -34,7 +34,7 @@ bool sh_command_expand_redirect(
     sh_error_t expansion_result;
     bool ret;
 
-    if (!(*type & (SH_TOKEN_DOUBLE_STR | SH_TOKEN_UNQUOTED_STR))) {
+    if (!(*type & SH_EXPANSION_TOKENS)) {
         *type = SH_TOKEN_SINGLE_STR;
         return true;
     }

@@ -115,7 +115,7 @@ bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *cmd)
         if (type == SH_TOKEN_DOUBLE_STR
             && !sh_command_expand_double_str(ctx, &cmd->base.args, i))
             return false;
-        if (type == SH_TOKEN_UNQUOTED_STR)
+        if (type & SH_UNQUOTED_TOKENS)
             next_pos = sh_command_expand_unquoted_str(ctx, &cmd->base.args, i);
         if (next_pos < 0)
             return false;

@@ -30,20 +30,20 @@ typedef struct sh_command_base {
     sh_command_type_t command_type;
     my_vec_t args;
     /// A vector of element type sh_token_type_t.
-    /// Elements have either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR as values.
+    /// Elements have either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR,
+    /// @c SH_TOKEN_UNQUOTED_STR, ir @c SH_TOKEN_ESCAPED_NAME as values.
     /// Each entry in this vector corresponds corresponds to one in @c args.
     my_vec_t arg_types;
     sh_pipe_pos_t pipe_pos;
     /// The path of the input redirection, set to @c NULL if no redirection.
     char *input;
-    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR.
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR
+    /// @c SH_TOKEN_UNQUOTED_STR, or @c SH_TOKEN_ESCAPED_NAME.
     sh_token_type_t input_type;
     /// The path of the output redirection, set to @c NULL if no redirection.
     char *output;
-    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR.
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR
+    /// @c SH_TOKEN_UNQUOTED_STR, or @c SH_TOKEN_ESCAPED_NAME.
     sh_token_type_t output_type;
     bool truncate;
     int pipe_in[2];

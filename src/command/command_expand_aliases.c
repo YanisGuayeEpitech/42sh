@@ -76,7 +76,9 @@ bool sh_command_expand_aliases(sh_ctx_t *ctx, sh_command_t *command)
     my_vec_t prev;
 
     my_vec_init(&prev, sizeof(char *));
-    if (!sh_command_get_alias(ctx, &command->base.args, &alias, &prev))
+    if (MY_VEC_GET(sh_token_type_t, &command->base.arg_types, 0)
+            == SH_TOKEN_ESCAPED_NAME
+        || !sh_command_get_alias(ctx, &command->base.args, &alias, &prev))
         return true;
     do {
         if (my_vec_reserve(&prev, 1) != MY_VEC_OK)
