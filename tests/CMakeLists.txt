@@ -6,7 +6,6 @@ set(SRC
     ${SRCROOT}/test_create_file_path.c
     ${SRCROOT}/test_env.c
     ${SRCROOT}/test_error.c
-    ${SRCROOT}/test_parsing.c
     ${SRCROOT}/test_reset_path.c
     ${SRCROOT}/test_util.c
     ${SRCROOT}/test_vars.c

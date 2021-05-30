@@ -20,4 +20,5 @@ void sh_command_init(sh_command_t *command)
             },
     };
     my_vec_init(&command->base.args, sizeof(char *));
+    my_vec_init(&command->base.arg_types, sizeof(sh_token_type_t));
 }

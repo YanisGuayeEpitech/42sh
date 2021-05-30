@@ -9,8 +9,8 @@
 #include <libmy/io.h>
 
 #include "builtin.h"
-#include "context.h"
 #include "shell.h"
+#include "variables.h"
 
 int sh_builtin_setenv(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[])
