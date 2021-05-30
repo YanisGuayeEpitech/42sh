@@ -13,10 +13,8 @@ void sh_drop_token(void *token)
 {
     sh_token_t *t = token;
 
-    switch (t->token_type) {
-        case SH_TOKEN_STRING: free(t->str); break;
-        default: break;
-    }
+    if (t->type & SH_STRING_TOKENS)
+        free(t->str);
     *t = (sh_token_t){0};
 }
 

@@ -15,6 +15,9 @@ typedef struct {
     int (*run)(sh_ctx_t *, int *, size_t, char const *[]);
 } sh_builtin_t;
 
+extern const sh_builtin_t BUILTINS[];
+extern const size_t BUILTIN_COUNT;
+
 /// Fetches a builtin command by name.
 ///
 /// @param name The name of the command.
@@ -38,6 +41,8 @@ void sh_dirs_run(sh_ctx_t *ctx, sh_dirs_options_t options);
 int sh_builtin_alias(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_bindkey(
+    sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
+int sh_builtin_builtins(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);
 int sh_builtin_cd(
     sh_ctx_t *ctx, int *should_exit, size_t argc, char const *argv[]);

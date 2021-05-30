@@ -43,7 +43,7 @@ int sh_token_unquoted_string(sh_token_stream_t *stream, sh_token_t *token)
         my_vec_free(&str, NULL);
         return 1;
     }
-    *token = (sh_token_t){.token_type = SH_TOKEN_STRING, .str = str.data};
+    *token = (sh_token_t){.type = SH_TOKEN_UNQUOTED_STR, .str = str.data};
     stream->line_pos += len;
     return 0;
 }

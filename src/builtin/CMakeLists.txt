@@ -4,6 +4,7 @@ set(SRC
     ${SRC}
     ${SRCROOT}/alias.c
     ${SRCROOT}/bindkey.c
+    ${SRCROOT}/builtins.c
     ${SRCROOT}/cd.c
     ${SRCROOT}/dirs.c
     ${SRCROOT}/env.c

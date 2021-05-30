@@ -12,7 +12,7 @@ size_t sh_token_find(
 {
     size_t pos = 0;
 
-    while (pos < token_count && !(tokens[pos].token_type & token_types))
+    while (pos < token_count && !(tokens[pos].type & token_types))
         ++pos;
     return pos;
 }
