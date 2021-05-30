@@ -20,9 +20,12 @@ typedef struct sh_ctx {
     /// A vector of the environment entries.
     my_vec_t env;
     /// A map of local variables, includes shell variables as well.
-    /// Key type: sh_lstr_t (with allocated string)
-    /// Value type: sh_var_value_t (with allocated string)
+    /// Key type: sh_lstr_t (allocated strings)
+    /// Value type: sh_var_value_t (allocated strings)
     my_hash_map_t vars;
+    /// Key type: sh_lstr_t (allocated strings)
+    /// Value type: sh_alias_t (allocated strings)
+    my_hash_map_t aliases;
     /// A vector of the entries from the PATH environment variable.
     my_vec_t path;
     /// A vector of sh_command_t

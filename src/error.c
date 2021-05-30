@@ -30,7 +30,8 @@ static char const *ERROR_MESSAGES[SH_ERROR_MAX] = {
     [SH_UNDEFINED_VAR] = "Undefined variable",
     [SH_ILLEGAL_VAR] = "Illegal variable name",
     [SH_UNKNOWN_KEY] = "Unknown key",
-    [SH_UNKNOWN_KEYBIND_FUNCTION] = "Unknwon keybind function",
+    [SH_UNKNOWN_KEYBIND_FUNCTION] = "Unknown keybind function",
+    [SH_ALIAS_LOOP] = "Alias loop",
 };
 
 char const *sh_strerror(sh_error_t code)

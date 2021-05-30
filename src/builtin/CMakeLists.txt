@@ -2,6 +2,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src/builtin)
 
 set(SRC
     ${SRC}
+    ${SRCROOT}/alias.c
     ${SRCROOT}/bindkey.c
     ${SRCROOT}/builtins.c
     ${SRCROOT}/cd.c
@@ -13,6 +14,7 @@ set(SRC
     ${SRCROOT}/set.c
     ${SRCROOT}/setenv.c
     ${SRCROOT}/source.c
+    ${SRCROOT}/unalias.c
     ${SRCROOT}/unsetenv.c
     PARENT_SCOPE
 )

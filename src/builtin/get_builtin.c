@@ -13,6 +13,7 @@
 #include "builtin.h"
 
 const sh_builtin_t BUILTINS[] = {
+    {"alias", &sh_builtin_alias},
     {"bindkey", &sh_builtin_bindkey},
     {"builtins", &sh_builtin_builtins},
     {"cd", &sh_builtin_cd},
@@ -22,6 +23,7 @@ const sh_builtin_t BUILTINS[] = {
     {"set", &sh_builtin_set},
     {"setenv", &sh_builtin_setenv},
     {"source", &sh_builtin_source},
+    {"unalias", &sh_builtin_unalias},
     {"unsetenv", &sh_builtin_unsetenv},
 };
 const size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(sh_builtin_t);

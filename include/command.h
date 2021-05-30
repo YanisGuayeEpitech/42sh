@@ -30,20 +30,20 @@ typedef struct sh_command_base {
     sh_command_type_t command_type;
     my_vec_t args;
     /// A vector of element type sh_token_type_t.
-    /// Elements have either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR as values.
+    /// Elements have either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR,
+    /// @c SH_TOKEN_UNQUOTED_STR, or @c SH_TOKEN_ESCAPED_NAME as values.
     /// Each entry in this vector corresponds corresponds to one in @c args.
     my_vec_t arg_types;
     sh_pipe_pos_t pipe_pos;
     /// The path of the input redirection, set to @c NULL if no redirection.
     char *input;
-    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR.
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR
+    /// @c SH_TOKEN_UNQUOTED_STR, or @c SH_TOKEN_ESCAPED_NAME.
     sh_token_type_t input_type;
     /// The path of the output redirection, set to @c NULL if no redirection.
     char *output;
-    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR, or
-    /// @c SH_TOKEN_UNQUOTED_STR.
+    /// Either @c SH_TOKEN_SINGLE_STR, @c SH_TOKEN_DOUBLE_STR
+    /// @c SH_TOKEN_UNQUOTED_STR, or @c SH_TOKEN_ESCAPED_NAME.
     sh_token_type_t output_type;
     bool truncate;
     int pipe_in[2];
@@ -78,8 +78,6 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
 
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
-bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
-
 /// Expands variable expressions (such as $VAR) into their values.
 ///
 /// Errors are printed to the standard output.
@@ -95,6 +93,10 @@ bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *command);
 /// false on error.
 bool sh_command_expand_redirect(
     sh_ctx_t *ctx, char **name, sh_token_type_t *type);
+
+bool sh_command_expand_aliases(sh_ctx_t *ctx, sh_command_t *command);
+
+bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
 
 /// Opens both input and output redirect files of the first command @c c1
 ///
@@ -136,5 +138,18 @@ int sh_external_pipe_close(
 /// Files created by an output redirect have the mode:
 /// u+rw, g+r, o+r
 #define SH_OUTPUT_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+
+/// The value of an alias
+typedef struct sh_alias {
+    char *value;
+    size_t length;
+    int multi_word;
+} sh_alias_t;
+
+/// A full alias entry
+typedef struct sh_alias_entry {
+    sh_lstr_t key;
+    sh_alias_t value;
+} sh_alias_entry_t;
 
 #endif // !defined(__SHELL_COMMAND_H__)

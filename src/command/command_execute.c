@@ -14,16 +14,8 @@
 #include "util.h"
 #include "variables.h"
 
-int sh_command_execute(
-    sh_ctx_t *ctx, sh_command_t *command, sh_command_t *next_command)
+static int sh_command_execute_dispatch(sh_ctx_t *ctx, sh_command_t *command)
 {
-    assert(ctx != NULL && command != NULL);
-    if (!sh_command_open_redirects(ctx, command, next_command))
-        return 0;
-    if ((command->command_type != SH_COMMAND_NOT_FOUND
-            && !sh_command_globbing(ctx, command))
-        || !sh_command_expand_vars(ctx, command))
-        return 0;
     switch (command->command_type) {
         case SH_COMMAND_EXTERNAL:
             return sh_execute_external(ctx, &command->external);
@@ -37,4 +29,18 @@ int sh_command_execute(
             return 0;
         default: return sh_rerror(NULL, SH_OUT_OF_MEMORY, -1);
     }
+}
+
+int sh_command_execute(
+    sh_ctx_t *ctx, sh_command_t *command, sh_command_t *next_command)
+{
+    assert(ctx != NULL && command != NULL);
+    if (!sh_command_open_redirects(ctx, command, next_command))
+        return 0;
+    if (!sh_command_expand_vars(ctx, command)
+        || !sh_command_expand_aliases(ctx, command)
+        || (command->command_type != SH_COMMAND_NOT_FOUND
+            && !sh_command_globbing(ctx, command)))
+        return 0;
+    return sh_command_execute_dispatch(ctx, command);
 }

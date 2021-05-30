@@ -32,3 +32,14 @@ char *sh_token_to_str(sh_token_t *token)
     }
     return my_strdup(SH_TOKEN_STR[token->type]);
 }
+
+bool sh_token_into_str(sh_token_t *token)
+{
+    char *value = sh_token_to_str(token);
+
+    if (value == NULL)
+        return false;
+    token->str = value;
+    token->type = sh_token_type_to_str(token->type);
+    return true;
+}

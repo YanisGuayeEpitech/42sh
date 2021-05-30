@@ -1,5 +1,38 @@
 suite = 'builtins'
 
+[alias]
+description = 'Tests the alias builtin'
+setup = "export PATH='/bin:/usr/bin'"
+tests = """
+echo 'alias'
+echo 'alias X'
+echo 'alias X Y'
+echo 'alias X'
+echo 'alias'
+echo 'alias ls "ls --color=auto"'
+echo 'alias ll ls -l --color=auto'
+echo 'alias grep grep --color=auto'
+echo 'alias'
+echo 'alias ls'
+echo 'ls'
+echo 'll | grep t'
+echo 'alias ls echo yeet'
+echo '\ls'
+"""
+
+[alias-loop]
+description = 'Tests the alias builtin'
+setup = ""
+tests = """
+echo 'alias a b'
+echo 'alias b c'
+echo 'alias c d'
+echo 'alias d e'
+echo 'alias e f'
+echo 'alias f a'
+echo 'c'
+"""
+
 [exit-zero]
 description = 'Exits the shell with code 0'
 setup = ""
@@ -110,4 +143,24 @@ echo 'setenv TEST1'
 echo 'setenv TEST2 value'
 echo 'setenv TEST3 "This is a test"'
 echo 'setenv'
+"""
+
+[unalias-no-args]
+description = 'Tests the alias builtin without paramters'
+setup = ""
+tests = """
+echo 'unalias'
+"""
+
+[unalias-valid-args]
+description = 'Tests the alias builtin'
+setup = ""
+tests = """
+echo 'alias ls ls --color=auto'
+echo 'alias yeet echo yeeeeee'
+echo 'alias truth true'
+echo 'unalias ls'
+echo 'alias'
+echo 'unalias truth'
+echo 'alias'
 """
