@@ -91,6 +91,11 @@ void sh_drop_token(void *token);
 /// @returns An allocated string, or @c NULL if allocation failed.
 char *sh_token_to_str(sh_token_t *token);
 
+/// Converts the given token to a string token.
+///
+/// @returns Whether allocation (if needed) succeded.
+bool sh_token_into_str(sh_token_t *token);
+
 /// @returns The corresponding string token type for the given token type.
 SH_INLINE sh_token_type_t sh_token_type_to_str(sh_token_type_t type)
 {

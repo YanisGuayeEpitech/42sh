@@ -9,9 +9,13 @@ echo 'alias X'
 echo 'alias X Y'
 echo 'alias X'
 echo 'alias'
-echo 'alias ls ls --color=auto'
+echo 'alias ls "ls --color=auto"'
+echo 'alias ll ls -l --color=auto'
+echo 'alias grep grep --color=auto'
 echo 'alias'
 echo 'alias ls'
+echo 'ls'
+echo 'll | grep t'
 """
 
 [exit-zero]

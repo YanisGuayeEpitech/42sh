@@ -78,8 +78,6 @@ int sh_command_parse(sh_command_t *command, size_t token_count,
 
 bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command);
 
-bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
-
 /// Expands variable expressions (such as $VAR) into their values.
 ///
 /// Errors are printed to the standard output.
@@ -95,6 +93,10 @@ bool sh_command_expand_vars(sh_ctx_t *ctx, sh_command_t *command);
 /// false on error.
 bool sh_command_expand_redirect(
     sh_ctx_t *ctx, char **name, sh_token_type_t *type);
+
+bool sh_command_expand_aliases(sh_ctx_t *ctx, sh_command_t *command);
+
+bool sh_command_globbing(sh_ctx_t *ctx, sh_command_t *command);
 
 /// Opens both input and output redirect files of the first command @c c1
 ///

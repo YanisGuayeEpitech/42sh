@@ -9,6 +9,7 @@
 
 #include <dirent.h>
 #include <libmy/ascii/ascii.h>
+#include <libmy/memory/alloc.h>
 #include <libmy/printf.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -73,6 +74,8 @@ bool sh_command_resolve(sh_ctx_t *ctx, sh_command_t *command)
     sh_builtin_t const *builtin;
     char const *name;
 
+    if (command->command_type == SH_COMMAND_EXTERNAL)
+        my_sfree((void **)&command->external.path);
     if (command->base.args.length <= 1)
         return false;
     name = MY_VEC_GET(char const *, &command->base.args, 0);
