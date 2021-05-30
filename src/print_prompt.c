@@ -5,11 +5,12 @@
 ** Prompt format functions
 */
 
-#include <libmy/io.h>
 #include <libmy/ascii.h>
-#include <unistd.h>
+#include <libmy/io.h>
+#include <libmy/printf.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "shell.h"
 #include "token.h"
@@ -47,7 +48,7 @@ void sh_print_y(sh_ctx_t *ctx)
 
     time(&now);
     local = localtime(&now);
-    year = local->tm_year%100;
+    year = local->tm_year % 100;
     my_printf("%d", year);
     (void)ctx;
 }
