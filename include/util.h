@@ -9,6 +9,7 @@
 #define __SHELL_UTIL_H__
 
 #include <libmy/hash.h>
+#include <libmy/io/iostream.h>
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -70,5 +71,9 @@ typedef struct sh_lstr {
 bool sh_lstr_dup(sh_lstr_t src, sh_lstr_t *dst);
 int sh_lstr_cmp(sh_lstr_t const *a, sh_lstr_t const *b);
 void sh_lstr_hash(my_hasher_t *hasher, sh_lstr_t *str);
+
+/// Prints the given array of strings in a column format.
+void sh_column_print(
+    bool is_tty, size_t entry_count, char **entries, my_iostream_t *out);
 
 #endif // !defined(__SHELL_UTIL_H__)
