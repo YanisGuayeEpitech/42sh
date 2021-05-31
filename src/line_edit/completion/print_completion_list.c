@@ -46,7 +46,8 @@ static bool sh_is_entry_duplicate(glob_t *globbuf, size_t index, char *entry)
     return false;
 }
 
-static char *sh_get_next_completion_entry(glob_t *globbuf, size_t *index)
+static bool sh_set_next_completion_entry(char **entry_ptr,
+glob_t *globbuf, size_t *index)
 {
     char *entry = sh_get_completion_entry(globbuf, *index);
     bool is_duplicate = sh_is_entry_duplicate(globbuf, *index, entry);
@@ -56,7 +57,8 @@ static char *sh_get_next_completion_entry(glob_t *globbuf, size_t *index)
         entry = sh_get_completion_entry(globbuf, *index);
         is_duplicate = sh_is_entry_duplicate(globbuf, *index, entry);
     }
-    return (is_duplicate) ? NULL : entry;
+    *entry_ptr = (is_duplicate) ? NULL : entry;
+    return !is_duplicate;
 }
 
 void sh_print_completion_list(
@@ -64,6 +66,7 @@ void sh_print_completion_list(
 {
     glob_t buf;
     my_vec_t entries;
+    char *entry;
 
     sh_line_edit_fill_completion_list(line_edit, line, &buf, apply);
     if (buf.gl_pathc <= 1) {
@@ -73,10 +76,9 @@ void sh_print_completion_list(
     my_putc('\n');
     my_vec_init(&entries, sizeof(char *));
     my_flush_stdout();
-    for (size_t i = 0; i < buf.gl_pathc; i++) {
-        if (sh_get_next_completion_entry(&buf, &i))
-            my_vec_push(&entries, sh_get_completion_entry(&buf, i));
-    }
+    for (size_t i = 0; i < buf.gl_pathc && 
+        sh_set_next_completion_entry(&entry, &buf, &i); i++)
+        my_vec_push(&entries, &entry);
     sh_column_print(
         line_edit->ctx->is_tty, entries.length, entries.data, MY_STDOUT);
     my_vec_free(&entries, NULL);
