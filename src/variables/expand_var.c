@@ -63,7 +63,7 @@ sh_error_t sh_expand_var(
     if (sh_expand_var_find_variable(&start, exp, name))
         return SH_OK;
     rest_start = exp->value_begin + name->length + 1;
-    value = sh_var_get(ctx, *name);
+    value = sh_var_get_any(ctx, *name);
     exp->value_end = rest_start - 1;
     if (copy_name)
         name->value = my_strndup(name->value, name->length);
